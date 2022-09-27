@@ -129,7 +129,7 @@ export const TEMPLATE_BUTTON = [
     iconFileName: "download.svg",
     title: "Download the Full Dupliation Template",
   },
-  { iconFileName: "upload.png", title: "Upload Template" },
+  { iconFileName: "Upload.png", title: "Upload Template" },
 ];
 
 export enum WorkStatusType {
