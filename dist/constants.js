@@ -90,11 +90,11 @@ export var JOB_SEEKER_TABS = [
 export var TEMPLATE_BUTTON = [
     { iconFileName: "Group.png", title: "Import From Job Seeker Collections" },
     {
-        iconFileName: "Download.png",
+        iconFileName: "download.svg",
         title: "Download the Pre Dupliation Template",
     },
     {
-        iconFileName: "Download.png",
+        iconFileName: "download.svg",
         title: "Download the Full Dupliation Template",
     },
     { iconFileName: "upload.png", title: "Upload Template" },
