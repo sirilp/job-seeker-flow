@@ -31,7 +31,7 @@ var JobSeekerTempleteButton = function (props) {
                 } }, { children: [_jsx("div", __assign({ style: {
                             display: "block",
                             height: "49%",
-                        } }, { children: _jsx("img", { src: "../../../src/assets/images/".concat(props.fileName), width: "40%", height: "120%" }) })), _jsx("div", __assign({ style: {
+                        } }, { children: _jsx("img", { src: "src/assets/images/".concat(props.fileName), width: "40%", height: "120%" }) })), _jsx("div", __assign({ style: {
                             display: "block",
                             height: "49%",
                         } }, { children: _jsx(Typography, __assign({ variant: "caption", display: "block", gutterBottom: true, fontSize: ".8vw" }, { children: props.title })) }))] })) })) }));
