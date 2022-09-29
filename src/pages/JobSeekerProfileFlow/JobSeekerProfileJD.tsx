@@ -1,4 +1,4 @@
-import React, { ReactElement, FC, useEffect } from "react";
+import React, { ReactElement, FC, useEffect, useRef } from "react";
 import { 
   Step, 
   Button, 
@@ -10,6 +10,8 @@ import "./JobSeekerProfileFlow.css";
 import {
   getFormData,
   getFormModeler,
+  getJobSeekerProfile,
+  postFormData,
   updateJobSeekerProfile,
 } from "../../services/FormDataService";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
@@ -23,10 +25,13 @@ import {
 } from "../../constants";
 import { Form } from "react-formio";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
+import KeycloakService from "../../services/KeycloakService";
 
 const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
 
   const userDataState = useAppSelector((state) => state.currentUser);
+  const dispatch = useAppDispatch();
+  const myRefTag: any = useRef(Form);
 
   const [loader, setLoader] = React.useState(false);
   const [menuForm, setMenuForm] = React.useState<any>(null);
@@ -34,20 +39,52 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   const [prefillDetails, setPrefillDetails] = React.useState<any>({});
   const [postFormDetails, setPostFormDetails] = React.useState<any>({});
 
+  const jdQueMap ={
+    textField: 'Hy',
+    issuingCountry: '',
+    yes: 'yes',
+    dateOfExpiry: '09/23/2020',
+    dateOfIssue: '09/23/2016',
+  };
+
   useEffect(() => {
+    if(props.profileDataId || userDataState.userData.profileId){
+      setLoader(true);
+      getDataFill();
+    }
     fetchForm();
   }, []);
 
+  const getDataFill = async () => {
+    const token = await KeycloakService.fetchTokenDifferently();
+    localStorage.setItem('react-token', token);
+    sessionStorage.setItem('react-token', token);
+    const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
+    if(profileDataFetched?.data?.data?.jdQuestionsMap) {
+       setPrefillDetails(
+        {
+          data: {
+            ...profileDataFetched?.data?.data?.jdQuestionsMap,
+          }
+        }
+       )
+      }
+  };
+  console.log(prefillDetails)
   const fetchForm = async () => {
+    const token = await KeycloakService.fetchTokenDifferently();
+    localStorage.setItem('react-token', token);
+    sessionStorage.setItem('react-token', token);
     const formMarkup = await getFormData(
       JD_PATCH_FORM, "", props.contestId
     );
-    if (formMarkup?.data?.data[0]?.formData?.jdQuestionForm) {
+      if (formMarkup?.data?.data[0]?.formData?.jdQuestionForm) {
       const jdMarkup = await getFormModeler(
         formMarkup?.data?.data[0]?.formData?.jdQuestionForm
       );
       if (jdMarkup?.data?.data?.components?.components) {
         setMenuForm(jdMarkup?.data?.data?.components);
+        setLoader(false);
       }
     }
   };
@@ -58,11 +95,17 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   };
 
   const submitFormData = async () => {
+    if (!myRefTag?.current) {
+      props.setType(WARNING_KEY);
+      props.setDataMessage(FORM_INVALID_STATUS);
+      props.setOpen(true);
+      return;
+    }
     const jdQuestionsMap = Object.assign(postFormDetails);
     setLoader(true);
     try {
       const bodyPayload = {
-        profileId: userDataState.userData.profileId,
+        profileId: props.profileDataId || userDataState.userData.profileId,
         profileData: {
           jdQuestionsMap
         },
@@ -87,10 +130,9 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   return (
     <div className="job-seeker-profile-content">
       <Form
+        ref={myRefTag}
         form={menuForm}
-        submission={{
-          data: prefillDetails,
-        }}
+        submission={ prefillDetails}
         onChange={(schema: any) => handleChange(schema)}
       />
       <PreviousNextButtons

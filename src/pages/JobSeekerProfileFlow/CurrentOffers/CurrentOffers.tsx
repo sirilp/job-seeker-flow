@@ -43,6 +43,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
 
   const [serviceList, setServiceList] = React.useState<any>([]);
   const [serviceListFiles, setServiceListFiles] = React.useState<any>([]);
+  const [prefillOfferLetters, setPrefillOfferLetters] = React.useState<any>(props?.prefilData?.map((files) => files.letterFiles ) || []);
   const [fixedCtc, setFixedCtc] = React.useState<{
     fixedCtcLakh: string;
     fixedCtcThousand: string;
@@ -185,11 +186,11 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
       });
   };
 
-  const handleServiceAdd = () => {
+  const handleServiceAdd = (prefillValue?: any) => {
     offerAddForm.setValues((prevValues) => ({
-      members: [...prevValues.members, { ...initialValuesForForm }],
+      members: [...prevValues.members, { ...initialValuesForForm, ...prefillValue }],
     }));
-    setServiceList((prevState: any) => [...prevState, { service: "" }]);
+    setServiceList((prevState: any) => [...prevState, { ...initialValuesForForm, ...prefillValue }]);
   };
 
   const getError = (name: string) => {
@@ -199,7 +200,10 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
   };
 
   useEffect(() => {
-    if (serviceList.length === 0) handleServiceAdd();
+    if (props.prefilData) {
+      console.log(props.prefilData)
+      props.prefilData.forEach((offer) => handleServiceAdd(offer));
+    } else if (serviceList.length === 0) handleServiceAdd();
   }, []);
 
   const receiveFileContent = (files: any, index: number) => {
@@ -385,6 +389,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         offerAddForm.values.members[index].fieldDisabled
                       }
                       setValues={handleFixedCtc}
+                      value={offerAddForm.values.members[index].fixedCtc}
                     />
                     <InlineInputs
                       InlineInputsArray={CTCDetails}
@@ -394,6 +399,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         offerAddForm.values.members[index].fieldDisabled
                       }
                       setValues={handleVariableCtc}
+                      value={offerAddForm.values.members[index].variableCtc}
                     />
                     <div>
                       <div className="experience-card-title">
@@ -436,7 +442,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         data={index}
                       />
                     )}
-                    {serviceListFiles[index] && serviceListFiles[index][0] ? (
+                    {serviceListFiles[index] && serviceListFiles?.length > 0 && serviceListFiles[index]?.length > 0  ? (
                       <Box>
                         <Button className="next-button" variant="contained">
                           {serviceListFiles[index][0]?.name}
@@ -459,6 +465,32 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         </Button>
                       </Box>
                     ) : null}
+  
+                      {(!serviceListFiles[index] && prefillOfferLetters?.length > 0 && prefillOfferLetters[index]?.length > 0) ? (
+                           <Box>
+                           <Button className="next-button" variant="contained">
+                             {prefillOfferLetters[index][0].path}
+                           </Button>
+                           <Button
+                             type="button"
+                             onClick={() =>{
+                              const letter = prefillOfferLetters
+                              letter.splice(index,1);
+                              console.log(letter)
+                              setPrefillOfferLetters([...letter])
+                             }}
+                             className="remove-btn"
+                           >
+                             <DeleteIcon
+                               color={
+                                 !offerAddForm.values.members[index].saveStatus
+                                   ? ERROR_KEY
+                                   : DISABLED_KEY
+                               }
+                             />
+                           </Button>
+                         </Box>
+                      ) : null}
                   </Grid>
                 </Grid>
                 {!props.disabled ? (

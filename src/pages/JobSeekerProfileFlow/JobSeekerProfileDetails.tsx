@@ -28,13 +28,17 @@ import {
 } from "./JobSeekerProfileFlowConstants";
 import "./JobSeekerProfileFlow.css";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
-import { updateJobSeekerProfile } from "../../services/FormDataService";
+import {
+  getJobSeekerProfile,
+  updateJobSeekerProfile,
+} from "../../services/FormDataService";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import {
   ERROR_KEY,
   SUCCESS_KEY,
   FORM_SUBMISSION_SUCCESS,
 } from "../../constants";
+import KeycloakService from "../../services/KeycloakService";
 
 const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   const dispatch = useAppDispatch();
@@ -133,7 +137,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     const profileDetailsMap = buildDetailsPayload();
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
-        profileId: userDataState.userData.profileId,
+        profileId: props.profileDataId || userDataState.userData.profileId,
         profileData: { profileDetailsMap },
       });
       console.log(profileDetailsResponse?.data);
@@ -179,6 +183,60 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     });
   };
 
+  useEffect(() => {
+    callPrefillData();
+  }, []);
+
+  const callPrefillData = async () => {
+    const token = await KeycloakService.fetchTokenDifferently();
+    localStorage.setItem("react-token", token);
+    sessionStorage.setItem("react-token", token);
+    const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
+    if (profileDataFetched?.data?.data?.profileDetailsMap) {
+      patchProfileDetails(profileDataFetched?.data?.data?.profileDetailsMap);
+    }
+  };
+
+  const patchProfileDetails = (patchData: any) => {
+    console.log(patchData);
+    setFreshGrad(patchData.freshGraduate);
+    setTotalExp(patchData.totalExperience);
+    setRelevantExperience({
+      relevantExperienceYears:
+        patchData.relevantExperience.relevantExperienceYears,
+      relevantExperienceMonths:
+        patchData.relevantExperience.relevantExperienceMonths,
+    });
+    setFixedCtc({
+      fixedCtcLakh: patchData.fixedCtc.fixedCtcLakh,
+      fixedCtcThousand: patchData.fixedCtc.fixedCtcThousand,
+    });
+    setVariableCtc({
+      variableCtcLakh: patchData.variableCtc.variableCtcLakh,
+      variableCtcThousand: patchData.variableCtc.variableCtcThousand,
+    });
+    setExpectedCtc({
+      expectedCtcLakh: patchData.expectedCtc.expectedCtcLakh,
+      expectedCtcThousand: patchData.expectedCtc.expectedCtcThousand,
+    });
+    setWorkStatus(patchData.workStatus);
+    setTotalCtc(patchData.totalCtc);
+  };
+
+  const setTotalExp = (patchObj: any) => {
+    setTotalExperience({
+      totalExperienceMonths: patchObj.totalExperienceMonths,
+      totalExperienceYears: patchObj.totalExperienceYears,
+    });
+  };
+  const setFreshGrad = (data: any) => {
+    if (data === "true") {
+      setFreshGraduate(true);
+    } else {
+      setFreshGraduate(false);
+    }
+  };
+
   return (
     <div className="job-seeker-profile-content">
       <p className="step-content-title-text">{EXPERIENCE_TITLE}</p>
@@ -204,12 +262,14 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
           InlineInputsArray={YearMonthDetails}
           disabled={!props.hasButtons}
           setValues={handleTotalExperience}
+          value={totalExperience}
         />
         <InlineInputs
           InlineInputsArray={YearMonthDetails}
           InlineInputTitle={RELEVANT_EXP_TEXT}
           disabled={!props.hasButtons}
           setValues={handleRelevantExperience}
+          value={relevantExperience}
         />
       </div>
       <div className="generic-container">
@@ -250,12 +310,14 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
           InlineInputTitle={FIXED_CTC_TEXT}
           disabled={!props.hasButtons}
           setValues={handleFixedCtc}
+          value={fixedCtc}
         />
         <InlineInputs
           InlineInputsArray={CTCDetails}
           InlineInputTitle={VARIABLE_CTC_TEXT}
           disabled={!props.hasButtons}
           setValues={handleVariableCtc}
+          value={variableCtc}
         />
         <div>
           <div className="experience-card-title">
@@ -267,6 +329,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
             <TextField
               disabled={!props.hasButtons}
               type="text"
+              value={totalCtc}
               onChange={(e) => setTotalCtc(e.target.value)}
               label={TOTAL_CTC_LABEL}
               placeholder={TCTC_PLACEHOLDER}
@@ -295,6 +358,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
             InlineInputsArray={CTCDetails}
             disabled={!props.hasButtons}
             setValues={handleExpectedCtc}
+            value={expectedCtc}
           />
         </div>
       </div>

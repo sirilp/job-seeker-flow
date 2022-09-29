@@ -5,6 +5,7 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import {
   LWD_TEXT,
@@ -31,6 +32,7 @@ import CurrentOffers from "./CurrentOffers/CurrentOffers";
 import { useStyles } from "./JobSeekerProfileFlowStyles";
 import Calendar from "../../components/Calendar/Calendar";
 import {
+  getJobSeekerProfile,
   updateJobSeekerProfile,
   UploadFiles,
 } from "../../services/FormDataService";
@@ -42,6 +44,7 @@ import {
   OFFER_LETTER,
 } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
+import KeycloakService from "../../services/KeycloakService";
 
 const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
   const classes = useStyles();
@@ -58,6 +61,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
   const [offerData, setOfferData] = useState<any[]>([]);
   const [reasonOfJobChange, setReasonOfJobChange] = useState("");
   const [reasonOfResignation, setReasonOfResignation] = useState("");
+  const [gotPatchData, setGotPatchData]= React.useState(false);
 
   const uploadPayloadBuild = (files) => {
     return {
@@ -85,19 +89,19 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
     };
   };
   const submitNoticePeriodInfo = async () => {
-    const noticePeriodInfoMap = buildDetailsPayload();
+    const profileNoticePeriodMap = buildDetailsPayload();
 
-    if (!validateNoticePeriodInfo(noticePeriodInfoMap)) {
+    if (!validateNoticePeriodInfo(profileNoticePeriodMap)) {
       props.setOpen(true);
       props.setType(WARNING_KEY);
       props.setDataMessage("Please enter all Notice Period details");
       return;
     }
-    if (noticePeriodInfoMap.offerData.length > 0) {
+    if (profileNoticePeriodMap.offerData.length > 0) {
       try {
         const fileIds: { index: number; id: string }[] = [];
         await Promise.all(
-          noticePeriodInfoMap.offerData.map(async (offer, index) => {
+          profileNoticePeriodMap.offerData.map(async (offer, index) => {
             const uploadResponse = await UploadFiles(
               uploadPayloadBuild(offer?.letterFiles)
             );
@@ -107,9 +111,9 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
             });
           })
         );
-        noticePeriodInfoMap.offerData.forEach((offer, index) => {
+        profileNoticePeriodMap.offerData.forEach((offer, index) => {
           const idData = fileIds.find((files) => files.index === index);
-          noticePeriodInfoMap.offerData[index].offerDocumentId = idData?.id;
+          profileNoticePeriodMap.offerData[index].offerDocumentId = idData?.id;
         });
       } catch (error) {
         props.setOpen(true);
@@ -122,8 +126,8 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
     }
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
-        profileId: userDataState.userData.profileId || "1018862574432321536",
-        profileData: { noticePeriodInfoMap },
+        profileId: props.profileDataId || userDataState.userData.profileId ,
+        profileData: { profileNoticePeriodMap },
       });
       console.log(profileDetailsResponse?.data);
       if (profileDetailsResponse?.data?.success) {
@@ -190,8 +194,45 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
     list.splice(index, 1);
     setOfferData(list);
   };
+
+  useEffect(() => {
+    callPrefillData();
+}, []);
+
+// const fetchCityDetails = async () => {
+//     const cityRawData = await getCityList();
+//     setCitiesArray(cityRawData?.data.split('\n'));
+// }
+
+const callPrefillData = async () => {
+    const token = await KeycloakService.fetchTokenDifferently();
+    localStorage.setItem('react-token', token);
+    sessionStorage.setItem('react-token', token);
+    const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
+    if(profileDataFetched?.data?.data?.profileNoticePeriodMap) {
+        patchNoticePeriodDetails(profileDataFetched?.data?.data?.profileNoticePeriodMap);
+    }
+}
+
+const patchNoticePeriodDetails = (patchData: any) => {
+    console.log(patchData);
+   
+    setBuyoutStatus(patchData.buyoutStatus);
+    setNegotiableStatus(patchData.negotiableStatus);
+    setNegotiablePeriod(patchData.negotiablePeriod);
+    setNoticeStatus(patchData.noticeStatus);
+    setReasonOfJobChange(patchData.reasonOfJobChange);
+    setOfferStatus(patchData.offerStatus);
+    setReasonOfResignation(patchData.reasonOfResignation);
+    setNoticePeriod(patchData.noticePeriod);
+    setOfferData(() => [...patchData.offerData]);
+    setGotPatchData(true);
+}
+
   return (
-    <div className="job-seeker-profile-content">
+    <>
+      {gotPatchData?
+      <div className="job-seeker-profile-content">
       <div className="notice-details-card">
         {currentlyWorking ? (
           <>
@@ -307,6 +348,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                 multiline
                 fullWidth
                 rows={3}
+                value={reasonOfJobChange}
                 helperText={WORD_LIMIT_TEXT}
                 onChange={(e) => setReasonOfJobChange(e.target.value)}
                 InputProps={{
@@ -455,6 +497,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     setType={props.setType}
                     setOpen={props.setOpen}
                     setDataMessage={props.setDataMessage}
+                    prefilData={props.profileDataId ? offerData : null}
                   />
                 </div>
               </div>
@@ -469,6 +512,11 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
         />
       ) : null}
     </div>
+      :
+      <CircularProgress />
+      }
+    </>
+    
   );
 };
 
