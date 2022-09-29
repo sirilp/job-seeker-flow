@@ -66,7 +66,6 @@ import Calendar from "../../components/Calendar/Calendar";
 import { getJobSeekerProfile, updateJobSeekerProfile, UploadFiles, } from "../../services/FormDataService";
 import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, WARNING_KEY, OFFER_LETTER, } from "../../constants";
 import { useAppSelector } from "../../services/StoreHooks";
-import KeycloakService from "../../services/KeycloakService";
 var JobSeekerProfileNoticePeriod = function (props) {
     var classes = useStyles();
     var userDataState = useAppSelector(function (state) { return state.currentUser; });
@@ -240,17 +239,12 @@ var JobSeekerProfileNoticePeriod = function (props) {
     //     setCitiesArray(cityRawData?.data.split('\n'));
     // }
     var callPrefillData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token, profileDataFetched;
+        var profileDataFetched;
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenDifferently()];
+                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
                 case 1:
-                    token = _e.sent();
-                    localStorage.setItem('react-token', token);
-                    sessionStorage.setItem('react-token', token);
-                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
-                case 2:
                     profileDataFetched = _e.sent();
                     if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.profileNoticePeriodMap) {
                         patchNoticePeriodDetails((_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.profileNoticePeriodMap);

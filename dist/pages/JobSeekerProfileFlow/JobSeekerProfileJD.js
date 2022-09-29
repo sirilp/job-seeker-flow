@@ -53,7 +53,6 @@ import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNe
 import { WARNING_KEY, JD_PATCH_FORM, FORM_INVALID_STATUS, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, ERROR_KEY, } from "../../constants";
 import { Form } from "react-formio";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-import KeycloakService from "../../services/KeycloakService";
 var JobSeekerProfileJD = function (props) {
     var userDataState = useAppSelector(function (state) { return state.currentUser; });
     var dispatch = useAppDispatch();
@@ -78,17 +77,12 @@ var JobSeekerProfileJD = function (props) {
         fetchForm();
     }, []);
     var getDataFill = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token, profileDataFetched;
+        var profileDataFetched;
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenDifferently()];
+                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
                 case 1:
-                    token = _e.sent();
-                    localStorage.setItem('react-token', token);
-                    sessionStorage.setItem('react-token', token);
-                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
-                case 2:
                     profileDataFetched = _e.sent();
                     if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.jdQuestionsMap) {
                         setPrefillDetails({
@@ -99,30 +93,24 @@ var JobSeekerProfileJD = function (props) {
             }
         });
     }); };
-    console.log(prefillDetails);
     var fetchForm = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token, formMarkup, jdMarkup;
+        var formMarkup, jdMarkup;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
         return __generator(this, function (_m) {
             switch (_m.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenDifferently()];
+                case 0: return [4 /*yield*/, getFormData(JD_PATCH_FORM, "", props.contestId)];
                 case 1:
-                    token = _m.sent();
-                    localStorage.setItem('react-token', token);
-                    sessionStorage.setItem('react-token', token);
-                    return [4 /*yield*/, getFormData(JD_PATCH_FORM, "", props.contestId)];
-                case 2:
                     formMarkup = _m.sent();
-                    if (!((_c = (_b = (_a = formMarkup === null || formMarkup === void 0 ? void 0 : formMarkup.data) === null || _a === void 0 ? void 0 : _a.data[0]) === null || _b === void 0 ? void 0 : _b.formData) === null || _c === void 0 ? void 0 : _c.jdQuestionForm)) return [3 /*break*/, 4];
+                    if (!((_c = (_b = (_a = formMarkup === null || formMarkup === void 0 ? void 0 : formMarkup.data) === null || _a === void 0 ? void 0 : _a.data[0]) === null || _b === void 0 ? void 0 : _b.formData) === null || _c === void 0 ? void 0 : _c.jdQuestionForm)) return [3 /*break*/, 3];
                     return [4 /*yield*/, getFormModeler((_f = (_e = (_d = formMarkup === null || formMarkup === void 0 ? void 0 : formMarkup.data) === null || _d === void 0 ? void 0 : _d.data[0]) === null || _e === void 0 ? void 0 : _e.formData) === null || _f === void 0 ? void 0 : _f.jdQuestionForm)];
-                case 3:
+                case 2:
                     jdMarkup = _m.sent();
                     if ((_j = (_h = (_g = jdMarkup === null || jdMarkup === void 0 ? void 0 : jdMarkup.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.components) === null || _j === void 0 ? void 0 : _j.components) {
                         setMenuForm((_l = (_k = jdMarkup === null || jdMarkup === void 0 ? void 0 : jdMarkup.data) === null || _k === void 0 ? void 0 : _k.data) === null || _l === void 0 ? void 0 : _l.components);
                         setLoader(false);
                     }
-                    _m.label = 4;
-                case 4: return [2 /*return*/];
+                    _m.label = 3;
+                case 3: return [2 /*return*/];
             }
         });
     }); };

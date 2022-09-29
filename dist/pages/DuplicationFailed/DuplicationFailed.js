@@ -50,7 +50,6 @@ import React, { useState, useRef, useMemo, useEffect, useCallback, } from "react
 import { Button, Grid, Typography, Box, Checkbox } from "@mui/material";
 import StepCount from "../../components/StepCount";
 import { LISTING_GENERIC_HEADERS } from "./DuplicationFailedColumnHeaders";
-import KeycloakService from "../../services/KeycloakService";
 import ColumnSelection from "../../components/ColumnSelection/ColumnSelection";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
@@ -73,22 +72,9 @@ var DuplicationFailed = function () {
     var _k = React.useState(0), pageNo = _k[0], setPageNo = _k[1];
     var _l = useState({}), agCount = _l[0], setAgCount = _l[1];
     useEffect(function () {
-        fetchToken();
         apiCallAggregateData();
         apiCallDuplicationFailedData(selectedButtonValue, pageNo, pageSize);
     }, []);
-    var fetchToken = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenOtherUser()];
-                case 1:
-                    token = _a.sent();
-                    sessionStorage.setItem("react-token", token);
-                    return [2 /*return*/];
-            }
-        });
-    }); };
     var setSelectedButton = function (id, filterValue) {
         setSelectedButtonId(id);
         setSelectedButtonValue(filterValue);

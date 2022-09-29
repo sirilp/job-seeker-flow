@@ -55,7 +55,6 @@ import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNe
 import { UploadFiles, getJobSeekerProfile, createJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import { ERROR_KEY, SUCCESS_KEY, IMAGE_UPLOAD_ERROR, JOB_SEEKER_RESUME, FORM_SUBMISSION_SUCCESS, } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-import KeycloakService from "../../services/KeycloakService";
 import { getFileDetails } from "../../services/DocumentService";
 var useStyles = makeStyles({
     Grid1: {
@@ -277,26 +276,21 @@ var JobSeekerProfileUpload = function (props) {
         callPrefillData();
     }, []);
     var callPrefillData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token, profileDataFetched, fileResponse;
+        var profileDataFetched, fileResponse;
         var _a, _b, _c, _d, _e, _f, _g, _h;
         return __generator(this, function (_j) {
             switch (_j.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenDifferently()];
+                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
                 case 1:
-                    token = _j.sent();
-                    localStorage.setItem('react-token', token);
-                    sessionStorage.setItem('react-token', token);
-                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
-                case 2:
                     profileDataFetched = _j.sent();
-                    if (!((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.resumeDocumentId)) return [3 /*break*/, 4];
+                    if (!((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.resumeDocumentId)) return [3 /*break*/, 3];
                     return [4 /*yield*/, getFileDetails((_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.resumeDocumentId)];
-                case 3:
+                case 2:
                     fileResponse = _j.sent();
                     if ((_f = (_e = fileResponse === null || fileResponse === void 0 ? void 0 : fileResponse.data) === null || _e === void 0 ? void 0 : _e.data) === null || _f === void 0 ? void 0 : _f.fileName)
                         setImageName((_h = (_g = fileResponse === null || fileResponse === void 0 ? void 0 : fileResponse.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.fileName);
-                    _j.label = 4;
-                case 4: return [2 /*return*/];
+                    _j.label = 3;
+                case 3: return [2 /*return*/];
             }
         });
     }); };

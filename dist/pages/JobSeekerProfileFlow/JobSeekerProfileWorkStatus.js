@@ -68,7 +68,6 @@ import { useStyles } from "./JobSeekerProfileFlowStyles";
 import { getCityList, getJobSeekerProfile, updateJobSeekerProfile } from '../../services/FormDataService';
 import { useAppSelector } from "../../services/StoreHooks";
 import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS } from "../../constants";
-import KeycloakService from "../../services/KeycloakService";
 var JobSeekerProfileWorkStatus = function (props) {
     var classes = useStyles();
     var experiencedRef = React.useRef();
@@ -192,17 +191,12 @@ var JobSeekerProfileWorkStatus = function (props) {
         });
     }); };
     var callPrefillData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token, profileDataFetched;
+        var profileDataFetched;
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenDifferently()];
+                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
                 case 1:
-                    token = _e.sent();
-                    localStorage.setItem('react-token', token);
-                    sessionStorage.setItem('react-token', token);
-                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
-                case 2:
                     profileDataFetched = _e.sent();
                     if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.profileWorkStatusMap) {
                         patchWorkStatusDetails((_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.profileWorkStatusMap);
