@@ -337,7 +337,7 @@ export const PDCStatusCheckButton = (params: any) => {
             setOpen(false);
           }, 4000);
           params.setValue([true, response?.data.data.profileLogId]);
-          localStorage.setItem(
+          sessionStorage.setItem(
             `row${params.rowIndex}`,
             JSON.stringify(params.data)
           );
@@ -591,7 +591,7 @@ export const FDCStatusCheckButton = (params: any) => {
             setOpen(false);
           }, 4000);
           params.setValue(true);
-          localStorage.setItem(
+          sessionStorage.setItem(
             `row${params.rowIndex}`,
             JSON.stringify(params.data)
           );

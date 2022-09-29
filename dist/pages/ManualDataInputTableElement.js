@@ -250,7 +250,7 @@ export var PDCStatusCheckButton = function (params) {
                         setOpen(false);
                     }, 4000);
                     params.setValue([true, response === null || response === void 0 ? void 0 : response.data.data.profileLogId]);
-                    localStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
+                    sessionStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
                 }
                 else {
                     setResult(fail);
@@ -415,7 +415,7 @@ export var FDCStatusCheckButton = function (params) {
                         setOpen(false);
                     }, 4000);
                     params.setValue(true);
-                    localStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
+                    sessionStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
                 }
                 else {
                     setResult(fail);

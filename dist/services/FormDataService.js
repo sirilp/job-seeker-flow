@@ -37,24 +37,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import axios from 'axios';
 export var getFormData = function (formId, id, recordId, page, size) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
-        return [2 /*return*/, axios.get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "form-runtime/v1/form-data?formId=").concat(formId).concat(id ? '&filter=id:' + id : '').concat(page ? '&page=' + page : '').concat(size ? '&size=' + size : '').concat(recordId ? '&filter=formData.recordId:' + recordId : ''), { headers: { Authorization: "Bearer ".concat(localStorage.getItem('react-token')) } }).catch(function (error) {
+        return [2 /*return*/, axios.get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "form-runtime/v1/form-data?formId=").concat(formId).concat(id ? '&filter=id:' + id : '').concat(page ? '&page=' + page : '').concat(size ? '&size=' + size : '').concat(recordId ? '&filter=formData.recordId:' + recordId : ''), { headers: { Authorization: "Bearer ".concat(sessionStorage.getItem('react-token')) } }).catch(function (error) {
                 console.log(error);
             })];
     });
 }); };
 export var postFormData = function (bodyPayload) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
-        return [2 /*return*/, axios.post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "form-runtime/v1/form-data"), bodyPayload, { headers: { Authorization: "Bearer ".concat(localStorage.getItem('react-token')) } }).catch(function (error) {
+        return [2 /*return*/, axios.post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "form-runtime/v1/form-data"), bodyPayload, { headers: { Authorization: "Bearer ".concat(sessionStorage.getItem('react-token')) } }).catch(function (error) {
                 console.log(error);
             })];
     });
 }); };
 export var getFormModeler = function (formId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
-        return [2 /*return*/, axios.get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "form-modeler/v1/forms/").concat(formId), { headers: { Authorization: "Bearer ".concat(localStorage.getItem('react-token')) } })
+        return [2 /*return*/, axios.get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "form-modeler/v1/forms/").concat(formId), { headers: { Authorization: "Bearer ".concat(sessionStorage.getItem('react-token')) } })
                 .catch(function (error) {
                 console.log(error);
             })];
@@ -63,7 +60,6 @@ export var getFormModeler = function (formId) { return __awaiter(void 0, void 0,
 export var UploadFiles = function (body) { return __awaiter(void 0, void 0, void 0, function () {
     var formData;
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
         formData = new FormData();
         formData.append("file", body.files[0]);
         formData.append("documentPath", body.documentPath);
@@ -73,7 +69,7 @@ export var UploadFiles = function (body) { return __awaiter(void 0, void 0, void
                 "https://api.dev.hiringhood.com/", "dms/v1/documents"), formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': "Bearer ".concat(localStorage.getItem('react-token'))
+                    'Authorization': "Bearer ".concat(sessionStorage.getItem('react-token'))
                 },
                 params: {
                     documentTypeId: body.documentTypeId
@@ -83,30 +79,27 @@ export var UploadFiles = function (body) { return __awaiter(void 0, void 0, void
 }); };
 export var createJobSeekerProfile = function (bodyPayload) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
         return [2 /*return*/, axios.post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seeker?profileLogId=").concat(bodyPayload.profileLogId), bodyPayload.profileData, {
                 headers: {
-                    Authorization: "Bearer ".concat(localStorage.getItem('react-token'))
+                    Authorization: "Bearer ".concat(sessionStorage.getItem('react-token'))
                 }
             })];
     });
 }); };
 export var updateJobSeekerProfile = function (bodyPayload) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
         return [2 /*return*/, axios.patch("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile/").concat(bodyPayload.profileId), bodyPayload.profileData, {
                 headers: {
-                    Authorization: "Bearer ".concat(localStorage.getItem('react-token'))
+                    Authorization: "Bearer ".concat(sessionStorage.getItem('react-token'))
                 }
             })];
     });
 }); };
 export var getJobSeekerProfile = function (profileId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('tokennnnnn', localStorage.getItem("react-token"));
         return [2 /*return*/, axios.get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile/").concat(profileId), {
                 headers: {
-                    Authorization: "Bearer ".concat(localStorage.getItem('react-token'))
+                    Authorization: "Bearer ".concat(sessionStorage.getItem('react-token'))
                 }
             })];
     });
