@@ -38,15 +38,17 @@ import axios from "axios";
 export var preDuplicationCheck = function (bodyPayload) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios
-                    .post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile-log/check-duplicates"), bodyPayload, {
-                    headers: {
-                        Authorization: "Bearer ".concat(localStorage.getItem("react-token")),
-                    },
-                })
-                    .catch(function (error) {
-                    console.log(error);
-                })];
+            case 0:
+                console.log('tokennnnnn', localStorage.getItem("react-token"));
+                return [4 /*yield*/, axios
+                        .post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile-log/check-duplicates"), bodyPayload, {
+                        headers: {
+                            Authorization: "Bearer ".concat(localStorage.getItem("react-token")),
+                        },
+                    })
+                        .catch(function (error) {
+                        console.log(error);
+                    })];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });
@@ -54,15 +56,17 @@ export var preDuplicationCheck = function (bodyPayload) { return __awaiter(void 
 export var fullDuplicationCheck = function (profileLogId, panNumber, dob) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios
-                    .patch("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile-log/").concat(profileLogId, "/check-duplicates"), { panNumber: panNumber, dateOfBirth: dob }, {
-                    headers: {
-                        Authorization: "Bearer ".concat(localStorage.getItem("react-token")),
-                    },
-                })
-                    .catch(function (error) {
-                    console.log(error);
-                })];
+            case 0:
+                console.log('tokennnnnn', localStorage.getItem("react-token"));
+                return [4 /*yield*/, axios
+                        .patch("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile-log/").concat(profileLogId, "/check-duplicates"), { panNumber: panNumber, dateOfBirth: dob }, {
+                        headers: {
+                            Authorization: "Bearer ".concat(localStorage.getItem("react-token")),
+                        },
+                    })
+                        .catch(function (error) {
+                        console.log(error);
+                    })];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });
@@ -70,15 +74,17 @@ export var fullDuplicationCheck = function (profileLogId, panNumber, dob) { retu
 export var contestLinkedJobsekeers = function (id, page, size) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers?contestId=").concat(id, "&page=").concat(page, "&size=").concat(size), {
-                    headers: {
-                        Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
-                    },
-                })
-                    .catch(function (error) {
-                    console.log(error);
-                })];
+            case 0:
+                console.log('tokennnnnn', localStorage.getItem("react-token"));
+                return [4 /*yield*/, axios
+                        .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers?contestId=").concat(id, "&page=").concat(page, "&size=").concat(size), {
+                        headers: {
+                            Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                        },
+                    })
+                        .catch(function (error) {
+                        console.log(error);
+                    })];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const getFormData = async (formId: string, id?: string, recordId?: string, page?: string, size?: number) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     return axios.get(`${process.env.REACT_APP_MAIN_SERVER_URL}form-runtime/v1/form-data?formId=${formId}${
         id ? '&filter=id:'+ id : ''}${
             page ? '&page='+page : ''}${
@@ -13,6 +14,7 @@ export const getFormData = async (formId: string, id?: string, recordId?: string
 };
 
 export const postFormData = async (bodyPayload: {formId: string, formData: any}) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     return axios.post(`${process.env.REACT_APP_MAIN_SERVER_URL}form-runtime/v1/form-data`,
     bodyPayload,{headers: {Authorization: `Bearer ${localStorage.getItem('react-token')}`}}).catch((error) => {
         console.log(error);
@@ -20,6 +22,7 @@ export const postFormData = async (bodyPayload: {formId: string, formData: any})
 };
 
 export const getFormModeler = async (formId: string) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     return axios.get(`${process.env.REACT_APP_MAIN_SERVER_URL}form-modeler/v1/forms/${formId}`,
     {headers: {Authorization: `Bearer ${localStorage.getItem('react-token')}`}})
     .catch((error) => {
@@ -28,6 +31,7 @@ export const getFormModeler = async (formId: string) => {
 };
 
 export const UploadFiles = async (body: any) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     const formData = new FormData();
     formData.append("file", body.files[0]);
     formData.append("documentPath", body.documentPath);
@@ -52,6 +56,7 @@ export const UploadFiles = async (body: any) => {
 };
 
 export const createJobSeekerProfile = async (bodyPayload: {profileLogId: string, profileData: any}) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     return axios.post(`${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seeker?profileLogId=${
         bodyPayload.profileLogId}`,
         bodyPayload.profileData, 
@@ -64,6 +69,7 @@ export const createJobSeekerProfile = async (bodyPayload: {profileLogId: string,
 };
 
 export const updateJobSeekerProfile = async (bodyPayload: {profileId: string, profileData: any}) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     return axios.patch(`${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile/${
         bodyPayload.profileId}`,
         bodyPayload.profileData, 
@@ -76,6 +82,7 @@ export const updateJobSeekerProfile = async (bodyPayload: {profileId: string, pr
 };
 
 export const getJobSeekerProfile = async (profileId: string) => {
+    console.log('tokennnnnn', localStorage.getItem("react-token"))
     return axios.get(`${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile/${profileId}`,
         {
             headers: {
