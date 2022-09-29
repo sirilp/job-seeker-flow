@@ -44,7 +44,6 @@ import {
   OFFER_LETTER,
 } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-import KeycloakService from "../../services/KeycloakService";
 
 const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
   const classes = useStyles();
@@ -205,9 +204,6 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
 // }
 
 const callPrefillData = async () => {
-    const token = await KeycloakService.fetchTokenDifferently();
-    localStorage.setItem('react-token', token);
-    sessionStorage.setItem('react-token', token);
     const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
     if(profileDataFetched?.data?.data?.profileNoticePeriodMap) {
         patchNoticePeriodDetails(profileDataFetched?.data?.data?.profileNoticePeriodMap);

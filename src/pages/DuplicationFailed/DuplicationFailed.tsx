@@ -10,7 +10,6 @@ import StepCount from "../../components/StepCount";
 import { AgGridReact } from "ag-grid-react";
 import { ColDef } from "ag-grid-community";
 import { LISTING_GENERIC_HEADERS } from "./DuplicationFailedColumnHeaders";
-import KeycloakService from "../../services/KeycloakService";
 import ColumnSelection from "../../components/ColumnSelection/ColumnSelection";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
@@ -40,15 +39,10 @@ const DuplicationFailed = () => {
   const [agCount, setAgCount] = useState<any>({});
 
   useEffect(() => {
-    fetchToken();
     apiCallAggregateData();
     apiCallDuplicationFailedData(selectedButtonValue, pageNo, pageSize);
   }, []);
 
-  const fetchToken = async () => {
-    const token = await KeycloakService.fetchTokenOtherUser();
-    sessionStorage.setItem("react-token", token);
-  };
   const setSelectedButton = (id: number, filterValue: string) => {
     setSelectedButtonId(id);
     setSelectedButtonValue(filterValue);

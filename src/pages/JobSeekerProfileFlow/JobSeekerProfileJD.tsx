@@ -25,7 +25,6 @@ import {
 } from "../../constants";
 import { Form } from "react-formio";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-import KeycloakService from "../../services/KeycloakService";
 
 const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
 
@@ -56,9 +55,6 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   }, []);
 
   const getDataFill = async () => {
-    const token = await KeycloakService.fetchTokenDifferently();
-    localStorage.setItem('react-token', token);
-    sessionStorage.setItem('react-token', token);
     const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
     if(profileDataFetched?.data?.data?.jdQuestionsMap) {
        setPrefillDetails(
@@ -70,11 +66,8 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
        )
       }
   };
-  console.log(prefillDetails)
+
   const fetchForm = async () => {
-    const token = await KeycloakService.fetchTokenDifferently();
-    localStorage.setItem('react-token', token);
-    sessionStorage.setItem('react-token', token);
     const formMarkup = await getFormData(
       JD_PATCH_FORM, "", props.contestId
     );

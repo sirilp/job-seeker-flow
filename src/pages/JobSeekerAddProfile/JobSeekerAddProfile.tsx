@@ -19,7 +19,6 @@ import "../JobSeekerBaseStyles.css";
 import { AgGridReact } from "ag-grid-react";
 import { relations, LISTING_GENERIC_HEADERS } from "./AddProfileColumnHeaders";
 import GridItem from "../GridItem/GridItem";
-import KeycloakService from "../../services/KeycloakService";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
   
   const useStyles = makeStyles(() => ({
@@ -31,15 +30,6 @@ import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
   }));
   
   const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
-    
-    useEffect(() => {
-      fetchToken();
-    }, []);
-  
-    const fetchToken = async () => {
-      const token = await KeycloakService.fetchTokenOtherUser();
-      localStorage.setItem("react-token", token);
-    };
   
     const classes = useStyles();
     const dispatch = useAppDispatch();

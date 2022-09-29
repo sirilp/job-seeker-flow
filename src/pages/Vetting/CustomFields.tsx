@@ -27,7 +27,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { openFile } from "../../services/DocumentService";
-import KeycloakService from "../../services/KeycloakService";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {

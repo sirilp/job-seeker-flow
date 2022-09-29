@@ -25,7 +25,6 @@ import {
   FORM_SUBMISSION_SUCCESS,
 } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-import KeycloakService from "../../services/KeycloakService";
 import { getFileDetails } from "../../services/DocumentService";
 
 const useStyles = makeStyles({
@@ -264,9 +263,6 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
   }, []);
 
   const callPrefillData = async () => {
-    const token = await KeycloakService.fetchTokenDifferently();
-    localStorage.setItem('react-token', token);
-    sessionStorage.setItem('react-token', token);
     const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
     if(profileDataFetched?.data?.data?.resumeDocumentId) {
       let fileResponse = await getFileDetails(profileDataFetched?.data?.data?.resumeDocumentId);

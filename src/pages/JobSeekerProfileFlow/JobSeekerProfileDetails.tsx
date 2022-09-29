@@ -38,7 +38,6 @@ import {
   SUCCESS_KEY,
   FORM_SUBMISSION_SUCCESS,
 } from "../../constants";
-import KeycloakService from "../../services/KeycloakService";
 
 const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   const dispatch = useAppDispatch();
@@ -188,9 +187,6 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   }, []);
 
   const callPrefillData = async () => {
-    const token = await KeycloakService.fetchTokenDifferently();
-    localStorage.setItem("react-token", token);
-    sessionStorage.setItem("react-token", token);
     const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
     if (profileDataFetched?.data?.data?.profileDetailsMap) {
       patchProfileDetails(profileDataFetched?.data?.data?.profileDetailsMap);
