@@ -46,15 +46,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import React from "react";
+import React, { useEffect } from "react";
 import { Select, MenuItem, Checkbox, TextField, InputLabel, FormControl, } from "@mui/material";
 import InlineInputs from "../../components/InlineInputs/InlineInputs";
 import { CTCDetails, FRESHER_TEXT, TCTC_SUB_TEXT, TOTAL_CTC_TEXT, FIXED_CTC_TEXT, TOTAL_EXP_TEXT, CTC_DETAIL_TEXT, TOTAL_CTC_LABEL, WorkStatusArray, YearMonthDetails, TCTC_PLACEHOLDER, EXPERIENCE_TITLE, WORK_STATUS_TEXT, RELEVANT_EXP_TEXT, VARIABLE_CTC_TEXT, EXPECTED_CTC_TEXT, } from "./JobSeekerProfileFlowConstants";
 import "./JobSeekerProfileFlow.css";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
-import { updateJobSeekerProfile } from "../../services/FormDataService";
+import { getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, } from "../../constants";
+import KeycloakService from "../../services/KeycloakService";
 var JobSeekerProfileDetails = function (props) {
     var dispatch = useAppDispatch();
     var userDataState = useAppSelector(function (state) { return state.currentUser; });
@@ -137,7 +138,7 @@ var JobSeekerProfileDetails = function (props) {
                 case 1:
                     _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, updateJobSeekerProfile({
-                            profileId: userDataState.userData.profileId,
+                            profileId: props.profileDataId || userDataState.userData.profileId,
                             profileData: { profileDetailsMap: profileDetailsMap },
                         })];
                 case 2:
@@ -184,10 +185,70 @@ var JobSeekerProfileDetails = function (props) {
             },
         });
     };
-    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx("p", __assign({ className: "step-content-title-text" }, { children: EXPERIENCE_TITLE })), _jsxs("div", __assign({ className: "experience-details-card" }, { children: [_jsxs("div", __assign({ className: "experience-card-title" }, { children: [_jsx("div", { children: _jsxs("span", { children: [TOTAL_EXP_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) }), _jsxs("div", { children: [_jsx("span", { children: FRESHER_TEXT }), _jsx(Checkbox, { disabled: !props.hasButtons, checked: freshGraduate, onChange: function (e) { var _a; return setFreshGraduate((_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.checked); }, inputProps: { "aria-label": "controlled" } })] })] })), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, disabled: !props.hasButtons, setValues: handleTotalExperience }), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, InlineInputTitle: RELEVANT_EXP_TEXT, disabled: !props.hasButtons, setValues: handleRelevantExperience })] })), _jsx("div", __assign({ className: "generic-container" }, { children: _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", WORK_STATUS_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) }), _jsx("div", __assign({ className: "work-status-select" }, { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ id: "demo-simple-select-helper-label" }, { children: WORK_STATUS_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, value: workStatus, label: WORK_STATUS_TEXT, onChange: function (e) { return setWorkStatus(e.target.value); } }, { children: WorkStatusArray.map(function (item) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item)); }) }))] })) }))] })) })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "ctc-details-text" }, { children: [" ", CTC_DETAIL_TEXT] })) }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: FIXED_CTC_TEXT, disabled: !props.hasButtons, setValues: handleFixedCtc }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: VARIABLE_CTC_TEXT, disabled: !props.hasButtons, setValues: handleVariableCtc }), _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("div", { children: _jsx("p", { children: TOTAL_CTC_TEXT }) }) })), _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx(TextField, { disabled: !props.hasButtons, type: "text", onChange: function (e) { return setTotalCtc(e.target.value); }, label: TOTAL_CTC_LABEL, placeholder: TCTC_PLACEHOLDER, InputProps: {
+    useEffect(function () {
+        callPrefillData();
+    }, []);
+    var callPrefillData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var token, profileDataFetched;
+        var _a, _b, _c, _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0: return [4 /*yield*/, KeycloakService.fetchTokenDifferently()];
+                case 1:
+                    token = _e.sent();
+                    localStorage.setItem("react-token", token);
+                    sessionStorage.setItem("react-token", token);
+                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
+                case 2:
+                    profileDataFetched = _e.sent();
+                    if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.profileDetailsMap) {
+                        patchProfileDetails((_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.profileDetailsMap);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var patchProfileDetails = function (patchData) {
+        console.log(patchData);
+        setFreshGrad(patchData.freshGraduate);
+        setTotalExp(patchData.totalExperience);
+        setRelevantExperience({
+            relevantExperienceYears: patchData.relevantExperience.relevantExperienceYears,
+            relevantExperienceMonths: patchData.relevantExperience.relevantExperienceMonths,
+        });
+        setFixedCtc({
+            fixedCtcLakh: patchData.fixedCtc.fixedCtcLakh,
+            fixedCtcThousand: patchData.fixedCtc.fixedCtcThousand,
+        });
+        setVariableCtc({
+            variableCtcLakh: patchData.variableCtc.variableCtcLakh,
+            variableCtcThousand: patchData.variableCtc.variableCtcThousand,
+        });
+        setExpectedCtc({
+            expectedCtcLakh: patchData.expectedCtc.expectedCtcLakh,
+            expectedCtcThousand: patchData.expectedCtc.expectedCtcThousand,
+        });
+        setWorkStatus(patchData.workStatus);
+        setTotalCtc(patchData.totalCtc);
+    };
+    var setTotalExp = function (patchObj) {
+        setTotalExperience({
+            totalExperienceMonths: patchObj.totalExperienceMonths,
+            totalExperienceYears: patchObj.totalExperienceYears,
+        });
+    };
+    var setFreshGrad = function (data) {
+        if (data === "true") {
+            setFreshGraduate(true);
+        }
+        else {
+            setFreshGraduate(false);
+        }
+    };
+    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx("p", __assign({ className: "step-content-title-text" }, { children: EXPERIENCE_TITLE })), _jsxs("div", __assign({ className: "experience-details-card" }, { children: [_jsxs("div", __assign({ className: "experience-card-title" }, { children: [_jsx("div", { children: _jsxs("span", { children: [TOTAL_EXP_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) }), _jsxs("div", { children: [_jsx("span", { children: FRESHER_TEXT }), _jsx(Checkbox, { disabled: !props.hasButtons, checked: freshGraduate, onChange: function (e) { var _a; return setFreshGraduate((_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.checked); }, inputProps: { "aria-label": "controlled" } })] })] })), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, disabled: !props.hasButtons, setValues: handleTotalExperience, value: totalExperience }), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, InlineInputTitle: RELEVANT_EXP_TEXT, disabled: !props.hasButtons, setValues: handleRelevantExperience, value: relevantExperience })] })), _jsx("div", __assign({ className: "generic-container" }, { children: _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", WORK_STATUS_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) }), _jsx("div", __assign({ className: "work-status-select" }, { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ id: "demo-simple-select-helper-label" }, { children: WORK_STATUS_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, value: workStatus, label: WORK_STATUS_TEXT, onChange: function (e) { return setWorkStatus(e.target.value); } }, { children: WorkStatusArray.map(function (item) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item)); }) }))] })) }))] })) })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "ctc-details-text" }, { children: [" ", CTC_DETAIL_TEXT] })) }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: FIXED_CTC_TEXT, disabled: !props.hasButtons, setValues: handleFixedCtc, value: fixedCtc }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: VARIABLE_CTC_TEXT, disabled: !props.hasButtons, setValues: handleVariableCtc, value: variableCtc }), _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("div", { children: _jsx("p", { children: TOTAL_CTC_TEXT }) }) })), _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx(TextField, { disabled: !props.hasButtons, type: "text", value: totalCtc, onChange: function (e) { return setTotalCtc(e.target.value); }, label: TOTAL_CTC_LABEL, placeholder: TCTC_PLACEHOLDER, InputProps: {
                                             inputProps: {
                                                 maxLength: 12,
                                             },
-                                        }, size: "small" }), _jsx("div", __assign({ className: "tctc-text" }, { children: _jsx("span", { children: TCTC_SUB_TEXT }) }))] }))] })] })), _jsxs("div", __assign({ className: "generic-container" }, { children: [_jsx("div", __assign({ className: "expected-ctc" }, { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", EXPECTED_CTC_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) })), _jsx("div", __assign({ className: "experience-details-card" }, { children: _jsx(InlineInputs, { InlineInputsArray: CTCDetails, disabled: !props.hasButtons, setValues: handleExpectedCtc }) }))] })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitDetails, handleBack: props.handleBack })) : null] })));
+                                        }, size: "small" }), _jsx("div", __assign({ className: "tctc-text" }, { children: _jsx("span", { children: TCTC_SUB_TEXT }) }))] }))] })] })), _jsxs("div", __assign({ className: "generic-container" }, { children: [_jsx("div", __assign({ className: "expected-ctc" }, { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", EXPECTED_CTC_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) })), _jsx("div", __assign({ className: "experience-details-card" }, { children: _jsx(InlineInputs, { InlineInputsArray: CTCDetails, disabled: !props.hasButtons, setValues: handleExpectedCtc, value: expectedCtc }) }))] })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitDetails, handleBack: props.handleBack })) : null] })));
 };
 export default JobSeekerProfileDetails;
