@@ -12,7 +12,8 @@ import {
   InputLabel,
   RadioGroup,
   FormControl,
-  FormControlLabel
+  FormControlLabel,
+  CircularProgress
 } from '@mui/material';
 import { 
   YesNoOptions,
@@ -55,6 +56,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     const userDataState = useAppSelector((state) => state.currentUser);
 
     const [gotPatchData, setGotPatchData] = React.useState(false);
+    const [loader, setLoader] = React.useState(false);
     const [citiesArray, setCitiesArray] = React.useState([]);
     const [jobStatus, setJobStatus] = React.useState(userDataState.userData.workStatus);
     const [currentLocation, setCurrentLocation] = React.useState('');
@@ -94,6 +96,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     };
 
     const submitWorkStatus = async () => {
+        setLoader(true);
         if(experiencedRef?.current) experiencedRef?.current.childMethod();
         if(freshGraduateRef?.current) freshGraduateRef?.current.childMethod();
         const profileWorkStatusMap = buildDetailsPayload();
@@ -121,6 +124,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
             props.setDataMessage(error?.message);
             props.setOpen(true);
         }
+        setLoader(false);
     }
 
     const buildDetailsPayload = () => {
@@ -159,8 +163,10 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     }
 
     useEffect(() => {
-        callPrefillData();
-        fetchCityDetails();
+        if (props.profileDataId || userDataState.userData.profileId){
+            callPrefillData();
+            fetchCityDetails();
+        } 
     }, []);
 
     const fetchCityDetails = async () => {
@@ -169,10 +175,20 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     }
 
     const callPrefillData = async () => {
-        const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
+        try{
+            setLoader(true);
+            const profileDataFetched = await getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId);
         if(profileDataFetched?.data?.data?.profileWorkStatusMap) {
             patchWorkStatusDetails(profileDataFetched?.data?.data?.profileWorkStatusMap);
         }
+        }
+        catch (error: any) {
+            console.log(error);
+            props.setType(ERROR_KEY);
+            props.setDataMessage('Something went wrong');
+            props.setOpen(true);
+          }
+          setLoader(false);
     }
 
     const patchWorkStatusDetails = (patchData: any) => {
@@ -211,6 +227,8 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     }
 
     return (
+           <>
+           {!loader ? (
             <div className="job-seeker-profile-content">
                 <p className="step-content-title-text">
                     {EXPERIENCE_TITLE}
@@ -416,6 +434,12 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                     : null
                 }
             </div>
+           ) : (
+          <Stack alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
+           </>
     )
 }
 

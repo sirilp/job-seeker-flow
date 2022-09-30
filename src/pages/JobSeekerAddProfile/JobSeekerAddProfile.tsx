@@ -1,11 +1,11 @@
 import React, {
-    ReactElement,
-    FC,
-    useEffect,
-    useRef,
-    useState,
-    useMemo,
-    useCallback,
+  ReactElement,
+  FC,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
 } from "react";
 import { JOB_SEEKER_TABS, TEMPLATE_BUTTON } from "../../constants";
 import { Typography, Divider, Button } from "@mui/material";
@@ -20,179 +20,200 @@ import { AgGridReact } from "ag-grid-react";
 import { relations, LISTING_GENERIC_HEADERS } from "./AddProfileColumnHeaders";
 import GridItem from "../GridItem/GridItem";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-  
-  const useStyles = makeStyles(() => ({
-    buttonCardContainer: {
-      "&.MuiCardContent-root": {
-        paddingBottom: "0vw",
-      },
+import Notification from "../../components/Notification";
+import { initialAlertState } from "../../modules/notificationState";
+
+const useStyles = makeStyles(() => ({
+  buttonCardContainer: {
+    "&.MuiCardContent-root": {
+      paddingBottom: "0vw",
     },
-  }));
-  
-  const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
-  
-    const classes = useStyles();
-    const dispatch = useAppDispatch();
-    const gridRef = useRef<AgGridReact<any>>();
-    const userDataState = useAppSelector((state) => state.currentUser);
-    
-    const [columnDefs, setColumnDefs] = useState(LISTING_GENERIC_HEADERS);
-    const [pageSize, setPageSize] = useState(10);
-    const [selectedRows, setSelectedRows] = useState<any[]>([]);
-    const [totalPages, setTotalPages] = useState(1);
+  },
+}));
 
-    const fulfillUpload = (data: any) => {
-      dispatchProfileLogId(data?.profileLogId);
-      props.handleComplete(0);
-      props.handleNext();
-    }
+const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
 
-    const dispatchProfileLogId = (profileLogId) => {
-      dispatch({
-        type: 'USER_ADD',
-        data: {
-          userData: {
-            ...userDataState.userData,
-            profileLogId
-          },
-          userId: userDataState.userId
-        }
-      });
-    }
-  
-    let r1 = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      interviewed: "no",
-      pdcStatus: null,
-      profileLogId: "",
-      dob: "",
-      lastFiveDigitOfPan: "",
-      fdcStatus: null,
-      uploadProfile: "",
-    };
-    let r2 = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      interviewed: "no",
-      pdcStatus: null,
-      dob: "",
-      lastFiveDigitOfPan: "",
-      fdcStatus: null,
-      uploadProfile: "",
-    };
-    let r3 = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      interviewed: "no",
-      pdcStatus: null,
-      dob: "",
-      lastFiveDigitOfPan: "",
-      fdcStatus: null,
-      uploadProfile: "",
-    };
-    let r4 = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      interviewed: "no",
-      pdcStatus: null,
-      dob: "",
-      lastFiveDigitOfPan: "",
-      fdcStatus: null,
-      uploadProfile: "",
-    };
-    let r5 = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      interviewed: "no",
-      pdcStatus: null,
-      dob: "",
-      lastFiveDigitOfPan: "",
-      fdcStatus: null,
-      uploadProfile: "",
-    };
-    let row = [r1, r2, r3, r4, r5];
-    const defaultColDef = useMemo(() => {
-      return {
-        flex: 1,
-        minWidth: 170,
-        maxWidth: 250,
-        sortable: true,
-        floatingFilter: true,
-        enableRowGroup: true,
-        enablePivot: true,
-        enableValue: true,
-        resizable: true,
-        cellStyle: { "border-right-color": "#DFE5FF" },
-      };
-    }, []);
-    // const onGridReady = React.useCallback(
-    //   (params) => {
-    //     apiCallRelatedFormData();
-    //   },
-    //   [gotData]
-    // );
-    // const onUpdateColumns = useCallback((data) => {
-    //   if (gridRef?.current) gridRef.current.api.setColumnDefs(data);
-    // }, []);
-    // const autoGroupColumnDef = useMemo<ColDef>(() => {
-    //   return {
-    //     headerName: "Group",
-    //     minWidth: 170,
-    //     field: "athlete",
-    //     valueGetter: (params) => {
-    //       if (params.node!.group) {
-    //         return params.node!.key;
-    //       } else {
-    //         return params.data[params.colDef.field!];
-    //       }
-    //     },
-    //     headerCheckboxSelection: true,
-    //     cellRenderer: "agGroupCellRenderer",
-    //     cellRendererParams: {
-    //       checkbox: true,
-    //     },
-    //   };
-    // }, []);
-    // const pageChange = (pageNumber) => {
-    //   setPageNo(pageNumber);
-    //   apiCallRelatedFormData(contestStatus, pageNumber - 1);
-    // };
-  
-    // const pageSizeChange = (pageSizeChanged) => {
-    //   setPageSize(pageSizeChanged);
-    //   apiCallRelatedFormData(contestStatus, 0, pageSizeChanged);
-    // };
-  
-    const onSelectionChanged = useCallback(() => {
-      if (gridRef.current) {
-        const rowSelection = gridRef.current.api.getSelectedRows();
-        setSelectedRows(rowSelection);
+  const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const gridRef = useRef<AgGridReact<any>>();
+  const userDataState = useAppSelector((state) => state.currentUser);
+  const notifyDataState = useAppSelector((state) => state.notificationAlert);
+
+  const [columnDefs, setColumnDefs] = useState(LISTING_GENERIC_HEADERS);
+  const [pageSize, setPageSize] = useState(10);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fulfillUpload = (data: any) => {
+    dispatchProfileLogId(data?.profileLogId);
+    props.handleComplete(0);
+    props.handleNext();
+  }
+
+  const dispatchProfileLogId = (profileLogId) => {
+    dispatch({
+      type: 'USER_ADD',
+      data: {
+        userData: {
+          ...userDataState.userData,
+          profileLogId
+        },
+        userId: userDataState.userId
       }
-    }, []);
-  
-    const onCellValueChanged = useCallback((event) => {
-      console.log(event);
-      // if (gridRef.current) {
-      //   const rowSelection = gridRef.current.api.getSelectedRows();
-  
-      // }
-    }, []);
-  
-    return (
-      <div className="form-encapsulate">
-        <div className="form-card-holder">
-          {/* <div className="forms-button-container">
+    });
+  }
+
+  const resetNotificationData = () => {
+    dispatch({
+      type: 'SEND_ALERT',
+      data: {
+        enable: initialAlertState.enable,
+        type: initialAlertState.type,
+        message: initialAlertState.message,
+        duration: initialAlertState.duration
+      }
+    });
+  }
+  let r1 = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    interviewed: "no",
+    pdcStatus: null,
+    profileLogId: "",
+    dob: "",
+    lastFiveDigitOfPan: "",
+    fdcStatus: null,
+    uploadProfile: "",
+  };
+  let r2 = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    interviewed: "no",
+    pdcStatus: null,
+    dob: "",
+    lastFiveDigitOfPan: "",
+    fdcStatus: null,
+    uploadProfile: "",
+  };
+  let r3 = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    interviewed: "no",
+    pdcStatus: null,
+    dob: "",
+    lastFiveDigitOfPan: "",
+    fdcStatus: null,
+    uploadProfile: "",
+  };
+  let r4 = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    interviewed: "no",
+    pdcStatus: null,
+    dob: "",
+    lastFiveDigitOfPan: "",
+    fdcStatus: null,
+    uploadProfile: "",
+  };
+  let r5 = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    interviewed: "no",
+    pdcStatus: null,
+    dob: "",
+    lastFiveDigitOfPan: "",
+    fdcStatus: null,
+    uploadProfile: "",
+  };
+  let row = [r1, r2, r3, r4, r5];
+  const defaultColDef = useMemo(() => {
+    return {
+      flex: 1,
+      minWidth: 170,
+      maxWidth: 250,
+      sortable: true,
+      floatingFilter: true,
+      enableRowGroup: true,
+      enablePivot: true,
+      enableValue: true,
+      resizable: true,
+      cellStyle: { "border-right-color": "#DFE5FF" },
+    };
+  }, []);
+  // const onGridReady = React.useCallback(
+  //   (params) => {
+  //     apiCallRelatedFormData();
+  //   },
+  //   [gotData]
+  // );
+  // const onUpdateColumns = useCallback((data) => {
+  //   if (gridRef?.current) gridRef.current.api.setColumnDefs(data);
+  // }, []);
+  // const autoGroupColumnDef = useMemo<ColDef>(() => {
+  //   return {
+  //     headerName: "Group",
+  //     minWidth: 170,
+  //     field: "athlete",
+  //     valueGetter: (params) => {
+  //       if (params.node!.group) {
+  //         return params.node!.key;
+  //       } else {
+  //         return params.data[params.colDef.field!];
+  //       }
+  //     },
+  //     headerCheckboxSelection: true,
+  //     cellRenderer: "agGroupCellRenderer",
+  //     cellRendererParams: {
+  //       checkbox: true,
+  //     },
+  //   };
+  // }, []);
+  // const pageChange = (pageNumber) => {
+  //   setPageNo(pageNumber);
+  //   apiCallRelatedFormData(contestStatus, pageNumber - 1);
+  // };
+
+  // const pageSizeChange = (pageSizeChanged) => {
+  //   setPageSize(pageSizeChanged);
+  //   apiCallRelatedFormData(contestStatus, 0, pageSizeChanged);
+  // };
+
+  const onSelectionChanged = useCallback(() => {
+    if (gridRef.current) {
+      const rowSelection = gridRef.current.api.getSelectedRows();
+      setSelectedRows(rowSelection);
+    }
+  }, []);
+
+  const onCellValueChanged = useCallback((event) => {
+    console.log(event);
+    // if (gridRef.current) {
+    //   const rowSelection = gridRef.current.api.getSelectedRows();
+
+    // }
+  }, []);
+
+  return (
+    <div className="form-encapsulate">
+      <div className="form-card-holder">
+        <Notification
+          open={notifyDataState.enable}
+          type={notifyDataState.type}
+          message={notifyDataState.message}
+          duration={notifyDataState.duration}
+          setOpen={() => resetNotificationData()}
+        />
+        {/* <div className="forms-button-container">
             <div
               className="card-container"
               style={{
@@ -284,80 +305,80 @@ import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
               <JobSeekerProfileCard />
             </div>
           </div> */}
-          <div>
-            <div>
-              <Typography
-                variant="h4"
-                gutterBottom
-                component="div"
-                color="black"
-                margin={"2vw 1vw 0vw 2vw"}
-              >
-                For Bulk Duplication Check
-              </Typography>
-            </div>
-  
-            <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
-              {TEMPLATE_BUTTON.map((button) => (
-                <JobSeekerTempleteButton
-                  fileName={button.iconFileName}
-                  title={button.title}
-                />
-              ))}
-            </div>
-  
-            <div>
-              <Typography
-                variant="h6"
-                gutterBottom
-                component="div"
-                color="black"
-                display="flex"
-                justifyContent="center"
-              >
-                <hr className="line" />
-                {"( OR )"}
-                <hr className="line" />
-              </Typography>
-            </div>
-          </div>
+        <div>
           <div>
             <Typography
               variant="h4"
               gutterBottom
               component="div"
               color="black"
-              margin={"2vw 1vw 2vw 2vw"}
+              margin={"2vw 1vw 0vw 2vw"}
             >
-              Enter the Details Manually
+              For Bulk Duplication Check
             </Typography>
           </div>
+
+          <div style={{ margin: "1vw 1vw 1vw 1vw" }}>
+            {TEMPLATE_BUTTON.map((button) => (
+              <JobSeekerTempleteButton
+                fileName={button.iconFileName}
+                title={button.title}
+              />
+            ))}
+          </div>
+
           <div>
-            <GridItem
-              gridRef={gridRef}
-              rowData={row}
-              columnDefs={columnDefs}
-              defaultColDef={defaultColDef}
-              suppressRowClickSelection={true}
-              groupSelectsChildren={true}
-              rowSelection={"multiple"}
-              rowGroupPanelShow={"always"}
-              pivotPanelShow={"always"}
-              enableRangeSelection={true}
-              pagination={false}
-              // pageSize={pageSize}
-              onSelectionChanged={onSelectionChanged}
-              // pageSizeArray={PAGE_SIZE_ARRAY}
-              // totalPages={totalPages}
-              // pageChange={pageChange}
-              // pageSizeChange={pageSizeChange}
-              onCellValueChanged={onCellValueChanged}
-              fulfillUpload={fulfillUpload}
-            />
+            <Typography
+              variant="h6"
+              gutterBottom
+              component="div"
+              color="black"
+              display="flex"
+              justifyContent="center"
+            >
+              <hr className="line" />
+              {"( OR )"}
+              <hr className="line" />
+            </Typography>
           </div>
         </div>
+        <div>
+          <Typography
+            variant="h4"
+            gutterBottom
+            component="div"
+            color="black"
+            margin={"2vw 1vw 2vw 2vw"}
+          >
+            Enter the Details Manually
+          </Typography>
+        </div>
+        <div>
+          <GridItem
+            gridRef={gridRef}
+            rowData={row}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            suppressRowClickSelection={true}
+            groupSelectsChildren={true}
+            rowSelection={"multiple"}
+            rowGroupPanelShow={"always"}
+            pivotPanelShow={"always"}
+            enableRangeSelection={true}
+            pagination={false}
+            // pageSize={pageSize}
+            onSelectionChanged={onSelectionChanged}
+            // pageSizeArray={PAGE_SIZE_ARRAY}
+            // totalPages={totalPages}
+            // pageChange={pageChange}
+            // pageSizeChange={pageSizeChange}
+            onCellValueChanged={onCellValueChanged}
+            fulfillUpload={fulfillUpload}
+          />
+        </div>
       </div>
-    );
-  };
-  
-  export default JobSeekerAddProfile;
+    </div>
+  );
+};
+
+export default JobSeekerAddProfile;

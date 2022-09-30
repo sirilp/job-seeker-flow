@@ -5,7 +5,20 @@ import {
   PATCH_CONTEST_DETAILS,
   CONTESTSETTINGS_EDIT,
   GET_CONTEST_SETTINGS,
+  FILTER_CONTEST_DETAILS_RELATION,
+  CONTEST_ABOUT_EMPLOYER
+
 } from "../constants";
+
+export const filterContestDetailsWithRelation = async (contestId?: string) => {
+  return axios
+    .get(
+      `${process.env.REACT_APP_API_GATEWAY_URL}${FILTER_CONTEST_DETAILS_RELATION}${CONTEST_ABOUT_EMPLOYER}:parentDataId&filter=formData.contestId:${contestId}&formId=${CONTEST_DETAILS}`
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 export const getContestDetails = async (filterId?: string) => {
   return axios

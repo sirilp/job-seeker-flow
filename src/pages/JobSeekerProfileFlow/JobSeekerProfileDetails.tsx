@@ -6,6 +6,8 @@ import {
   TextField,
   InputLabel,
   FormControl,
+  CircularProgress,
+  Stack,
 } from "@mui/material";
 import InlineInputs from "../../components/InlineInputs/InlineInputs";
 import {
@@ -44,6 +46,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   const userDataState = useAppSelector((state) => state.currentUser);
 
   const [freshGraduate, setFreshGraduate] = React.useState(false);
+  const [loader, setLoader] = React.useState(false);
   const [workStatus, setWorkStatus] = React.useState("");
   const [totalCtc, setTotalCtc] = React.useState("");
   const [totalExperience, setTotalExperience] = React.useState<{
@@ -133,6 +136,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   };
 
   const submitDetails = async () => {
+    setLoader(true);
     const profileDetailsMap = buildDetailsPayload();
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
@@ -154,6 +158,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
       props.setDataMessage(error?.message);
       props.setOpen(true);
     }
+    setLoader(false);
   };
 
   const buildDetailsPayload = () => {
@@ -183,14 +188,26 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   };
 
   useEffect(() => {
-    callPrefillData();
+    if (props.profileDataId || userDataState.userData.profileId)
+      callPrefillData();
   }, []);
 
   const callPrefillData = async () => {
-    const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
-    if (profileDataFetched?.data?.data?.profileDetailsMap) {
-      patchProfileDetails(profileDataFetched?.data?.data?.profileDetailsMap);
+    try {
+      setLoader(true);
+      const profileDataFetched = await getJobSeekerProfile(
+        props.profileDataId || userDataState.userData.profileId
+      );
+      if (profileDataFetched?.data?.data?.profileDetailsMap) {
+        patchProfileDetails(profileDataFetched?.data?.data?.profileDetailsMap);
+      }
+    } catch (error: any) {
+      console.log(error);
+      props.setType(ERROR_KEY);
+      props.setDataMessage("Somrthing went wrong");
+      props.setOpen(true);
     }
+    setLoader(false);
   };
 
   const patchProfileDetails = (patchData: any) => {
@@ -234,137 +251,145 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   };
 
   return (
-    <div className="job-seeker-profile-content">
-      <p className="step-content-title-text">{EXPERIENCE_TITLE}</p>
-      <div className="experience-details-card">
-        <div className="experience-card-title">
-          <div>
-            <span>
-              {TOTAL_EXP_TEXT}
-              <span className="asterisk-span"> *</span>
-            </span>
-          </div>
-          <div>
-            <span>{FRESHER_TEXT}</span>
-            <Checkbox
+    <>
+      {!loader ? (
+        <div className="job-seeker-profile-content">
+          <p className="step-content-title-text">{EXPERIENCE_TITLE}</p>
+          <div className="experience-details-card">
+            <div className="experience-card-title">
+              <div>
+                <span>
+                  {TOTAL_EXP_TEXT}
+                  <span className="asterisk-span"> *</span>
+                </span>
+              </div>
+              <div>
+                <span>{FRESHER_TEXT}</span>
+                <Checkbox
+                  disabled={!props.hasButtons}
+                  checked={freshGraduate}
+                  onChange={(e) => setFreshGraduate(e?.target?.checked)}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              </div>
+            </div>
+            <InlineInputs
+              InlineInputsArray={YearMonthDetails}
               disabled={!props.hasButtons}
-              checked={freshGraduate}
-              onChange={(e) => setFreshGraduate(e?.target?.checked)}
-              inputProps={{ "aria-label": "controlled" }}
+              setValues={handleTotalExperience}
+              value={totalExperience}
+            />
+            <InlineInputs
+              InlineInputsArray={YearMonthDetails}
+              InlineInputTitle={RELEVANT_EXP_TEXT}
+              disabled={!props.hasButtons}
+              setValues={handleRelevantExperience}
+              value={relevantExperience}
             />
           </div>
-        </div>
-        <InlineInputs
-          InlineInputsArray={YearMonthDetails}
-          disabled={!props.hasButtons}
-          setValues={handleTotalExperience}
-          value={totalExperience}
-        />
-        <InlineInputs
-          InlineInputsArray={YearMonthDetails}
-          InlineInputTitle={RELEVANT_EXP_TEXT}
-          disabled={!props.hasButtons}
-          setValues={handleRelevantExperience}
-          value={relevantExperience}
-        />
-      </div>
-      <div className="generic-container">
-        <div className="inline-div">
-          <div>
-            <p className="step-content-title-text">
-              {" "}
-              {WORK_STATUS_TEXT} <span className="asterisk-span"> *</span>
-            </p>
+          <div className="generic-container">
+            <div className="inline-div">
+              <div>
+                <p className="step-content-title-text">
+                  {" "}
+                  {WORK_STATUS_TEXT} <span className="asterisk-span"> *</span>
+                </p>
+              </div>
+              <div className="work-status-select">
+                <FormControl sx={{ minWidth: 250 }}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    {WORK_STATUS_TEXT}
+                  </InputLabel>
+                  <Select
+                    disabled={!props.hasButtons}
+                    value={workStatus}
+                    label={WORK_STATUS_TEXT}
+                    onChange={(e) => setWorkStatus(e.target.value)}
+                  >
+                    {WorkStatusArray.map((item: string) => (
+                      <MenuItem key={item} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
           </div>
-          <div className="work-status-select">
-            <FormControl sx={{ minWidth: 250 }}>
-              <InputLabel id="demo-simple-select-helper-label">
-                {WORK_STATUS_TEXT}
-              </InputLabel>
-              <Select
-                disabled={!props.hasButtons}
-                value={workStatus}
-                label={WORK_STATUS_TEXT}
-                onChange={(e) => setWorkStatus(e.target.value)}
-              >
-                {WorkStatusArray.map((item: string) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-        </div>
-      </div>
-      <div className="conditional-container">
-        <div>
-          <p className="ctc-details-text"> {CTC_DETAIL_TEXT}</p>
-        </div>
-        <InlineInputs
-          InlineInputsArray={CTCDetails}
-          InlineInputTitle={FIXED_CTC_TEXT}
-          disabled={!props.hasButtons}
-          setValues={handleFixedCtc}
-          value={fixedCtc}
-        />
-        <InlineInputs
-          InlineInputsArray={CTCDetails}
-          InlineInputTitle={VARIABLE_CTC_TEXT}
-          disabled={!props.hasButtons}
-          setValues={handleVariableCtc}
-          value={variableCtc}
-        />
-        <div>
-          <div className="experience-card-title">
+          <div className="conditional-container">
             <div>
-              <p>{TOTAL_CTC_TEXT}</p>
+              <p className="ctc-details-text"> {CTC_DETAIL_TEXT}</p>
             </div>
-          </div>
-          <div className="inline-div">
-            <TextField
+            <InlineInputs
+              InlineInputsArray={CTCDetails}
+              InlineInputTitle={FIXED_CTC_TEXT}
               disabled={!props.hasButtons}
-              type="text"
-              value={totalCtc}
-              onChange={(e) => setTotalCtc(e.target.value)}
-              label={TOTAL_CTC_LABEL}
-              placeholder={TCTC_PLACEHOLDER}
-              InputProps={{
-                inputProps: {
-                  maxLength: 12,
-                },
-              }}
-              size="small"
+              setValues={handleFixedCtc}
+              value={fixedCtc}
             />
-            <div className="tctc-text">
-              <span>{TCTC_SUB_TEXT}</span>
+            <InlineInputs
+              InlineInputsArray={CTCDetails}
+              InlineInputTitle={VARIABLE_CTC_TEXT}
+              disabled={!props.hasButtons}
+              setValues={handleVariableCtc}
+              value={variableCtc}
+            />
+            <div>
+              <div className="experience-card-title">
+                <div>
+                  <p>{TOTAL_CTC_TEXT}</p>
+                </div>
+              </div>
+              <div className="inline-div">
+                <TextField
+                  disabled={!props.hasButtons}
+                  type="text"
+                  value={totalCtc}
+                  onChange={(e) => setTotalCtc(e.target.value)}
+                  label={TOTAL_CTC_LABEL}
+                  placeholder={TCTC_PLACEHOLDER}
+                  InputProps={{
+                    inputProps: {
+                      maxLength: 12,
+                    },
+                  }}
+                  size="small"
+                />
+                <div className="tctc-text">
+                  <span>{TCTC_SUB_TEXT}</span>
+                </div>
+              </div>
             </div>
           </div>
+          <div className="generic-container">
+            <div className="expected-ctc">
+              <p className="step-content-title-text">
+                {" "}
+                {EXPECTED_CTC_TEXT} <span className="asterisk-span"> *</span>
+              </p>
+            </div>
+            <div className="experience-details-card">
+              <InlineInputs
+                InlineInputsArray={CTCDetails}
+                disabled={!props.hasButtons}
+                setValues={handleExpectedCtc}
+                value={expectedCtc}
+              />
+            </div>
+          </div>
+          {props.hasButtons ? (
+            <PreviousNextButtons
+              handleNext={submitDetails}
+              handleBack={props.handleBack}
+            />
+          ) : null}
         </div>
-      </div>
-      <div className="generic-container">
-        <div className="expected-ctc">
-          <p className="step-content-title-text">
-            {" "}
-            {EXPECTED_CTC_TEXT} <span className="asterisk-span"> *</span>
-          </p>
-        </div>
-        <div className="experience-details-card">
-          <InlineInputs
-            InlineInputsArray={CTCDetails}
-            disabled={!props.hasButtons}
-            setValues={handleExpectedCtc}
-            value={expectedCtc}
-          />
-        </div>
-      </div>
-      {props.hasButtons ? (
-        <PreviousNextButtons
-          handleNext={submitDetails}
-          handleBack={props.handleBack}
-        />
-      ) : null}
-    </div>
+      ) : (
+        <Stack alignItems="center">
+          <CircularProgress />
+        </Stack>
+      )}
+    </>
   );
 };
 

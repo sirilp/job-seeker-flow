@@ -4,7 +4,9 @@ import {
   Button, 
   MenuItem, 
   Checkbox, 
-  FormControl 
+  FormControl, 
+  CircularProgress,
+  Stack
 } from "@mui/material";
 import "./JobSeekerProfileFlow.css";
 import {
@@ -66,7 +68,7 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
        )
       }
   };
-
+  
   const fetchForm = async () => {
     const formMarkup = await getFormData(
       JD_PATCH_FORM, "", props.contestId
@@ -132,6 +134,11 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
         handleNext={submitFormData}
         handleBack={props.handleBack}
       />
+      {loader && (
+          <Stack alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
     </div>
   );
 };

@@ -43,6 +43,8 @@ export const JD_PATCH_FORM = "999548019411533824";
 export const CONTEST_ABOUT_EMPLOYER = "991289466351534080";
 export const JOB_SEEKER_RESUME = "1018802975069569024";
 export const OFFER_LETTER = "1022430257759780864";
+export const FILTER_CONTEST_DETAILS_RELATION =
+  "/form-runtime/v1/form-data?relations=";
 
 export const ALL_KEY = "All";
 export const COLUMNS_TEXT = "Columns";
@@ -122,14 +124,14 @@ export const JOB_SEEKER_TABS = [
 export const TEMPLATE_BUTTON = [
   { iconFileName: "Group.png", title: "Import From Job Seeker Collections" },
   {
-    iconFileName: "download.svg",
+    iconFileName: "Download.png",
     title: "Download the Pre Dupliation Template",
   },
   {
-    iconFileName: "download.svg",
+    iconFileName: "Download.png",
     title: "Download the Full Dupliation Template",
   },
-  { iconFileName: "Upload.png", title: "Upload Template" },
+  { iconFileName: "upload.png", title: "Upload Template" },
 ];
 
 export enum WorkStatusType {

@@ -6,6 +6,8 @@ import {
   Checkbox,
   Typography,
   ButtonGroup,
+  CircularProgress,
+  Stack,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDropzone } from "react-dropzone";
@@ -68,7 +70,7 @@ const useStyles = makeStyles({
   subText3: {
     fontSize: "15px",
     color: "#4D6CD9",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   tempalteSubText1: {
     fontSize: "13px",
@@ -159,6 +161,7 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
   const [templateState, setTemplateState] = React.useState(false);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const [imageName, setImageName] = React.useState("");
+  const [loader, setLoader] = React.useState(false);
 
   const {
     acceptedFiles: acceptedFilesTemplate,
@@ -201,6 +204,7 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
   };
 
   const callResumeUpload = async () => {
+    setLoader(true);
     if (acceptedFilesResume.length > 0) {
       try {
         const uploadResponse = await UploadFiles(uploadPayloadBuild()).catch(
@@ -212,13 +216,14 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
           }
         );
         if (uploadResponse?.data?.success) {
-          if(imageName) {
+          if (imageName) {
             const updateResumeReponse = await updateJobSeekerProfile({
-                profileId: props.profileDataId || userDataState.userData.profileId,
-                profileData: {
-                  resumeDocumentId: uploadResponse?.data?.data?.id,
-                }
-            })
+              profileId:
+                props.profileDataId || userDataState.userData.profileId,
+              profileData: {
+                resumeDocumentId: uploadResponse?.data?.data?.id,
+              },
+            });
           } else {
             const seekerProfile = await createJobSeekerProfile({
               profileLogId: userDataState.userData.profileLogId,
@@ -241,8 +246,9 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
         props.setType(ERROR_KEY);
         props.setDataMessage(error?.message);
         props.setOpen(true);
-      }
+      } 
     }
+    setLoader(false);
   };
 
   const dispatchProfileId = (profileId) => {
@@ -259,19 +265,36 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
   };
 
   useEffect(() => {
+    if (props.profileDataId || userDataState.userData.profileId)
     callPrefillData();
   }, []);
 
   const callPrefillData = async () => {
-    const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
-    if(profileDataFetched?.data?.data?.resumeDocumentId) {
-      let fileResponse = await getFileDetails(profileDataFetched?.data?.data?.resumeDocumentId);
-      if(fileResponse?.data?.data?.fileName) setImageName(fileResponse?.data?.data?.fileName);
-    }
-  }
+      try {
+        setLoader(true);
+        const profileDataFetched = await getJobSeekerProfile(
+          props.profileDataId || userDataState.userData.profileId
+        );
+        if (profileDataFetched?.data?.data?.resumeDocumentId) {
+          let fileResponse = await getFileDetails(
+            profileDataFetched?.data?.data?.resumeDocumentId
+          );
+          if (fileResponse?.data?.data?.fileName)
+            setImageName(fileResponse?.data?.data?.fileName);
+        }
+      } catch (error: any) {
+        console.log(error);
+        props.setType(ERROR_KEY);
+        props.setDataMessage('Something went wrong');
+        props.setOpen(true);
+      }
+      setLoader(false);
+  
+  };
 
   return (
-    <div className="job-seeker-profile-content">
+    <>
+      <div className="job-seeker-profile-content">
       <Grid container spacing={3}>
         <Grid item xs={12} className={classes.Grid1}>
           <ButtonGroup variant="outlined" aria-label="outlined button group">
@@ -323,15 +346,15 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
               }}
             >
               <Box textAlign="left" className={classes.subText1}>
-              {
-                imageName && acceptedFilesResume.length < 1 ? 
-                <span>{imageName}</span> :
-                <Box>
-                  {acceptedFilesResume.map((file: any) => (
-                    <Box key={file.path || file.name}>{file.path}</Box>
-                  ))}
-                </Box>
-              }
+                {imageName && acceptedFilesResume.length < 1 ? (
+                  <span>{imageName}</span>
+                ) : (
+                  <Box>
+                    {acceptedFilesResume.map((file: any) => (
+                      <Box key={file.path || file.name}>{file.path}</Box>
+                    ))}
+                  </Box>
+                )}
               </Box>
               <Box textAlign="left" className={classes.subText2}>
                 <Checkbox {...label} defaultChecked color="success" />
@@ -510,6 +533,13 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
         handleBack={props.handleBack}
       />
     </div>
+    {loader && (
+          <Stack alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
+    
+    </>
   );
 };
 

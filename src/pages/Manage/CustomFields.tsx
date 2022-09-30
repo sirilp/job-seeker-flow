@@ -10,6 +10,7 @@ import {
   Tooltip,
   ClickAwayListener,
   IconButton,
+  Drawer,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
@@ -27,6 +28,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { openFile } from "../../services/DocumentService";
+import MessageBox from "../Broadcast/MessageBox";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -72,12 +74,15 @@ export const ResumeUploaded = (params) => {
 };
 
 export const Icons = (params) => {
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+
   const classes = useStyles();
   const handleClick = () => {
     console.log(params);
   };
   const handleChat = () => {
     console.log("Chat Icon clicked");
+    setToggleDrawer(true);
   };
 
   return (
@@ -97,6 +102,28 @@ export const Icons = (params) => {
         onClick={handleChat}
       />
       <DehazeIcon className={classes.iconColor} onClick={handleClick} />
+    
+      <Drawer
+        anchor="left"
+        open={toggleDrawer}
+        onClose={() => setToggleDrawer(false)}
+      >
+        <Box
+          sx={{
+            width: '380px',
+            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
+            top: 0,
+            left: 0,
+          }}
+        // onClick={() => setToggleDrawer(false)}
+        // onKeyDown={() => setToggleDrawer(false)}
+        >
+          <MessageBox closeIt={() => setToggleDrawer(false)} params={params} />
+          {console.log("Left Drawer called")}
+        </Box>
+      </Drawer>
     </div>
   );
 };

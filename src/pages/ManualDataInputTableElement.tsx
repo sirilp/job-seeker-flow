@@ -22,6 +22,7 @@ import {
   fullDuplicationCheck,
 } from "../services/JobSeekerService";
 import moment from "moment";
+import { useAppDispatch } from "../services/StoreHooks";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -181,7 +182,7 @@ export const CustomDropDown = (params: any) => {
       placement="right"
       arrow
       classes={{ popper: className, arrow: classes.arrow }}
-      // className={classes.arrowStyle}
+    // className={classes.arrowStyle}
     />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
@@ -258,6 +259,8 @@ export const CustomDropDown = (params: any) => {
 };
 
 export const PDCStatusCheckButton = (params: any) => {
+  const dispatch = useAppDispatch();
+
   const fail = {
     result: "Fail",
     color: "#EF4444",
@@ -300,6 +303,19 @@ export const PDCStatusCheckButton = (params: any) => {
   const buttonId = `buttonNo${params.rowIndex}${params.column.instanceId}`;
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
 
+  const dispatchNotificationData = (notifyData) => {
+
+    dispatch({
+      type: 'SEND_ALERT',
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration
+      }
+    });
+  }
+
   const ref = useRef(null);
 
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -311,13 +327,34 @@ export const PDCStatusCheckButton = (params: any) => {
       params.data.email.trim() == "" ||
       params.data.interviewed.trim() == ""
     ) {
-      alert("Enter All Details.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Enter All Details.",
+        duration: 2000,
+      });
+      console.log("Enter All Details.");
+
       params.setValue([false, ""]);
     } else if (!/^[6-9]{1}[0-9]{9}$/.test(params.data.phoneNumber)) {
-      alert("Invalid Phone Number.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Invalid Phone Number.",
+        duration: 2000,
+      });
+      console.log("Invalid Phone Number.");
+
       params.setValue([false, ""]);
     } else if (!emailRegex.test(params.data.email)) {
-      alert("Invalid Email.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Invalid Email.",
+        duration: 2000,
+      });
+      console.log("Invalid Email.");
+
       params.setValue([false, ""]);
     } else {
       const bodyPayload = {
@@ -504,6 +541,8 @@ export const PanInputBox = (params: any) => {
   );
 };
 export const FDCStatusCheckButton = (params: any) => {
+  const dispatch = useAppDispatch();
+
   const fail = {
     result: "Fail",
     color: "#EF4444",
@@ -526,6 +565,19 @@ export const FDCStatusCheckButton = (params: any) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
+
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: 'SEND_ALERT',
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration
+      }
+    });
+  }
+
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip
       {...props}
@@ -557,26 +609,57 @@ export const FDCStatusCheckButton = (params: any) => {
       params.data.email.trim() == "" ||
       params.data.interviewed.trim() == ""
     ) {
-      alert("Enter All Details.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Enter All Details.",
+        duration: 2000,
+      });
+
       params.setValue(false);
     }
     // else if (params.data.dob.trim() == "") {
     //   alert("Please enter date of birth.");
     // }
     else if (!/^[A-Za-z\s]+$/.test(params.data.firstName)) {
-      alert("Only alphabet can be entered in first name.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Only alphabet can be entered in first name.",
+        duration: 2000,
+      });
       params.setValue(false);
     } else if (!/^[A-Za-z\s]+$/.test(params.data.lastName)) {
-      alert("Only alphabet can be entered in last name.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Only alphabet can be entered in last name.",
+        duration: 2000,
+      });
       params.setValue(false);
     } else if (!/^[6-9]{1}[0-9]{9}$/.test(params.data.phoneNumber)) {
-      alert("Invalid Phone Number.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Invalid Phone Number.",
+        duration: 2000,
+      });
       params.setValue(false);
     } else if (!emailRegex.test(params.data.email)) {
-      alert("Invalid Email.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Invalid Email.",
+        duration: 2000,
+      });
       params.setValue(false);
     } else if (params.data.lastFiveDigitOfPan.trim().length != 5) {
-      alert("Please enter last five digits of PAN.");
+      dispatchNotificationData({
+        enable: true,
+        type: "warning",
+        message: "Please enter last five digits of PAN.",
+        duration: 2000,
+      });
       params.setValue(false);
     } else {
       fullDuplicationCheck(
@@ -700,7 +783,7 @@ export const FDCStatusCheckButton = (params: any) => {
 export const CustomUploadButton = (params: any) => {
   const classes = useStyles();
 
-  const navigateUpload = () => {};
+  const navigateUpload = () => { };
 
   return (
     <div
