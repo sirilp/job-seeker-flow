@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useEffect, useRef } from "react";
+import { CircularProgress, Stack } from "@mui/material";
 import "./JobSeekerProfileFlow.css";
 import { getFormData, getFormModeler, getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
@@ -165,6 +166,6 @@ var JobSeekerProfileJD = function (props) {
             }
         });
     }); };
-    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), _jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: props.handleBack })] })));
+    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), _jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: props.handleBack }), loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
 };
 export default JobSeekerProfileJD;

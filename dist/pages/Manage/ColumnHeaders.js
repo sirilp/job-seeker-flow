@@ -1,4 +1,4 @@
-import { CustomDropDown, Icons, ResumeUploaded } from "./CustomFields";
+import { Icons, ResumeUploaded } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 export var dateFilterParams = {
     comparator: function (filterLocalDateAtMidnight, cellValue) {
@@ -198,6 +198,58 @@ export var LISTING_GENERIC_HEADERS = [
         minWidth: 200,
     },
     {
+        headerName: "Partner Assessments",
+        field: "partnerAssessments",
+        hide: false,
+        minWidth: 250,
+        filter: "agTextColumnFilter",
+        floatingFilterComponentParams: {
+            suppressFilterButton: true,
+        },
+        filterParams: {
+            buttons: ["apply", "clear"],
+        },
+    },
+    {
+        headerName: "Job Seeker Main Stage",
+        field: "jobSeekerMainStage",
+        hide: false,
+        filter: "agDateColumnFilter",
+        filterParams: {
+            buttons: ["apply", "clear"],
+        },
+        floatingFilterComponentParams: {
+            suppressFilterButton: true,
+        },
+        minWidth: 260,
+    },
+    {
+        headerName: "Job Seeker Sub Stage",
+        field: "jobSeekerSubStage",
+        hide: false,
+        filter: "agDateColumnFilter",
+        filterParams: {
+            buttons: ["apply", "clear"],
+        },
+        floatingFilterComponentParams: {
+            suppressFilterButton: true,
+        },
+        minWidth: 250,
+    },
+    {
+        headerName: "Job Seeker Comment",
+        field: "jobSeekerComment",
+        hide: false,
+        filter: "agDateColumnFilter",
+        filterParams: {
+            buttons: ["apply", "clear"],
+        },
+        floatingFilterComponentParams: {
+            suppressFilterButton: true,
+        },
+        minWidth: 240,
+    },
+    {
         headerName: "Interview Scheduling",
         field: "interviewScheduling",
         hide: false,
@@ -222,88 +274,8 @@ export var LISTING_GENERIC_HEADERS = [
         minWidth: 230,
     },
     {
-        headerName: "Phase-L1",
-        field: "phaseL1",
-        hide: false,
-        minWidth: 250,
-        filter: "agTextColumnFilter",
-        cellRenderer: CustomDropDown,
-        valueSetter: function (params) {
-            params.data.phaseL1 = params.newValue;
-            return true;
-        },
-        filterParams: {
-            buttons: ["apply", "clear"],
-        },
-        floatingFilterComponentParams: {
-            suppressFilterButton: true,
-        },
-    },
-    {
-        headerName: "Phase-L2",
-        field: "phaseL2",
-        hide: false,
-        minWidth: 250,
-        filter: "agTextColumnFilter",
-        cellRenderer: CustomDropDown,
-        valueSetter: function (params) {
-            params.data.phaseL2 = params.newValue;
-            return true;
-        },
-        filterParams: {
-            buttons: ["apply", "clear"],
-        },
-        floatingFilterComponentParams: {
-            suppressFilterButton: true,
-        },
-    },
-    {
-        headerName: "Phase-HR",
-        field: "phaseHR",
-        hide: false,
-        minWidth: 250,
-        filter: "agTextColumnFilter",
-        cellRenderer: CustomDropDown,
-        valueSetter: function (params) {
-            params.data.phaseHR = params.newValue;
-            return true;
-        },
-        filterParams: {
-            buttons: ["apply", "clear"],
-        },
-        floatingFilterComponentParams: {
-            suppressFilterButton: true,
-        },
-    },
-    {
-        headerName: "Offer Rolled Out",
-        field: "offerRolledOut",
-        hide: false,
-        minWidth: 230,
-        filter: "agTextColumnFilter",
-        floatingFilterComponentParams: {
-            suppressFilterButton: true,
-        },
-        filterParams: {
-            buttons: ["apply", "clear"],
-        },
-    },
-    {
         headerName: "Job Seeker Joined",
         field: "jobSeekerJoined",
-        hide: false,
-        minWidth: 230,
-        filter: "agTextColumnFilter",
-        floatingFilterComponentParams: {
-            suppressFilterButton: true,
-        },
-        filterParams: {
-            buttons: ["apply", "clear"],
-        },
-    },
-    {
-        headerName: "Claim Reward",
-        field: "claimReward",
         hide: false,
         minWidth: 230,
         filter: "agTextColumnFilter",
@@ -326,6 +298,19 @@ export var LISTING_GENERIC_HEADERS = [
         filterParams: {
             buttons: ["apply", "clear"],
         },
+    },
+    {
+        headerName: "Send Reward",
+        field: "sendReward",
+        hide: false,
+        filter: "agDateColumnFilter",
+        filterParams: {
+            buttons: ["apply", "clear"],
+        },
+        floatingFilterComponentParams: {
+            suppressFilterButton: true,
+        },
+        minWidth: 230,
     },
 ];
 export var relations = [CONTEST_ABOUT_EMPLOYER];

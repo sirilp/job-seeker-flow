@@ -32,6 +32,7 @@ export var JD_PATCH_FORM = "999548019411533824";
 export var CONTEST_ABOUT_EMPLOYER = "991289466351534080";
 export var JOB_SEEKER_RESUME = "1018802975069569024";
 export var OFFER_LETTER = "1022430257759780864";
+export var FILTER_CONTEST_DETAILS_RELATION = "/form-runtime/v1/form-data?relations=";
 export var ALL_KEY = "All";
 export var COLUMNS_TEXT = "Columns";
 export var DISABLED_KEY = 'disabled';
