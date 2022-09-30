@@ -367,7 +367,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                             setType={props.setType}
                             setOpen={props.setOpen}
                             setDataMessage={props.setDataMessage}
-                            prefillDetails={props.profileDataId ? certificationDetails : null}
+                            prefillDetails={props.profileDataId || userDataState.userData.profileId ? certificationDetails : null}
                         />
                     </div>
 
