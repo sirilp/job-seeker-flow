@@ -68,7 +68,7 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
        )
       }
   };
-  
+
   const fetchForm = async () => {
     const formMarkup = await getFormData(
       JD_PATCH_FORM, "", props.contestId

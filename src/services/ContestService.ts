@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import {
   GET_CONTEST_DETAILS,
   CONTEST_DETAILS,
@@ -23,7 +23,12 @@ export const filterContestDetailsWithRelation = async (contestId?: string) => {
 export const getContestDetails = async (filterId?: string) => {
   return axios
     .get(
-      `${process.env.REACT_APP_API_GATEWAY_URL}${GET_CONTEST_DETAILS}${filterId}&&formId=${CONTEST_DETAILS}`
+      `${process.env.REACT_APP_MAIN_SERVER_URL}${GET_CONTEST_DETAILS}${filterId}&formId=${CONTEST_DETAILS}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
     )
     .catch((error) => {
       console.log(error);

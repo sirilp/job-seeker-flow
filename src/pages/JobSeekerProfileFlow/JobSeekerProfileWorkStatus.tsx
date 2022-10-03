@@ -176,7 +176,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
 
     const callPrefillData = async () => {
         try{
-            setLoader(true);
+            setLoader(false);
             const profileDataFetched = await getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId);
         if(profileDataFetched?.data?.data?.profileWorkStatusMap) {
             patchWorkStatusDetails(profileDataFetched?.data?.data?.profileWorkStatusMap);
@@ -367,7 +367,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                             setType={props.setType}
                             setOpen={props.setOpen}
                             setDataMessage={props.setDataMessage}
-                            prefillDetails={props.profileDataId || userDataState.userData.profileId ? certificationDetails : null}
+                            prefillDetails={(props.profileDataId || userDataState.userData.profileId) ? certificationDetails : null}
                         />
                     </div>
 

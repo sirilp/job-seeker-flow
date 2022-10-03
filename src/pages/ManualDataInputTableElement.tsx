@@ -23,6 +23,7 @@ import {
 } from "../services/JobSeekerService";
 import moment from "moment";
 import { useAppDispatch } from "../services/StoreHooks";
+import { DUPLICATION_PASS, DUPLICATION_FAIL } from "../constants";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -182,7 +183,7 @@ export const CustomDropDown = (params: any) => {
       placement="right"
       arrow
       classes={{ popper: className, arrow: classes.arrow }}
-    // className={classes.arrowStyle}
+      // className={classes.arrowStyle}
     />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
@@ -265,13 +266,13 @@ export const PDCStatusCheckButton = (params: any) => {
     result: "Fail",
     color: "#EF4444",
     title: "Dublicate Found!",
-    body: "The ownwership with sai anvesh Maruboyina for 30 days.",
+    body: "",
   };
   const pass = {
     result: "Pass",
     color: "#22C55E",
     title: "Pre Dublication Check Pass, job Seeker Id Created! ",
-    body: "Please Add DOB and PAN No. For full Dublication Check.",
+    body: "",
   };
   const [result, setResult] = useState({
     result: "",
@@ -300,21 +301,20 @@ export const PDCStatusCheckButton = (params: any) => {
     },
   }));
 
-  const buttonId = `buttonNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
 
   const dispatchNotificationData = (notifyData) => {
-
     dispatch({
-      type: 'SEND_ALERT',
+      type: "SEND_ALERT",
       data: {
         enable: notifyData.enable,
         type: notifyData.type,
         message: notifyData.message,
-        duration: notifyData.duration
-      }
+        duration: notifyData.duration,
+      },
     });
-  }
+  };
 
   const ref = useRef(null);
 
@@ -368,23 +368,31 @@ export const PDCStatusCheckButton = (params: any) => {
       };
       preDuplicationCheck(bodyPayload).then((response) => {
         if (response?.data.data.status == "PDC_SUCCESS") {
-          setResult(pass);
-          setOpen(true);
-          setTimeout(() => {
-            setOpen(false);
-          }, 4000);
+          setResult({
+            ...DUPLICATION_PASS,
+            title: "Pre Dublication Check Pass, job Seeker Id Created! ",
+            body: response?.data.message,
+          });
           params.setValue([true, response?.data.data.profileLogId]);
           sessionStorage.setItem(
             `row${params.rowIndex}`,
             JSON.stringify(params.data)
           );
-        } else {
-          setResult(fail);
           setOpen(true);
           setTimeout(() => {
             setOpen(false);
           }, 4000);
+        } else {
+          setResult({
+            ...DUPLICATION_FAIL,
+            title: "Dublicate Found!",
+            body: response?.data.message,
+          });
           params.setValue([false, response?.data.data.profileLogId]);
+          setOpen(true);
+          setTimeout(() => {
+            setOpen(false);
+          }, 4000);
         }
       });
     }
@@ -409,15 +417,24 @@ export const PDCStatusCheckButton = (params: any) => {
         body: "",
       });
     } else if (params.getValue()) {
-      setResult(pass);
+      setResult({
+        ...DUPLICATION_PASS,
+        title: "Pre Dublication Check Pass, job Seeker Id Created!",
+        // body: response?.data.message,
+      });
     } else if (!params.getValue() == false) {
-      setResult(fail);
+      setResult({
+        ...DUPLICATION_FAIL,
+        title: "Dublicate Found!",
+        // body: response?.data.message,
+      });
     }
   }, []);
 
   return (
     <>
       <Button
+        id={id}
         className={classes.buttonContainer}
         sx={{
           display: "inline",
@@ -478,9 +495,11 @@ export const PDCStatusCheckButton = (params: any) => {
 
 export const CustomDOBInputBox = (params: any) => {
   const [date, setDate] = React.useState(
-    params.getValue() == "" ? new Date(new Date().setFullYear(new Date().getFullYear() - 18)) : params.getValue()
+    params.getValue() == ""
+      ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+      : params.getValue()
   );
-
+  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const handleChange = (newValue: any) => {
     const dd = ("0" + newValue.$D).slice(-2);
     const mm = ("0" + (newValue.$M + 1)).slice(-2);
@@ -502,6 +521,7 @@ export const CustomDOBInputBox = (params: any) => {
         renderInput={({ inputRef, inputProps, InputProps }) => (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <input
+              id={id}
               ref={inputRef}
               {...inputProps}
               style={{
@@ -568,15 +588,15 @@ export const FDCStatusCheckButton = (params: any) => {
 
   const dispatchNotificationData = (notifyData) => {
     dispatch({
-      type: 'SEND_ALERT',
+      type: "SEND_ALERT",
       data: {
         enable: notifyData.enable,
         type: notifyData.type,
         message: notifyData.message,
-        duration: notifyData.duration
-      }
+        duration: notifyData.duration,
+      },
     });
-  }
+  };
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip
@@ -595,7 +615,7 @@ export const FDCStatusCheckButton = (params: any) => {
     },
   }));
 
-  const buttonId = `buttonNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
 
   const ref = useRef(null);
@@ -668,7 +688,11 @@ export const FDCStatusCheckButton = (params: any) => {
         params.data.dob
       ).then((response) => {
         if (response?.data.data.status == "FDC_SUCCESS") {
-          setResult(pass);
+          setResult({
+            ...DUPLICATION_PASS,
+            title: "Final Dublication Check Passed, ",
+            body: response?.data.message,
+          });
           setOpen(true);
           setTimeout(() => {
             setOpen(false);
@@ -679,7 +703,11 @@ export const FDCStatusCheckButton = (params: any) => {
             JSON.stringify(params.data)
           );
         } else {
-          setResult(fail);
+          setResult({
+            ...DUPLICATION_FAIL,
+            title: "Final Dublication Check Passed, ",
+            body: response?.data.message,
+          });
           setOpen(true);
           setTimeout(() => {
             setOpen(false);
@@ -710,15 +738,24 @@ export const FDCStatusCheckButton = (params: any) => {
         body: "",
       });
     } else if (params.getValue()) {
-      setResult(pass);
+      setResult({
+        ...DUPLICATION_PASS,
+        title: "Final Dublication Check Passed, ",
+        // body: response?.data.message,
+      });
     } else if (!params.getValue() == false) {
-      setResult(fail);
+      setResult({
+        ...DUPLICATION_FAIL,
+        title: "Final Dublication Check Passed, ",
+        // body: response?.data.message,
+      });
     }
   }, []);
 
   return (
     <>
       <Button
+        id={id}
         className={classes.buttonContainer}
         sx={{
           display: "inline",
@@ -783,8 +820,8 @@ export const FDCStatusCheckButton = (params: any) => {
 export const CustomUploadButton = (params: any) => {
   const classes = useStyles();
 
-  const navigateUpload = () => { };
-
+  const navigateUpload = () => {};
+  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   return (
     <div
       style={{
@@ -792,6 +829,7 @@ export const CustomUploadButton = (params: any) => {
       }}
     >
       <Button
+        id={id}
         className={classes.buttonContainer}
         variant="contained"
         size="small"

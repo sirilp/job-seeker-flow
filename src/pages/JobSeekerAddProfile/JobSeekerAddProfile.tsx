@@ -19,7 +19,6 @@ import "../JobSeekerBaseStyles.css";
 import { AgGridReact } from "ag-grid-react";
 import { relations, LISTING_GENERIC_HEADERS } from "./AddProfileColumnHeaders";
 import GridItem from "../GridItem/GridItem";
-import KeycloakService from "../../services/KeycloakService";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
@@ -49,32 +48,32 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     dispatchProfileLogId(data?.profileLogId);
     props.handleComplete(0);
     props.handleNext();
-  }
+  };
 
   const dispatchProfileLogId = (profileLogId) => {
     dispatch({
-      type: 'USER_ADD',
+      type: "USER_ADD",
       data: {
         userData: {
           ...userDataState.userData,
-          profileLogId
+          profileLogId,
         },
-        userId: userDataState.userId
-      }
+        userId: userDataState.userId,
+      },
     });
-  }
+  };
 
   const resetNotificationData = () => {
     dispatch({
-      type: 'SEND_ALERT',
+      type: "SEND_ALERT",
       data: {
         enable: initialAlertState.enable,
         type: initialAlertState.type,
         message: initialAlertState.message,
-        duration: initialAlertState.duration
-      }
+        duration: initialAlertState.duration,
+      },
     });
-  }
+  };
   let r1 = {
     firstName: "",
     lastName: "",
@@ -95,6 +94,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     email: "",
     interviewed: "no",
     pdcStatus: null,
+    profileLogId: "",
     dob: "",
     lastFiveDigitOfPan: "",
     fdcStatus: null,
@@ -107,6 +107,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     email: "",
     interviewed: "no",
     pdcStatus: null,
+    profileLogId: "",
     dob: "",
     lastFiveDigitOfPan: "",
     fdcStatus: null,
@@ -119,6 +120,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     email: "",
     interviewed: "no",
     pdcStatus: null,
+    profileLogId: "",
     dob: "",
     lastFiveDigitOfPan: "",
     fdcStatus: null,
@@ -131,6 +133,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     email: "",
     interviewed: "no",
     pdcStatus: null,
+    profileLogId: "",
     dob: "",
     lastFiveDigitOfPan: "",
     fdcStatus: null,

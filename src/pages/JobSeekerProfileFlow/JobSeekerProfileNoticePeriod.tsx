@@ -508,7 +508,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                         setType={props.setType}
                         setOpen={props.setOpen}
                         setDataMessage={props.setDataMessage}
-                        prefilData={props.profileDataId || userDataState.userData.profileId ? offerData : null}
+                        prefilData={(props.profileDataId || userDataState.userData.profileId) ? offerData : null}
                       />
                     </div>
                   </div>

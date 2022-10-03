@@ -30,7 +30,7 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
           setType={setType}
           setOpen={setOpen}
           setDataMessage={setDataMessage}
-          contestId={"1016320143470620672"}
+          contestId={props.id}
         />
       ),
     },
