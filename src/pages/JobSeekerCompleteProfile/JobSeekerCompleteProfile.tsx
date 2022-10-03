@@ -8,7 +8,7 @@ import { shadows } from "@mui/system";
 import { getContestAggregateStatistics } from "../../services/JobSeekerService";
 import { JOB_SEEKER_COMLETE_PROFILE_TEXT } from "../../constants";
 
-const JobSeekerCompleteProfile = () => {
+const JobSeekerCompleteProfile = (props) => {
   const [activeTab, setActiveTab] = useState(0);
   const [dataMessage, setDataMessage] = useState("");
   const [open, setOpen] = useState(false);
