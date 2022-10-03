@@ -206,15 +206,15 @@ var JobSeekerProfileUpload = function (props) {
     };
     var callResumeUpload = function () { return __awaiter(void 0, void 0, void 0, function () {
         var uploadResponse, updateResumeReponse, seekerProfile, error_1;
-        var _a, _b, _c, _d, _e, _f, _g, _h;
-        return __generator(this, function (_j) {
-            switch (_j.label) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        return __generator(this, function (_l) {
+            switch (_l.label) {
                 case 0:
                     setLoader(true);
                     if (!(acceptedFilesResume.length > 0)) return [3 /*break*/, 9];
-                    _j.label = 1;
+                    _l.label = 1;
                 case 1:
-                    _j.trys.push([1, 8, , 9]);
+                    _l.trys.push([1, 8, , 9]);
                     return [4 /*yield*/, UploadFiles(uploadPayloadBuild()).catch(function (error) {
                             props.setType(ERROR_KEY);
                             props.setDataMessage(IMAGE_UPLOAD_ERROR);
@@ -222,7 +222,7 @@ var JobSeekerProfileUpload = function (props) {
                             console.log(error);
                         })];
                 case 2:
-                    uploadResponse = _j.sent();
+                    uploadResponse = _l.sent();
                     if (!((_a = uploadResponse === null || uploadResponse === void 0 ? void 0 : uploadResponse.data) === null || _a === void 0 ? void 0 : _a.success)) return [3 /*break*/, 7];
                     if (!imageName) return [3 /*break*/, 4];
                     return [4 /*yield*/, updateJobSeekerProfile({
@@ -232,7 +232,7 @@ var JobSeekerProfileUpload = function (props) {
                             },
                         })];
                 case 3:
-                    updateResumeReponse = _j.sent();
+                    updateResumeReponse = _l.sent();
                     return [3 /*break*/, 6];
                 case 4: return [4 /*yield*/, createJobSeekerProfile({
                         profileLogId: userDataState.userData.profileLogId,
@@ -241,21 +241,21 @@ var JobSeekerProfileUpload = function (props) {
                         },
                     })];
                 case 5:
-                    seekerProfile = _j.sent();
+                    seekerProfile = _l.sent();
                     if ((_f = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _f === void 0 ? void 0 : _f.success) {
-                        dispatchProfileId((_h = (_g = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.profileId);
+                        dispatchProfileId((_h = (_g = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.profileId, (_k = (_j = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _j === void 0 ? void 0 : _j.data) === null || _k === void 0 ? void 0 : _k.jobSeekerId);
                     }
-                    _j.label = 6;
+                    _l.label = 6;
                 case 6:
                     props.setType(SUCCESS_KEY);
                     props.setDataMessage(FORM_SUBMISSION_SUCCESS);
                     props.setOpen(true);
                     props.handleComplete(1);
                     props.handleNext();
-                    _j.label = 7;
+                    _l.label = 7;
                 case 7: return [3 /*break*/, 9];
                 case 8:
-                    error_1 = _j.sent();
+                    error_1 = _l.sent();
                     console.log(error_1);
                     props.setType(ERROR_KEY);
                     props.setDataMessage(error_1 === null || error_1 === void 0 ? void 0 : error_1.message);
@@ -267,11 +267,11 @@ var JobSeekerProfileUpload = function (props) {
             }
         });
     }); };
-    var dispatchProfileId = function (profileId) {
+    var dispatchProfileId = function (profileId, jobSeekerId) {
         dispatch({
             type: "USER_ADD",
             data: {
-                userData: __assign(__assign({}, userDataState.userData), { profileId: profileId }),
+                userData: __assign(__assign({}, userDataState.userData), { profileId: profileId, jobSeekerId: jobSeekerId }),
                 userId: userDataState.userId,
             },
         });
@@ -303,7 +303,7 @@ var JobSeekerProfileUpload = function (props) {
                     error_2 = _j.sent();
                     console.log(error_2);
                     props.setType(ERROR_KEY);
-                    props.setDataMessage('Something went wrong');
+                    props.setDataMessage("Something went wrong");
                     props.setOpen(true);
                     return [3 /*break*/, 5];
                 case 5:

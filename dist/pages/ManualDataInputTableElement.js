@@ -33,6 +33,7 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { preDuplicationCheck, fullDuplicationCheck, } from "../services/JobSeekerService";
 import moment from "moment";
 import { useAppDispatch } from "../services/StoreHooks";
+import { DUPLICATION_PASS, DUPLICATION_FAIL } from "../constants";
 var useStyles = makeStyles(function () { return ({
     buttonContainer: {
         "&.MuiButton-root": {
@@ -181,13 +182,13 @@ export var PDCStatusCheckButton = function (params) {
         result: "Fail",
         color: "#EF4444",
         title: "Dublicate Found!",
-        body: "The ownwership with sai anvesh Maruboyina for 30 days.",
+        body: "",
     };
     var pass = {
         result: "Pass",
         color: "#22C55E",
         title: "Pre Dublication Check Pass, job Seeker Id Created! ",
-        body: "Please Add DOB and PAN No. For full Dublication Check.",
+        body: "",
     };
     var _a = useState({
         result: "",
@@ -213,17 +214,17 @@ export var PDCStatusCheckButton = function (params) {
             },
             _b);
     });
-    var buttonId = "buttonNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
     var dispatchNotificationData = function (notifyData) {
         dispatch({
-            type: 'SEND_ALERT',
+            type: "SEND_ALERT",
             data: {
                 enable: notifyData.enable,
                 type: notifyData.type,
                 message: notifyData.message,
-                duration: notifyData.duration
-            }
+                duration: notifyData.duration,
+            },
         });
     };
     var ref = useRef(null);
@@ -275,21 +276,21 @@ export var PDCStatusCheckButton = function (params) {
             };
             preDuplicationCheck(bodyPayload).then(function (response) {
                 if ((response === null || response === void 0 ? void 0 : response.data.data.status) == "PDC_SUCCESS") {
-                    setResult(pass);
-                    setOpen(true);
-                    setTimeout(function () {
-                        setOpen(false);
-                    }, 4000);
+                    setResult(__assign(__assign({}, DUPLICATION_PASS), { title: "Pre Dublication Check Pass, job Seeker Id Created! ", body: response === null || response === void 0 ? void 0 : response.data.message }));
                     params.setValue([true, response === null || response === void 0 ? void 0 : response.data.data.profileLogId]);
                     sessionStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
-                }
-                else {
-                    setResult(fail);
                     setOpen(true);
                     setTimeout(function () {
                         setOpen(false);
                     }, 4000);
+                }
+                else {
+                    setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Dublicate Found!", body: response === null || response === void 0 ? void 0 : response.data.message }));
                     params.setValue([false, response === null || response === void 0 ? void 0 : response.data.data.profileLogId]);
+                    setOpen(true);
+                    setTimeout(function () {
+                        setOpen(false);
+                    }, 4000);
                 }
             });
         }
@@ -313,13 +314,13 @@ export var PDCStatusCheckButton = function (params) {
             });
         }
         else if (params.getValue()) {
-            setResult(pass);
+            setResult(__assign(__assign({}, DUPLICATION_PASS), { title: "Pre Dublication Check Pass, job Seeker Id Created!" }));
         }
         else if (!params.getValue() == false) {
-            setResult(fail);
+            setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Dublicate Found!" }));
         }
     }, []);
-    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ className: classes.buttonContainer, sx: {
+    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, className: classes.buttonContainer, sx: {
                     display: "inline",
                 }, variant: "contained", size: "small", onClick: handleClick }, { children: "Check" })), _jsx("div", __assign({ style: { color: result.color, display: "inline" } }, { children: result.result })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip, __assign({ onClose: handleTooltipClose, open: open, disableFocusListener: true, disableHoverListener: true, disableTouchListener: true, title: _jsxs(React.Fragment, { children: [_jsx(Typography, __assign({ variant: "subtitle2" }, { children: _jsx("b", __assign({ style: { color: result.color } }, { children: result.title })) })), _jsx(Typography, __assign({ variant: "caption", color: "#626880" }, { children: result.body }))] }) }, { children: (function () {
                             if (result.result == "Pass") {
@@ -334,7 +335,10 @@ export var PDCStatusCheckButton = function (params) {
                         })() })) })) }))] }));
 };
 export var CustomDOBInputBox = function (params) {
-    var _a = React.useState(params.getValue() == "" ? new Date(new Date().setFullYear(new Date().getFullYear() - 18)) : params.getValue()), date = _a[0], setDate = _a[1];
+    var _a = React.useState(params.getValue() == ""
+        ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+        : params.getValue()), date = _a[0], setDate = _a[1];
+    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var handleChange = function (newValue) {
         var dd = ("0" + newValue.$D).slice(-2);
         var mm = ("0" + (newValue.$M + 1)).slice(-2);
@@ -346,7 +350,7 @@ export var CustomDOBInputBox = function (params) {
                 handleChange(newValue);
             }, maxDate: moment().subtract(18, "year"), renderInput: function (_a) {
                 var inputRef = _a.inputRef, inputProps = _a.inputProps, InputProps = _a.InputProps;
-                return (_jsxs(Box, __assign({ sx: { display: "flex", alignItems: "center" } }, { children: [_jsx("input", __assign({ ref: inputRef }, inputProps, { style: {
+                return (_jsxs(Box, __assign({ sx: { display: "flex", alignItems: "center" } }, { children: [_jsx("input", __assign({ id: id, ref: inputRef }, inputProps, { style: {
                                 // height: "2vw",
                                 width: "90%",
                                 border: "1px solid #DFE5FF",
@@ -388,13 +392,13 @@ export var FDCStatusCheckButton = function (params) {
     var _b = React.useState(false), open = _b[0], setOpen = _b[1];
     var dispatchNotificationData = function (notifyData) {
         dispatch({
-            type: 'SEND_ALERT',
+            type: "SEND_ALERT",
             data: {
                 enable: notifyData.enable,
                 type: notifyData.type,
                 message: notifyData.message,
-                duration: notifyData.duration
-            }
+                duration: notifyData.duration,
+            },
         });
     };
     var HtmlTooltip = styled(function (_a) {
@@ -413,7 +417,7 @@ export var FDCStatusCheckButton = function (params) {
             },
             _b);
     });
-    var buttonId = "buttonNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
     var ref = useRef(null);
     var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -482,7 +486,7 @@ export var FDCStatusCheckButton = function (params) {
         else {
             fullDuplicationCheck(params.data.profileLogId, params.data.lastFiveDigitOfPan, params.data.dob).then(function (response) {
                 if ((response === null || response === void 0 ? void 0 : response.data.data.status) == "FDC_SUCCESS") {
-                    setResult(pass);
+                    setResult(__assign(__assign({}, DUPLICATION_PASS), { title: "Final Dublication Check Passed, ", body: response === null || response === void 0 ? void 0 : response.data.message }));
                     setOpen(true);
                     setTimeout(function () {
                         setOpen(false);
@@ -491,7 +495,7 @@ export var FDCStatusCheckButton = function (params) {
                     sessionStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
                 }
                 else {
-                    setResult(fail);
+                    setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Dublication Check Passed, ", body: response === null || response === void 0 ? void 0 : response.data.message }));
                     setOpen(true);
                     setTimeout(function () {
                         setOpen(false);
@@ -520,13 +524,13 @@ export var FDCStatusCheckButton = function (params) {
             });
         }
         else if (params.getValue()) {
-            setResult(pass);
+            setResult(__assign(__assign({}, DUPLICATION_PASS), { title: "Final Dublication Check Passed, " }));
         }
         else if (!params.getValue() == false) {
-            setResult(fail);
+            setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Dublication Check Passed, " }));
         }
     }, []);
-    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ className: classes.buttonContainer, sx: {
+    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, className: classes.buttonContainer, sx: {
                     display: "inline",
                 }, variant: "contained", size: "small", onClick: handleClick }, { children: "Check" })), _jsx("div", __assign({ style: { color: result.color, display: "inline" } }, { children: result.result })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip
                     // PopperProps={{
@@ -551,9 +555,10 @@ export var FDCStatusCheckButton = function (params) {
 export var CustomUploadButton = function (params) {
     var classes = useStyles();
     var navigateUpload = function () { };
+    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     return (_jsx("div", __assign({ style: {
             textAlign: "center",
-        } }, { children: _jsx(Button, __assign({ className: classes.buttonContainer, variant: "contained", size: "small", onClick: navigateUpload }, { children: "Upload" })) })));
+        } }, { children: _jsx(Button, __assign({ id: id, className: classes.buttonContainer, variant: "contained", size: "small", onClick: navigateUpload }, { children: "Upload" })) })));
 };
 var ManualDataInputTableElement = function () {
     return _jsx("div", { children: "ManualDataInputTableElement" });

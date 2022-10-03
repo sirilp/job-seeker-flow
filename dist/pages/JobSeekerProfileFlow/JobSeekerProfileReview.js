@@ -46,43 +46,61 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import React from "react";
-import { Stack, Button, Divider, Typography, IconButton, CircularProgress, } from '@mui/material';
-import { JobSeekerReviewArray, } from './JobSeekerProfileFlowConstants';
-import './JobSeekerProfileFlow.css';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { ERROR_KEY } from "../../constants";
+import React, { useState } from "react";
+import { Stack, Button, Divider, Typography, IconButton, CircularProgress, } from "@mui/material";
+import { JobSeekerReviewArray } from "./JobSeekerProfileFlowConstants";
+import "./JobSeekerProfileFlow.css";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { ERROR_KEY, ADD_PROFILE_CONFIRMATION_BOX_TEXT, } from "../../constants";
 import JobSeekerProfileJD from "./JobSeekerProfileJD";
 import JobSeekerProfileUpload from "./JobSeekerProfileUpload";
 import JobSeekerProfileDetails from "./JobSeekerProfileDetails";
 import JobSeekerProfileWorkStatus from "./JobSeekerProfileWorkStatus";
 import JobSeekerProfileNoticePeriod from "./JobSeekerProfileNoticePeriod";
+import ConfirmationModel from "../../components/ConfirmationModal/ConfirmationModel";
+import { startJobSeekerWorkflow } from "../../services/JobSeekerService";
+import JobSeekerCompleteProfile from "../JobSeekerCompleteProfile/JobSeekerCompleteProfile";
+import { useAppSelector } from "../../services/StoreHooks";
 var JobSeekerProfileReview = function (props) {
     var _a = React.useState(false), loader = _a[0], setLoader = _a[1];
     var _b = React.useState(false), checkout = _b[0], setCheckout = _b[1];
     var _c = React.useState(-1), currentIndex = _c[0], setCurrentIndex = _c[1];
+    var _d = useState({
+        isOpen: false,
+        title: "",
+        mainMessage: "",
+        bottomMessage: "",
+    }), dialogAction = _d[0], setDialogAction = _d[1];
+    var _e = useState(false), submitted = _e[0], setSubmitted = _e[1];
+    var userDataState = useAppSelector(function (state) { return state.currentUser; });
     var renderCurrentSelection = function (currentSection) {
         switch (currentSection) {
             case 1:
                 return null;
             case 2:
-                return _jsx(JobSeekerProfileUpload, { profileDataId: '1018862574432321536', hasButtons: false });
+                return (_jsx(JobSeekerProfileUpload, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
             case 3:
-                return _jsx(JobSeekerProfileDetails, { profileDataId: '1018862574432321536', hasButtons: false });
+                return (_jsx(JobSeekerProfileDetails, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
             case 4:
-                return _jsx(JobSeekerProfileWorkStatus, { profileDataId: '1018862574432321536', hasButtons: false });
+                return (_jsx(JobSeekerProfileWorkStatus, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
             case 5:
-                return _jsx(JobSeekerProfileNoticePeriod, { profileDataId: '1018862574432321536', hasButtons: false });
+                return (_jsx(JobSeekerProfileNoticePeriod, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
             default:
-                return _jsx(JobSeekerProfileJD, { profileDataId: '1018862574432321536', hasButtons: false });
+                return (_jsx(JobSeekerProfileJD, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
         }
     };
     var submitAllDetails = function () { return __awaiter(void 0, void 0, void 0, function () {
         var _a, _b;
         return __generator(this, function (_c) {
             setLoader(true);
+            setDialogAction({
+                isOpen: true,
+                title: ADD_PROFILE_CONFIRMATION_BOX_TEXT.header,
+                mainMessage: ADD_PROFILE_CONFIRMATION_BOX_TEXT.mainMessage,
+                bottomMessage: ADD_PROFILE_CONFIRMATION_BOX_TEXT.bottomMessage,
+            });
             try {
                 // const postFormResponse = await GenericProcess(
                 //     {
@@ -112,34 +130,51 @@ var JobSeekerProfileReview = function (props) {
             return [2 /*return*/];
         });
     }); };
-    return (_jsx("div", __assign({ className: "form-internal-body" }, { children: checkout ?
-            // <SignupSuccess 
-            //     setCheckout={setCheckout}
-            //     setActiveStep={props.setActiveStep}
-            //     setCompleted={props.setCompleted}
-            //     displayMessage={`Your Contest has been Published Successfully`} 
-            // /> 
-            _jsx(_Fragment, {})
-            :
-                _jsxs(_Fragment, { children: [_jsx("div", __assign({ className: "stepper-container" }, { children: JobSeekerReviewArray.map(function (reviewData, index) { return (_jsxs("div", __assign({ className: "review-card", style: currentIndex === index ?
-                                    {
-                                        height: 'auto',
-                                        flexDirection: 'column'
-                                    } : {
-                                    height: '68px',
-                                    flexDirection: 'row'
-                                } }, { children: [_jsx("span", __assign({ className: "review-title-text" }, { children: reviewData.label })), _jsxs("div", { children: [reviewData.navigate ?
-                                                _jsxs(Button, __assign({ variant: "text", className: "review-buttons-color", onClick: function () { return props.setActiveStep(index); } }, { children: [_jsx("img", { src: "assets/images/Edit.png", className: "review-icons" }), "Edit"] }))
-                                                : null, _jsx(IconButton, __assign({ "aria-label": "plus", className: "review-buttons-color", onClick: function () {
+    var cancelFunction = function () {
+        setDialogAction(__assign(__assign({}, dialogAction), { isOpen: false }));
+    };
+    var apiCallStartJobSeekerWorkflow = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var bodyPayload, response;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    bodyPayload = {
+                        jobSeekerId: userDataState.userData.jobSeekerId,
+                        action: "startJobSeekerWorkflow",
+                    };
+                    return [4 /*yield*/, startJobSeekerWorkflow(bodyPayload)];
+                case 1:
+                    response = _b.sent();
+                    if ((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.success) {
+                        props.setProgressBar(false);
+                        setSubmitted(true);
+                        setDialogAction(__assign(__assign({}, dialogAction), { isOpen: false }));
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    return (_jsx(_Fragment, { children: submitted ? (_jsx(_Fragment, { children: _jsx(JobSeekerCompleteProfile, { contestId: props.contestId }) })) : (_jsx(_Fragment, { children: _jsx("div", __assign({ className: "form-internal-body" }, { children: checkout ? (
+                // <SignupSuccess
+                //     setCheckout={setCheckout}
+                //     setActiveStep={props.setActiveStep}
+                //     setCompleted={props.setCompleted}
+                //     displayMessage={`Your Contest has been Published Successfully`}
+                // />
+                _jsx(_Fragment, {})) : (_jsxs(_Fragment, { children: [_jsx("div", __assign({ className: "stepper-container" }, { children: JobSeekerReviewArray.map(function (reviewData, index) { return (_jsxs("div", __assign({ className: "review-card", style: currentIndex === index
+                                    ? {
+                                        height: "auto",
+                                        flexDirection: "column",
+                                    }
+                                    : {
+                                        height: "68px",
+                                        flexDirection: "row",
+                                    } }, { children: [_jsx("span", __assign({ className: "review-title-text" }, { children: reviewData.label })), _jsxs("div", { children: [reviewData.navigate ? (_jsxs(Button, __assign({ variant: "text", className: "review-buttons-color", onClick: function () { return props.setActiveStep(index); } }, { children: [_jsx("img", { src: "assets/images/Edit.png", className: "review-icons" }), "Edit"] }))) : null, _jsx(IconButton, __assign({ "aria-label": "plus", className: "review-buttons-color", onClick: function () {
                                                     if (currentIndex !== index)
                                                         setCurrentIndex(index);
                                                     else
                                                         setCurrentIndex(-1);
-                                                } }, { children: currentIndex !== index ? _jsx(AddIcon, {}) : _jsx(RemoveIcon, {}) }))] }), currentIndex === index ?
-                                        _jsx("div", __assign({ style: { width: '100%' } }, { children: renderCurrentSelection(index + 1) }))
-                                        : null] }), index)); }) })), _jsx("div", __assign({ className: "review-divider" }, { children: _jsx(Divider, {}) })), loader ?
-                            _jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))
-                            :
-                                _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx(Typography, { variant: "h6", noWrap: true, component: "div" }), _jsx(Typography, __assign({ variant: "h6", noWrap: true, component: "div" }, { children: _jsxs(Button, __assign({ variant: "contained", className: "next-button", onClick: submitAllDetails }, { children: ["Submit All Details", _jsx(ArrowForwardIosIcon, { className: "next-icon" })] })) }))] }))] }) })));
+                                                } }, { children: currentIndex !== index ? (_jsx(AddIcon, {})) : (_jsx(RemoveIcon, {})) }))] }), currentIndex === index ? (_jsx("div", __assign({ style: { width: "100%" } }, { children: renderCurrentSelection(index + 1) }))) : null] }), index)); }) })), _jsx("div", __assign({ className: "review-divider" }, { children: _jsx(Divider, {}) })), loader ? (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) : (_jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx(Typography, { variant: "h6", noWrap: true, component: "div" }), _jsx(Typography, __assign({ variant: "h6", noWrap: true, component: "div" }, { children: _jsxs(Button, __assign({ variant: "contained", className: "next-button", onClick: submitAllDetails }, { children: ["Submit All Details", _jsx(ArrowForwardIosIcon, { className: "next-icon" })] })) }))] }))), _jsx(ConfirmationModel, { dialogAction: dialogAction, setDialogAction: setDialogAction, buttonRightFunction: apiCallStartJobSeekerWorkflow, buttonLeftFunction: cancelFunction })] })) })) })) }));
 };
 export default JobSeekerProfileReview;

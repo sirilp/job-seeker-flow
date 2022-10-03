@@ -45,22 +45,22 @@ var JobSeekerAddProfile = function (props) {
     };
     var dispatchProfileLogId = function (profileLogId) {
         dispatch({
-            type: 'USER_ADD',
+            type: "USER_ADD",
             data: {
                 userData: __assign(__assign({}, userDataState.userData), { profileLogId: profileLogId }),
-                userId: userDataState.userId
-            }
+                userId: userDataState.userId,
+            },
         });
     };
     var resetNotificationData = function () {
         dispatch({
-            type: 'SEND_ALERT',
+            type: "SEND_ALERT",
             data: {
                 enable: initialAlertState.enable,
                 type: initialAlertState.type,
                 message: initialAlertState.message,
-                duration: initialAlertState.duration
-            }
+                duration: initialAlertState.duration,
+            },
         });
     };
     var r1 = {
@@ -83,6 +83,7 @@ var JobSeekerAddProfile = function (props) {
         email: "",
         interviewed: "no",
         pdcStatus: null,
+        profileLogId: "",
         dob: "",
         lastFiveDigitOfPan: "",
         fdcStatus: null,
@@ -95,6 +96,7 @@ var JobSeekerAddProfile = function (props) {
         email: "",
         interviewed: "no",
         pdcStatus: null,
+        profileLogId: "",
         dob: "",
         lastFiveDigitOfPan: "",
         fdcStatus: null,
@@ -107,6 +109,7 @@ var JobSeekerAddProfile = function (props) {
         email: "",
         interviewed: "no",
         pdcStatus: null,
+        profileLogId: "",
         dob: "",
         lastFiveDigitOfPan: "",
         fdcStatus: null,
@@ -119,6 +122,7 @@ var JobSeekerAddProfile = function (props) {
         email: "",
         interviewed: "no",
         pdcStatus: null,
+        profileLogId: "",
         dob: "",
         lastFiveDigitOfPan: "",
         fdcStatus: null,

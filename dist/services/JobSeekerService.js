@@ -131,3 +131,35 @@ export var getDuplicationFailedProfilesAggregate = function () { return __awaite
         }
     });
 }); };
+export var startJobSeekerWorkflow = function (bodyPayload) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios
+                    .post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seeker/").concat(bodyPayload.jobSeekerId, "/submit?action=").concat(bodyPayload.action), bodyPayload, {
+                    headers: {
+                        Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                    },
+                })
+                    .catch(function (error) {
+                    console.log(error);
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+export var getContestAggregateStatistics = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profiles/aggregate/status"), {
+                    headers: {
+                        Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                    },
+                })
+                    .catch(function (error) {
+                    console.log(error);
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };

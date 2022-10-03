@@ -25,8 +25,8 @@ export var FORM_SUBMISSION_SUCCESS = "Details are successfully submitted";
 export var IMAGE_UPLOAD_ERROR = "Something went wrong in image upload, please try again";
 export var FORM_INVALID_STATUS = "Form is not validated, kindly fill all the required details";
 export var SPECIAL_CHAR_ERR_MSG = "cannot have special characters or numbers";
-export var ALPHA_ERR_MSG = 'Cannot have special charaters';
-export var URL_ERROR_MSG = 'Please Enter proper URL';
+export var ALPHA_ERR_MSG = "Cannot have special charaters";
+export var URL_ERROR_MSG = "Please Enter proper URL";
 export var CONTEST_DETAILS = "991273137863147520";
 export var JD_PATCH_FORM = "999548019411533824";
 export var CONTEST_ABOUT_EMPLOYER = "991289466351534080";
@@ -35,7 +35,7 @@ export var OFFER_LETTER = "1022430257759780864";
 export var FILTER_CONTEST_DETAILS_RELATION = "/form-runtime/v1/form-data?relations=";
 export var ALL_KEY = "All";
 export var COLUMNS_TEXT = "Columns";
-export var DISABLED_KEY = 'disabled';
+export var DISABLED_KEY = "disabled";
 export var emailValidation = function (email) {
     var regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])");
     return !(!email || regex.test(email) === false);
@@ -77,7 +77,7 @@ export var LETTERS_ONLY_REGEX = /^[a-zA-Z \b]+$/;
 export var ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9 \b]+$/;
 export var URL_REGEX = new RegExp("(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?");
 export var CONFIRMATION_BOX_BUTTON = ["Yes", "Cancel"];
-export var GET_CONTEST_DETAILS = "/form-runtime/v1/form-data?filter=id:";
+export var GET_CONTEST_DETAILS = "form-runtime/v1/form-data?filter=id:";
 export var PATCH_CONTEST_DETAILS = "/form-runtime/v1/form-data";
 export var CONTESTSETTINGS_EDIT = "999548019411533824";
 export var GET_CONTEST_SETTINGS = "/form-runtime/v1/form-data?filter=formData.contestId:";
@@ -91,14 +91,14 @@ export var JOB_SEEKER_TABS = [
 export var TEMPLATE_BUTTON = [
     { iconFileName: "Group.png", title: "Import From Job Seeker Collections" },
     {
-        iconFileName: "download.svg",
+        iconFileName: "Download.png",
         title: "Download the Pre Dupliation Template",
     },
     {
-        iconFileName: "download.svg",
+        iconFileName: "Download.png",
         title: "Download the Full Dupliation Template",
     },
-    { iconFileName: "Upload.png", title: "Upload Template" },
+    { iconFileName: "upload.png", title: "Upload Template" },
 ];
 export var WorkStatusType;
 (function (WorkStatusType) {
@@ -113,3 +113,33 @@ export var JOB_SEEKER_STATUS = [
     { iconFileName: "Group 3369", title: "Days Left", data: " 29" },
 ];
 export var PAGE_SIZE_ARRAY = [10, 15, 20, 25, 50, 100];
+export var DUPLICATION_PASS = {
+    result: "Pass",
+    color: "#22C55E",
+    title: "",
+    body: "",
+};
+export var DUPLICATION_FAIL = {
+    result: "Fail",
+    color: "#EF4444",
+    title: "",
+    body: "",
+};
+export var ADD_PROFILE_CONFIRMATION_BOX_BUTTON = [
+    "Keep Editing",
+    "Submit and Send Verification to Job Seeker",
+];
+export var ADD_PROFILE_CONFIRMATION_BOX_TEXT = {
+    header: "Job Seeker Consent Required",
+    mainMessage: "The Profile needs verification of data and consent of submission from Job Seeker before proceeding",
+    bottomMessage: "Profile will be submitted to the HH Admin for further processing. After the Job Seeker consent is obtained",
+};
+export var JOB_SEEKER_COMLETE_PROFILE_TEXT = {
+    title: "Congrats! The Profile is complete and saved in your dashboard.",
+    titleOne: "Email & SMS sent to get consent from job seeker ",
+    notification1: "Sent on 21 of July, 2021, 09:33:03 AM IST",
+    notification2: "Please follow up and get the consent from the job seeker at the earliest.",
+    notification3: "Stay tuned !! to get further updates on Recruiter Dashboard.",
+    notification4: "Hope this job seeker converts into placement and we wish you all the best!!",
+    alyticsTitle: "Your Profile Submission Statistics For this Contest",
+};

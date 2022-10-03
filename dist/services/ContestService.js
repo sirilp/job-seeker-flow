@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import axios from 'axios';
+import axios from "axios";
 import { GET_CONTEST_DETAILS, CONTEST_DETAILS, PATCH_CONTEST_DETAILS, CONTESTSETTINGS_EDIT, GET_CONTEST_SETTINGS, FILTER_CONTEST_DETAILS_RELATION, CONTEST_ABOUT_EMPLOYER } from "../constants";
 export var filterContestDetailsWithRelation = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -48,7 +48,11 @@ export var filterContestDetailsWithRelation = function (contestId) { return __aw
 export var getContestDetails = function (filterId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, axios
-                .get("".concat(process.env.REACT_APP_API_GATEWAY_URL).concat(GET_CONTEST_DETAILS).concat(filterId, "&&formId=").concat(CONTEST_DETAILS))
+                .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL).concat(GET_CONTEST_DETAILS).concat(filterId, "&formId=").concat(CONTEST_DETAILS), {
+                headers: {
+                    Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                },
+            })
                 .catch(function (error) {
                 console.log(error);
             })];
