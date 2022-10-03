@@ -48,7 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { Grid, Box } from "@mui/material";
-import GraphCo from "../../assets/GraphCo.png";
+import GraphCo from "../../../src/assets/GraphCo.png";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { getContestAggregateStatistics } from "../../services/JobSeekerService";
