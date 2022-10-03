@@ -19,6 +19,7 @@ import "../JobSeekerBaseStyles.css";
 import { AgGridReact } from "ag-grid-react";
 import { relations, LISTING_GENERIC_HEADERS } from "./AddProfileColumnHeaders";
 import GridItem from "../GridItem/GridItem";
+import KeycloakService from "../../services/KeycloakService";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
@@ -206,13 +207,15 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
   return (
     <div className="form-encapsulate">
       <div className="form-card-holder">
-        <Notification
+        { notifyDataState &&  (
+          <Notification
           open={notifyDataState.enable}
           type={notifyDataState.type}
           message={notifyDataState.message}
           duration={notifyDataState.duration}
           setOpen={() => resetNotificationData()}
         />
+        )}
         {/* <div className="forms-button-container">
             <div
               className="card-container"
