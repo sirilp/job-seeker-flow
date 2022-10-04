@@ -197,7 +197,7 @@ var CurrentOffers = function (props) {
         setServiceListFiles(function () { return tempArray; });
         offerAddForm.values.members[index].letterFiles = null;
     };
-    return (_jsxs(React.Fragment, { children: [_jsx("div", __assign({ className: "add-btn-div" }, { children: _jsxs(Button, __assign({ className: "next-button stack-button", variant: "contained", onClick: handleServiceAdd }, { children: [_jsx(AddIcon, { className: "add-icon" }), " ", OFFER_ADD_TEXT] })) })), serviceList.length > 0 &&
+    return (_jsxs(React.Fragment, { children: [_jsx("div", __assign({ className: "add-btn-div" }, { children: _jsxs(Button, __assign({ className: "next-button stack-button", variant: "contained", onClick: function () { return handleServiceAdd(); } }, { children: [_jsx(AddIcon, { className: "add-icon" }), " ", OFFER_ADD_TEXT] })) })), serviceList.length > 0 &&
                 serviceList.map(function (singleService, index) {
                     var _a, _b, _c;
                     return (_jsx("div", __assign({ className: "services" }, { children: _jsx("div", __assign({ className: "first-division" }, { children: _jsxs(StyledContainer, { children: [_jsxs(Grid, __assign({ container: true, className: classes.muiContainer }, { children: [_jsx(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: FULL_SIZE_GRID, lg: FULL_SIZE_GRID, sx: {

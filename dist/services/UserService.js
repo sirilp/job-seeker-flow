@@ -39,7 +39,11 @@ import KeycloakService from "./KeycloakService";
 export var getUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, axios
-                .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "accounts/v1/users?filter-column=userName&filter-value=").concat(KeycloakService.getUsername()))
+                .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "accounts/v1/users?filter-column=userName&filter-value=").concat(KeycloakService.getUsername()), {
+                headers: {
+                    Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                },
+            })
                 .catch(function (error) {
                 console.log(error);
             })];

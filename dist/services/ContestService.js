@@ -35,16 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import axios from "axios";
-import { GET_CONTEST_DETAILS, CONTEST_DETAILS, PATCH_CONTEST_DETAILS, CONTESTSETTINGS_EDIT, GET_CONTEST_SETTINGS, FILTER_CONTEST_DETAILS_RELATION, CONTEST_ABOUT_EMPLOYER } from "../constants";
-export var filterContestDetailsWithRelation = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/, axios
-                .get("".concat(process.env.REACT_APP_API_GATEWAY_URL).concat(FILTER_CONTEST_DETAILS_RELATION).concat(CONTEST_ABOUT_EMPLOYER, ":parentDataId&filter=formData.contestId:").concat(contestId, "&formId=").concat(CONTEST_DETAILS))
-                .catch(function (error) {
-                console.log(error);
-            })];
-    });
-}); };
+import { GET_CONTEST_DETAILS, CONTEST_DETAILS, PATCH_CONTEST_DETAILS, CONTESTSETTINGS_EDIT, GET_CONTEST_SETTINGS, FILTER_CONTEST_DETAILS_RELATION, CONTEST_ABOUT_EMPLOYER, } from "../constants";
+var token = sessionStorage.getItem("react-token");
 export var getContestDetails = function (filterId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, axios
@@ -71,6 +63,19 @@ export var getContestSettings = function (filterId) { return __awaiter(void 0, v
     return __generator(this, function (_a) {
         return [2 /*return*/, axios
                 .get("".concat(process.env.REACT_APP_API_GATEWAY_URL).concat(GET_CONTEST_SETTINGS).concat(filterId, "&&formId=").concat(CONTESTSETTINGS_EDIT))
+                .catch(function (error) {
+                console.log(error);
+            })];
+    });
+}); };
+export var filterContestDetailsWithRelation = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, axios
+                .get("".concat(process.env.REACT_APP_API_GATEWAY_URL).concat(FILTER_CONTEST_DETAILS_RELATION).concat(CONTEST_ABOUT_EMPLOYER, ":parentDataId&filter=formData.contestId:").concat(contestId, "&formId=").concat(CONTEST_DETAILS), {
+                headers: {
+                    Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                },
+            })
                 .catch(function (error) {
                 console.log(error);
             })];

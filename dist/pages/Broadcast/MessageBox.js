@@ -65,9 +65,10 @@ var useStyles = makeStyles({
     mainContainer: {
         display: "flex",
         flexDirection: "column",
-        height: 687,
-        width: 390,
+        height: "100%",
+        width: 400,
         // margin: 30,
+        overflow: "auto",
         border: "1px solid #E5E5E5",
     },
     section1: {
@@ -80,8 +81,9 @@ var useStyles = makeStyles({
     },
     section2: {
         marginTop: "15px",
-        height: "550px",
+        height: "auto",
         width: "390px",
+        marginBottom: "15px",
         // overflow: "auto",
     },
     card: {
@@ -95,7 +97,7 @@ var useStyles = makeStyles({
         margin: "8px",
         display: "flex",
         color: "#4D6CD9",
-        flexDirection: 'row-reverse',
+        flexDirection: "row-reverse",
     },
     cardGridContainer: {
         display: "flex",
@@ -107,7 +109,8 @@ var useStyles = makeStyles({
         height: "70px",
         alignItems: "center",
         // display: 'flex',
-        flexDirection: 'row',
+        flexDirection: "row",
+        paddingBottom: "20px",
         // flexWrap: 'wrap',
     },
     messageField: {
@@ -201,49 +204,47 @@ var MessageBox = function (_a) {
             userId: "821024382412341234",
         },
     ]), chatMessages = _e[0], setChatMessages = _e[1];
+    var searchContestDeatils = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        var _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0: return [4 /*yield*/, filterContestDetailsWithRelation(id)];
+                case 1:
+                    response = _d.sent();
+                    console.log("response", response);
+                    if (response) {
+                        setContestData((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data[0].formData);
+                        setEmployerData((_b = response === null || response === void 0 ? void 0 : response.data) === null || _b === void 0 ? void 0 : _b.data[0]);
+                        Object.keys((_c = response === null || response === void 0 ? void 0 : response.data) === null || _c === void 0 ? void 0 : _c.data[0]).map(function (keyName) {
+                            var _a;
+                            if (/^\d+$/.test(keyName))
+                                setEmployerData((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data[0][keyName][0].formData);
+                        });
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    // searchContestDeatils("CONTEST_2209000101");
+    var handleCurrentUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var Data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getUserData()];
+                case 1:
+                    Data = _a.sent();
+                    console.log(Data === null || Data === void 0 ? void 0 : Data.data.data[0].userId);
+                    setCurrentUserId(Data === null || Data === void 0 ? void 0 : Data.data.data[0].userId);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     useEffect(function () {
-        var searchContestDeatils = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
-            var _a, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0: return [4 /*yield*/, filterContestDetailsWithRelation(id)];
-                    case 1:
-                        response = _d.sent();
-                        console.log("response", response);
-                        if (response) {
-                            setContestData((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data[0].formData);
-                            setEmployerData((_b = response === null || response === void 0 ? void 0 : response.data) === null || _b === void 0 ? void 0 : _b.data[0]);
-                            Object.keys((_c = response === null || response === void 0 ? void 0 : response.data) === null || _c === void 0 ? void 0 : _c.data[0]).map(function (keyName) {
-                                var _a;
-                                if (/^\d+$/.test(keyName))
-                                    setEmployerData((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data[0][keyName][0].formData);
-                            });
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        }); };
-        // searchContestDeatils("CONTEST_2209000101");
         searchContestDeatils(params.data.contestId);
-    }, []);
-    useEffect(function () {
-        var handleCurrentUserData = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var Data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, getUserData()];
-                    case 1:
-                        Data = _a.sent();
-                        console.log(Data === null || Data === void 0 ? void 0 : Data.data.data[0].userId);
-                        setCurrentUserId(Data === null || Data === void 0 ? void 0 : Data.data.data[0].userId);
-                        return [2 /*return*/];
-                }
-            });
-        }); };
         handleCurrentUserData();
     }, []);
-    return (_jsx("div", { children: _jsxs(Grid, __assign({ container: true, spacing: 0, className: classes.mainContainer }, { children: [_jsxs(Box, __assign({ className: classes.section1 }, { children: ["Message", _jsx(CloseIcon, { sx: { float: "right" }, onClick: closeIt })] })), _jsxs(Box, __assign({ className: classes.section2 }, { children: [_jsx("h5", __assign({ style: { color: "#4D6CD9", marginLeft: 4 } }, { children: "Depak Sankala" })), _jsxs("p", __assign({ style: { marginLeft: 4 } }, { children: [" ", "Profile Source: Name of the Recruiter"] })), _jsxs(Paper, __assign({ elevation: 3, className: classes.card }, { children: [_jsxs(Box, __assign({ className: classes.cardHeader }, { children: [_jsx("p", { children: contestData.position }), _jsx(PushPinIcon, { color: "primary" })] })), _jsxs(Grid, __assign({ container: true, spacing: 1, className: classes.cardGridContainer }, { children: [_jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon4, alt: "Banner-Icon4" }), " ", contestData.budgetCtcFrom, "LPA - ", contestData.budgetCtcTo, "LPA"] })), _jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon5, alt: "Banner-Icon5" }), " ", contestData.experienceFrom, " to ", contestData.experienceTo, " Yrs"] })), _jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon1, alt: "Banner-Icon1" }), "       ", employerData.employerName || "unknown"] })), _jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon2, alt: "Banner-Icon2" }), "   ", contestData.numberOfPositions, " Positions"] })), _jsxs(Grid, __assign({ xs: 6, item: true, display: "inline-flex" }, { children: [_jsx("img", { src: icon3, alt: "Banner-Icon3" }), _jsx(Typography, __assign({ variant: "body1", sx: {
+    return (_jsx("div", { children: _jsxs(Grid, __assign({ container: true, spacing: 0, className: classes.mainContainer }, { children: [_jsxs(Box, __assign({ className: classes.section1 }, { children: ["Message", _jsx(CloseIcon, { sx: { float: "right" }, onClick: closeIt })] })), _jsxs(Box, __assign({ className: classes.section2 }, { children: [_jsx("h5", __assign({ style: { color: "#4D6CD9", marginLeft: 4 } }, { children: params.data.firstName })), _jsxs("p", __assign({ style: { marginLeft: 4 } }, { children: [" ", "Profile Source: Name of the Recruiter"] })), _jsxs(Paper, __assign({ elevation: 3, className: classes.card }, { children: [_jsxs(Box, __assign({ className: classes.cardHeader }, { children: [_jsx("p", { children: contestData.position }), _jsx(PushPinIcon, { color: "primary" })] })), _jsxs(Grid, __assign({ container: true, spacing: 1, className: classes.cardGridContainer }, { children: [_jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon4, alt: "Banner-Icon4" }), " ", contestData.budgetCtcFrom, "LPA - ", contestData.budgetCtcTo, "LPA"] })), _jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon5, alt: "Banner-Icon5" }), " ", contestData.experienceFrom, " to ", contestData.experienceTo, " Yrs"] })), _jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon1, alt: "Banner-Icon1" }), "       ", employerData.employerName || "unknown"] })), _jsxs(Grid, __assign({ item: true, xs: 6 }, { children: [_jsx("img", { src: icon2, alt: "Banner-Icon2" }), "   ", contestData.numberOfPositions, " Positions"] })), _jsxs(Grid, __assign({ xs: 6, item: true, display: "inline-flex" }, { children: [_jsx("img", { src: icon3, alt: "Banner-Icon3" }), _jsx(Typography, __assign({ variant: "body1", sx: {
                                                         wordWrap: "break-word",
                                                         // m: 0.5,
                                                         fontSize: 13,

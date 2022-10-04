@@ -134,7 +134,7 @@ var CertificationDetails = function (props) {
         props.removeCertification(index);
         handleServiceRemove(index);
     };
-    return (_jsx(React.Fragment, { children: _jsxs("div", __assign({ className: "certification-div" }, { children: [_jsx("div", __assign({ className: "add-btn-div" }, { children: _jsxs(Button, __assign({ className: "next-button", variant: "contained", onClick: handleServiceAdd }, { children: [_jsx(AddIcon, { className: "add-icon" }), " ", CERTIFICATION_ADD_TEXT] })) })), serviceList.length > 0 &&
+    return (_jsx(React.Fragment, { children: _jsxs("div", __assign({ className: "certification-div" }, { children: [_jsx("div", __assign({ className: "add-btn-div" }, { children: _jsxs(Button, __assign({ className: "next-button", variant: "contained", onClick: function () { return handleServiceAdd(); } }, { children: [_jsx(AddIcon, { className: "add-icon" }), " ", CERTIFICATION_ADD_TEXT] })) })), serviceList.length > 0 &&
                     serviceList.map(function (singleService, index) { return (_jsx("div", __assign({ className: "services" }, { children: _jsx("div", __assign({ className: "first-division" }, { children: _jsxs(StyledContainer, { children: [_jsxs(Grid, __assign({ container: true, className: classes.muiContainer }, { children: [_jsx(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: FULL_SIZE_GRID, lg: FULL_SIZE_GRID, sx: {
                                                     display: "flex",
                                                     alignItems: "center",

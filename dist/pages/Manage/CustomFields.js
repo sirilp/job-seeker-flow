@@ -58,18 +58,26 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { Typography, Box, tooltipClasses, Tooltip, IconButton, Drawer, } from "@mui/material";
+import { Typography, Button, Box, tooltipClasses, Tooltip, IconButton, Drawer, Grid, Card, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import LocalPhoneRoundedIcon from "@mui/icons-material/LocalPhoneRounded";
+import CloseIcon from "@mui/icons-material/Close";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { openFile } from "../../services/DocumentService";
 import MessageBox from "../Broadcast/MessageBox";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 var useStyles = makeStyles(function () { return ({
     buttonContainer: {
         "&.MuiButton-root": {
@@ -123,10 +131,10 @@ export var Icons = function (params) {
     return (_jsxs("div", __assign({ style: {
             textAlign: "center",
         } }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsxs(Box, __assign({ sx: {
-                        width: '380px',
-                        overflow: 'hidden',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: "380px",
+                        overflow: "hidden",
+                        justifyContent: "center",
+                        alignItems: "center",
                         top: 0,
                         left: 0,
                     } }, { children: [_jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }), console.log("Left Drawer called")] })) }))] })));
@@ -239,6 +247,92 @@ export var CustomDropDown = function (params) {
                         return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, { children: _jsx(ErrorIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) }) })));
                     }
                 })() }))] }));
+};
+export var ViewAssessments = function (params) {
+    var _a = useState(false), toggleDrawer = _a[0], setToggleDrawer = _a[1];
+    var _b = React.useState([]), assessmentType = _b[0], setAssessmentType = _b[1];
+    var _c = React.useState([]), assessmentPartner = _c[0], setAssessmentPartner = _c[1];
+    var assessmentTypes = [
+        "Assessment Services",
+        "Interview as a Service",
+        "Resume Builder",
+        "Learning Management System",
+    ];
+    var assessmentPartners = [
+        "Assessment Services",
+        "Interview as a Service",
+        "Resume Builder",
+        "Learning Management System",
+    ];
+    var handleChangeAssessmentType = function (event) {
+        var value = event.target.value;
+        setAssessmentType(
+        // On autofill we get a stringified value.
+        typeof value === "string" ? value.split(",") : value);
+    };
+    var handleChangeAssessmentPartner = function (event) {
+        var value = event.target.value;
+        setAssessmentPartner(
+        // On autofill we get a stringified value.
+        typeof value === "string" ? value.split(",") : value);
+    };
+    var classes = useStyles();
+    var handleClick = function () {
+        console.log(params);
+        setToggleDrawer(true);
+    };
+    return (_jsxs("div", __assign({ style: {
+            textAlign: "center",
+        } }, { children: [_jsx(Typography, __assign({ onClick: handleClick, className: classes.uploadText }, { children: "View Assessments" })), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ sx: {
+                        width: "400px",
+                        overflow: "hidden",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        top: 0,
+                        overflowY: "auto",
+                    } }, { children: _jsxs(Grid, { children: [_jsx(Box, { children: _jsxs(Typography, __assign({ sx: {
+                                        textAlign: "center",
+                                        backgroundColor: "#4D6CD9",
+                                        height: "50px",
+                                        width: "390px",
+                                        color: "#FFFFFF",
+                                        padding: "10px",
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                    } }, { children: ["View Assessments", _jsx(CloseIcon, { sx: { float: "right" }, onClick: function () { return setToggleDrawer(false); } })] })) }), _jsx(Typography, __assign({ textAlign: "center" }, { children: "Request New Assessment" })), _jsx(Typography, { children: "Job Seeker Name - Rajesh Sharma" }), _jsxs(Box, { children: [_jsxs(Card, __assign({ sx: {
+                                            border: "1px solid grey",
+                                            height: "180px ",
+                                            marginTop: "20px",
+                                            marginRight: "5px",
+                                            marginLeft: "5px",
+                                            fontSize: "13px",
+                                        }, elevation: 3 }, { children: [_jsxs(Box, __assign({ display: "flex" }, { children: [_jsx(Typography, __assign({ p: 2 }, { children: "Assessment Type" })), _jsx(FormControl, __assign({ sx: { m: 1, minWidth: 120 }, size: "small" }, { children: _jsx(Select, __assign({ labelId: "demo-multiple-checkbox-label", id: "demo-multiple-checkbox", multiple: true, value: assessmentType, onChange: handleChangeAssessmentType, input: _jsx(OutlinedInput, { label: "Tag" }), renderValue: function (selected) { return selected.join(", "); }, sx: {
+                                                                width: "190px",
+                                                                "& legend": { display: "none" },
+                                                                "& fieldset": { top: 0 },
+                                                            } }, { children: assessmentTypes.map(function (name) { return (_jsxs(MenuItem, __assign({ value: name }, { children: [_jsx(Checkbox, { checked: assessmentType.indexOf(name) > -1 }), _jsx(ListItemText, { primary: name })] }), name)); }) })) }))] })), _jsxs(Box, __assign({ display: "flex" }, { children: [_jsx(Typography, __assign({ p: 1 }, { children: "Assessment Partner" })), _jsx(FormControl, __assign({ sx: { m: 1, minWidth: 120 }, size: "small" }, { children: _jsx(Select, __assign({ labelId: "demo-multiple-checkbox-label", id: "demo-multiple-checkbox", multiple: true, value: assessmentPartner, onChange: handleChangeAssessmentPartner, input: _jsx(OutlinedInput, { label: "Tag" }), renderValue: function (selected) { return selected.join(", "); }, sx: {
+                                                                width: "190px",
+                                                                "& legend": { display: "none" },
+                                                                "& fieldset": { top: 0 },
+                                                            } }, { children: assessmentPartners.map(function (name) { return (_jsxs(MenuItem, __assign({ value: name }, { children: [_jsx(Checkbox, { checked: assessmentPartner.indexOf(name) > -1 }), _jsx(ListItemText, { primary: name })] }), name)); }) })) }))] })), _jsx(Box, __assign({ textAlign: "center" }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "Request Assessment" })) }))] })), _jsx(Typography, __assign({ sx: {
+                                            fontSize: "20px",
+                                            fontWeight: "bold",
+                                            textAlign: "center",
+                                        } }, { children: "Partner Assessment Reports" })), _jsxs(Card, __assign({ sx: {
+                                            border: "1px solid grey",
+                                            height: "200px ",
+                                            marginTop: "20px",
+                                            marginRight: "5px",
+                                            marginLeft: "5px",
+                                            fontSize: "15px",
+                                        }, elevation: 3 }, { children: [_jsxs(Box, __assign({ textAlign: "center" }, { children: [_jsxs("div", __assign({ style: { margin: "10px" } }, { children: ["Assessment Type - Interview as a Service", _jsx(FormatAlignJustifyIcon, { sx: { color: "blue", float: "right" } })] })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" }))] })), _jsx(Box, __assign({ textAlign: "center", mt: 3 }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "View Assesment Report" })) }))] })), _jsxs(Card, __assign({ sx: {
+                                            border: "1px solid grey",
+                                            height: "200px ",
+                                            marginTop: "20px",
+                                            marginRight: "5px",
+                                            marginLeft: "5px",
+                                            fontSize: "15px",
+                                        }, elevation: 3 }, { children: [_jsxs(Box, __assign({ textAlign: "center" }, { children: [_jsxs("div", __assign({ style: { margin: "10px" } }, { children: ["Assessment Type - Interview as a Service", _jsx(FormatAlignJustifyIcon, { sx: { color: "blue", float: "right" } })] })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" }))] })), _jsx(Box, __assign({ textAlign: "center", mt: 3 }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "Upload Assesment Report" })) }))] }))] })] }) })) }))] })));
 };
 var CustomFields = function () {
     return _jsx("div", { children: "CustomFields" });

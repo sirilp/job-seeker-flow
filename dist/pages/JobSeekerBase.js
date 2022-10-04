@@ -21,6 +21,7 @@ import Notification from "../components/Notification";
 import DuplicationFailed from "./DuplicationFailed/DuplicationFailed";
 import AllJs from "./AllJs/AllJs";
 import Manage from "./Manage/Manage";
+import IncompleteUploads from "./IncompleteUploads/IncompleteUploads";
 var useStyles = makeStyles(function () { return ({}); });
 var JobSeekerBase = function (props) {
     var id = props.id, contestId = props.contestId;
@@ -43,7 +44,7 @@ var JobSeekerBase = function (props) {
         {
             title: "Incomplete Uploads ",
             index: 2,
-            component: _jsx("div", { children: "Page Not Avaliable" }),
+            component: _jsx(IncompleteUploads, { contestId: contestId, id: id }),
         },
         {
             title: "All JS",

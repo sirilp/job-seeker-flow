@@ -143,13 +143,7 @@ const IncompleteUploads = (props) => {
     }
   };
 
-  const fetchToken = async () => {
-    const token = await KeycloakService.fetchTokenOtherUser();
-    sessionStorage.setItem("react-token", token);
-  };
-
   useEffect(() => {
-    fetchToken();
     getTableRowData(selectedButtonValue, contestId, pageNo, pageSize);
     handleAggregateData();
   }, [selectedButtonValue, contestId, pageNo, pageSize]);

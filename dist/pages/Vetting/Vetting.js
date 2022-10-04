@@ -59,7 +59,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
-import { contestLinkedJobsekeers, getAggregateData, } from "../../services/JobSeekerService";
+import { statusFilterContestLinkedJobsekeers, consentStatusFilterContestLinkedJobsekeers, getAggregateData, } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
 var useStyles = makeStyles(function () { return ({
@@ -76,61 +76,67 @@ var Vetting = function (props) {
     var _c = React.useState(0), pageNo = _c[0], setPageNo = _c[1];
     var _d = useState([]), selectedRows = _d[0], setSelectedRows = _d[1];
     var _e = useState(0), totalPages = _e[0], setTotalPages = _e[1];
-    var _f = React.useState(), rowData = _f[0], setRowData = _f[1];
-    var _g = React.useState(1), selectedButton = _g[0], setSelectedButton = _g[1];
-    var _h = React.useState(false), columnsListOpen = _h[0], setColumnsListOpen = _h[1];
-    var _j = React.useState(true), floatingFilter = _j[0], setFloatingFilter = _j[1];
+    var _f = React.useState([]), rowData = _f[0], setRowData = _f[1];
+    var _g = useState("JOB_SEEKER_APPLIED"), selectedButtonValue = _g[0], setSelectedButtonValue = _g[1];
+    var _h = React.useState(1), selectedButtonId = _h[0], setSelectedButtonId = _h[1];
+    var _j = React.useState(false), columnsListOpen = _j[0], setColumnsListOpen = _j[1];
+    var _k = React.useState(true), floatingFilter = _k[0], setFloatingFilter = _k[1];
     var label = { inputProps: { "aria-label": "Checkbox demo" } };
-    var _k = useState({
+    var _l = useState({
         submitted: 0,
         consent: 0,
-        hhShortlisting: 0,
-        employerDuplication: 0,
-        employerShortlisting: 0,
-    }), agCount = _k[0], setAgCount = _k[1];
+    }), agCount = _l[0], setAgCount = _l[1];
     useEffect(function () {
-        getTableRowData(pageNo, pageSize, contestId);
+        getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
         handleAggregateData(contestId);
-    }, []);
+    }, [pageNo, pageSize, contestId, selectedButtonValue]);
+    var setSelectedButton = function (id, filterValue) {
+        console.log(filterValue, id);
+        setSelectedButtonId(id);
+        setSelectedButtonValue(filterValue);
+        getTableRowData(0, 10, contestId, filterValue);
+    };
     var handleAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, result, result1;
+        var response, result1, result2, result3, result4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getAggregateData(contestId)];
                 case 1:
                     response = _a.sent();
+                    console.log(response);
                     if (response.data.success) {
-                        result = response.data.data.filter(function (data) { return data.status === "TOTAL_JOB_SEEKERS"; });
-                        result1 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_DUPLICATE"; });
+                        console.log(response.data.success);
+                        result1 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_APPLIED"; });
+                        result2 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_CONSENT_PASS"; });
+                        result3 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKEER_CONSENT_PENDING"; });
+                        result4 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_CONSENT_FAIL"; });
                         setAgCount({
-                            submitted: result[0].count,
-                            consent: 0,
-                            hhShortlisting: 0,
-                            employerDuplication: result1[0].count,
-                            employerShortlisting: 0,
+                            submitted: (result1.length > 0 && result1[0].count) || 0,
+                            consentPass: (result2.length > 0 && result2[0].count) || 0,
+                            consentPending: (result3.length > 0 && result3[0].count) || 0,
+                            consentFail: (result4.length > 0 && result4[0].count) || 0,
                         });
                     }
                     else {
                         setAgCount({
                             submitted: 0,
                             consent: 0,
-                            hhShortlisting: 0,
-                            employerDuplication: 0,
-                            employerShortlisting: 0,
                         });
                     }
                     return [2 /*return*/];
             }
         });
     }); };
-    var getTableRowData = function (pageNo, pageSize, contestId) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, mapData, result;
-        var _a, _b, _c, _d, _e, _f;
-        return __generator(this, function (_g) {
-            switch (_g.label) {
-                case 0: return [4 /*yield*/, contestLinkedJobsekeers(contestId, pageNo, pageSize)];
+    var getTableRowData = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, mapData, result, response, mapData, result;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+        return __generator(this, function (_o) {
+            switch (_o.label) {
+                case 0:
+                    if (!(selectedButtonValue === "JOB_SEEKER_APPLIED")) return [3 /*break*/, 2];
+                    return [4 /*yield*/, statusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
                 case 1:
-                    response = _g.sent();
+                    response = _o.sent();
                     if (response.data.success) {
                         mapData = response.data.data.content;
                         result = mapData.map(function (item, index) {
@@ -147,7 +153,28 @@ var Vetting = function (props) {
                         console.log("false");
                         setRowData([]);
                     }
-                    return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, consentStatusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
+                case 3:
+                    response = _o.sent();
+                    if (response.data.success) {
+                        mapData = response.data.data.content;
+                        result = mapData.map(function (item, index) {
+                            item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
+                            var Data = __assign(__assign(__assign({}, item), item.matchedProfileLogsList[0]), item.matchedProfilesList[0]);
+                            return Data;
+                        });
+                        setRowData(result);
+                        setTotalPages((_h = (_g = response === null || response === void 0 ? void 0 : response.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.totalPages);
+                        setPageNo((_k = (_j = response === null || response === void 0 ? void 0 : response.data) === null || _j === void 0 ? void 0 : _j.data) === null || _k === void 0 ? void 0 : _k.pageNo);
+                        setPageSize((_m = (_l = response === null || response === void 0 ? void 0 : response.data) === null || _l === void 0 ? void 0 : _l.data) === null || _m === void 0 ? void 0 : _m.pageSize);
+                    }
+                    else {
+                        console.log("false");
+                        setRowData([]);
+                    }
+                    _o.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
     }); };
@@ -203,7 +230,7 @@ var Vetting = function (props) {
     };
     useEffect(function () {
         // call api with new pagenumber
-        getTableRowData(pageNo, pageSize, contestId);
+        getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
     }, [pageNo, pageSize, contestId]);
     var onUpdateColumns = useCallback(function (data) {
         if (gridRef === null || gridRef === void 0 ? void 0 : gridRef.current)
@@ -226,34 +253,32 @@ var Vetting = function (props) {
                                 label: "Submitted",
                                 tooltip: "Submitted",
                                 id: 1,
+                                value: "JOB_SEEKER_APPLIED",
                             },
                             {
-                                label: "Consent",
-                                tooltip: "Consent",
+                                label: "Consent Pass",
+                                tooltip: "Consent Pass",
                                 id: 2,
+                                value: "JOB_SEEKEER_CONSENT_PASS",
                             },
                             {
-                                label: "HH Shortlisting",
-                                tooltip: "HH Shortlisting",
+                                label: "Consent Pending",
+                                tooltip: "Consent Pending",
                                 id: 3,
+                                value: "JOB_SEEKEER_CONSENT_PENDING",
                             },
                             {
-                                label: "Employer Duplication",
-                                tooltip: "Employer Duplication",
+                                label: "Consent Fail",
+                                tooltip: "Consent Fail",
                                 id: 4,
-                            },
-                            {
-                                label: "Employer Shortlisting",
-                                tooltip: "Employer Shortlisting",
-                                id: 5,
+                                value: "JOB_SEEKEER_CONSENT_FAIL",
                             },
                         ], countsList: [
                             { _id: 1, count: agCount.submitted },
-                            { _id: 2, count: agCount.consent },
-                            { _id: 3, count: agCount.hhShortlisting },
-                            { _id: 4, count: agCount.employerDuplication },
-                            { _id: 5, count: agCount.employerShortlisting },
-                        ], setSelectedButton: setSelectedButton, selectedButton: selectedButton })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block", className: classes.actions1 }, { children: [_jsx(Checkbox, {}), " ", selectedRows.length, " Selected", _jsx(DeleteOutlineIcon, { className: classes.deleteIcon }), _jsx(BookmarkBorderIcon, { className: classes.bookmarkIcon })] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
+                            { _id: 2, count: agCount.consentPass },
+                            { _id: 3, count: agCount.consentPending },
+                            { _id: 4, count: agCount.consentFail },
+                        ], setSelectedButton: setSelectedButton, selectedButton: selectedButtonId })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block", className: classes.actions1 }, { children: [_jsx(Checkbox, {}), " ", selectedRows.length, " Selected", _jsx(DeleteOutlineIcon, { className: classes.deleteIcon }), _jsx(BookmarkBorderIcon, { className: classes.bookmarkIcon })] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
                     return Object.assign({ headerName: cl.headerName, hide: !cl.hide });
                 }), setColumnsDisplay: setColumnsDisplay, onClose: setColumnsListOpen, open: columnsListOpen }), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx(AgGridWithPagination, { gridRef: gridRef, rowData: rowData, columnDefs: columnDefs, defaultColDef: defaultColDef, autoGroupColumnDef: autoGroupColumnDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, pageSize: pageSize, onSelectionChanged: onSelectionChanged, pageSizeArray: PAGE_SIZE_ARRAY, totalPages: totalPages, pageChange: pageChange, pageSizeChange: pageSizeChange }) }))] })));
 };

@@ -78,9 +78,7 @@ var DuplicationFailed = function () {
     var setSelectedButton = function (id, filterValue) {
         setSelectedButtonId(id);
         setSelectedButtonValue(filterValue);
-        setPageNo(0);
-        setPageSize(10);
-        apiCallDuplicationFailedData(filterValue, pageNo, 10);
+        apiCallDuplicationFailedData(filterValue, 0, 10);
     };
     var apiCallAggregateData = function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, result, t_1;

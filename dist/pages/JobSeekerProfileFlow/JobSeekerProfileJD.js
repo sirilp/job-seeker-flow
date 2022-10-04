@@ -82,7 +82,7 @@ var JobSeekerProfileJD = function (props) {
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
-                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId)];
+                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId)];
                 case 1:
                     profileDataFetched = _e.sent();
                     if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.jdQuestionsMap) {
