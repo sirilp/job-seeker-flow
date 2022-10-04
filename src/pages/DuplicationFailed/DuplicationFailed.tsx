@@ -46,9 +46,7 @@ const DuplicationFailed = () => {
   const setSelectedButton = (id: number, filterValue: string) => {
     setSelectedButtonId(id);
     setSelectedButtonValue(filterValue);
-    setPageNo(0);
-    setPageSize(10);
-    apiCallDuplicationFailedData(filterValue, pageNo, 10);
+    apiCallDuplicationFailedData(filterValue, 0, 10);
   };
   const apiCallAggregateData = async () => {
     const response: any = await getDuplicationFailedProfilesAggregate();

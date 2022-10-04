@@ -2,7 +2,7 @@ import {
   CheckboxSelectionCallbackParams,
   HeaderCheckboxSelectionCallbackParams,
 } from "ag-grid-community";
-import { CustomDropDown, Icons, ResumeUploaded } from "./CustomFields";
+import { Icons } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 
 export const dateFilterParams = {
@@ -54,11 +54,11 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Actions",
-    cellRenderer: Icons,
     floatingFilter: false,
+    cellRenderer: Icons,
   },
   {
-    headerName: "Job seeker Name",
+    headerName: "First Name",
     field: "firstName",
     filter: "agTextColumnFilter",
     minWidth: 200,
@@ -71,53 +71,29 @@ export const LISTING_GENERIC_HEADERS = [
     },
   },
   {
-    headerName: "Experience",
-    field: "experience",
+    headerName: "Last Name",
+    field: "lastName",
     hide: false,
-    minWidth: 180,
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
-    filter: "agNumberColumnFilter",
-    floatingFilterComponentParams: {
-      suppressFilterButton: true,
-    },
-  },
-  {
-    headerName: "Expected CTC",
-    field: "expectedCTC",
-    hide: false,
-    minWidth: 215,
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
+    minWidth: 200,
     filter: "agTextColumnFilter",
     floatingFilterComponentParams: {
       suppressFilterButton: true,
     },
-  },
-  {
-    headerName: "Profile Uploaded",
-    field: "appliedDate",
-    hide: false,
-    filter: "agDateColumnFilter",
-    filterParams: dateFilterParams,
-    floatingFilterComponentParams: {
-      suppressFilterButton: true,
+    filterParams: {
+      buttons: ["apply", "clear"],
     },
-    minWidth: 215,
   },
   {
     headerName: "Recruiter Uploading",
     field: "referredBy",
     hide: false,
-    minWidth: 230,
+    minWidth: 200,
     filter: "agTextColumnFilter",
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
     floatingFilterComponentParams: {
       suppressFilterButton: true,
+    },
+    filterParams: {
+      buttons: ["apply", "clear"],
     },
   },
   {
@@ -147,62 +123,55 @@ export const LISTING_GENERIC_HEADERS = [
     },
   },
   {
-    headerName: "Current Location",
-    field: "currentLocation",
+    headerName: "DOB",
+    field: "dateOfBirth",
+    hide: false,
+    minWidth: 215,
+    filter: "agDateColumnFilter",
+    filterParams: dateFilterParams,
+    floatingFilterComponentParams: {
+      suppressFilterButton: true,
+    },
+  },
+  {
+    headerName: "PAN NO",
+    field: "panNumber",
     hide: false,
     minWidth: 200,
     filter: "agTextColumnFilter",
+    filterParams: dateFilterParams,
     floatingFilterComponentParams: {
       suppressFilterButton: true,
     },
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
   },
   {
-    headerName: "Currently Working",
-    field: "currentlyWorking",
+    headerName: "FDC Status Check on",
+    field: "fdcStatusCheckon",
+    filter: "agDateColumnFilter",
+    floatingFilterComponentParams: {
+      suppressFilterButton: true,
+    },
     hide: false,
     minWidth: 215,
-    filter: "agNumberColumnFilter",
-    // floatingFilterComponent: ,
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
+    filterParams: dateFilterParams,
+  },
+  {
+    headerName: "Ownership Till",
+    field: "ownershipTill",
+    filter: "agDateColumnFilter",
     floatingFilterComponentParams: {
       suppressFilterButton: true,
     },
-  },
-  {
-    headerName: "Resume Uploaded",
-    field: "resumeDocumentId",
     hide: false,
     minWidth: 215,
-    cellRenderer: ResumeUploaded,
+    filterParams: dateFilterParams,
   },
+
   {
-    headerName: "Change Consent Status",
-    field: "consentStatus",
+    headerName: "Current Upload Step",
+    field: "profileLastCompletedStep",
     hide: false,
-    minWidth: 230,
-    filter: "agTextColumnFilter",
-    cellRenderer: CustomDropDown,
-    valueSetter: (params: any) => {
-      params.data.changeConsentStatus = params.newValue;
-      return true;
-    },
-    floatingFilterComponentParams: {
-      suppressFilterButton: true,
-    },
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
-  },
-  {
-    headerName: "Job Seeker ID",
-    field: "_id",
-    hide: false,
-    minWidth: 200,
+    minWidth: 215,
     filter: "agTextColumnFilter",
     filterParams: {
       buttons: ["apply", "clear"],

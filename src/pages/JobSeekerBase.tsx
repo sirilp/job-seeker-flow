@@ -9,6 +9,7 @@ import Notification from "../components/Notification";
 import DuplicationFailed from "./DuplicationFailed/DuplicationFailed";
 import AllJs from "./AllJs/AllJs";
 import Manage from "./Manage/Manage";
+import IncompleteUploads from "./IncompleteUploads/IncompleteUploads";
 
 const useStyles = makeStyles(() => ({}));
 
@@ -42,7 +43,7 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
     {
       title: "Incomplete Uploads ",
       index: 2,
-      component: <div>Page Not Avaliable</div>,
+      component: <IncompleteUploads contestId={contestId} id={id} />,
     },
     {
       title: "All JS",

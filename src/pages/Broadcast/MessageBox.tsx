@@ -32,9 +32,10 @@ const useStyles = makeStyles({
   mainContainer: {
     display: "flex",
     flexDirection: "column",
-    height: 687,
-    width: 390,
+    height: "100%",
+    width: 400,
     // margin: 30,
+    overflow: "auto",
     border: "1px solid #E5E5E5",
   },
   section1: {
@@ -47,8 +48,9 @@ const useStyles = makeStyles({
   },
   section2: {
     marginTop: "15px",
-    height: "550px",
+    height: "auto",
     width: "390px",
+    marginBottom: "15px",
     // overflow: "auto",
   },
   card: {
@@ -62,7 +64,7 @@ const useStyles = makeStyles({
     margin: "8px",
     display: "flex",
     color: "#4D6CD9",
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
   },
   cardGridContainer: {
     display: "flex",
@@ -74,7 +76,8 @@ const useStyles = makeStyles({
     height: "70px",
     alignItems: "center",
     // display: 'flex',
-    flexDirection: 'row',
+    flexDirection: "row",
+    paddingBottom: "20px",
     // flexWrap: 'wrap',
   },
   messageField: {
@@ -169,31 +172,29 @@ const MessageBox = ({ closeIt, params }) => {
     },
   ]);
 
-  useEffect(() => {
-    const searchContestDeatils = async (id) => {
-      const response = await filterContestDetailsWithRelation(id);
-      console.log("response", response);
-      if (response) {
-        setContestData(response?.data?.data[0].formData);
-        setEmployerData(response?.data?.data[0]);
-        Object.keys(response?.data?.data[0]).map((keyName) => {
-          if (/^\d+$/.test(keyName))
-            setEmployerData(response?.data?.data[0][keyName][0].formData);
-        });
-      }
-    };
-    // searchContestDeatils("CONTEST_2209000101");
+  const searchContestDeatils = async (id) => {
+    const response = await filterContestDetailsWithRelation(id);
+    console.log("response", response);
+    if (response) {
+      setContestData(response?.data?.data[0].formData);
+      setEmployerData(response?.data?.data[0]);
+      Object.keys(response?.data?.data[0]).map((keyName) => {
+        if (/^\d+$/.test(keyName))
+          setEmployerData(response?.data?.data[0][keyName][0].formData);
+      });
+    }
+  };
+  // searchContestDeatils("CONTEST_2209000101");
 
+  const handleCurrentUserData = async () => {
+    const Data = await getUserData();
+    console.log(Data?.data.data[0].userId);
+    setCurrentUserId(Data?.data.data[0].userId);
+    //   setCurrentUser(Data?.data.data[0]);
+  };
+
+  useEffect(() => {
     searchContestDeatils(params.data.contestId);
-  }, []);
-
-  useEffect(() => {
-    const handleCurrentUserData = async () => {
-      const Data = await getUserData();
-      console.log(Data?.data.data[0].userId);
-      setCurrentUserId(Data?.data.data[0].userId);
-      //   setCurrentUser(Data?.data.data[0]);
-    };
     handleCurrentUserData();
   }, []);
 
@@ -205,7 +206,9 @@ const MessageBox = ({ closeIt, params }) => {
           <CloseIcon sx={{ float: "right" }} onClick={closeIt} />
         </Box>
         <Box className={classes.section2}>
-          <h5 style={{ color: "#4D6CD9", marginLeft: 4 }}>Depak Sankala</h5>
+          <h5 style={{ color: "#4D6CD9", marginLeft: 4 }}>
+            {params.data.firstName}
+          </h5>
           <p style={{ marginLeft: 4 }}>
             {" "}
             Profile Source: Name of the Recruiter
@@ -275,19 +278,19 @@ const MessageBox = ({ closeIt, params }) => {
                     sx={
                       message.userId !== currentUserId
                         ? {
-                          position: "absolute",
-                          left: 0,
-                          m: 1,
-                          bottom: 0,
-                          marginBottom: 4 * index,
-                        }
+                            position: "absolute",
+                            left: 0,
+                            m: 1,
+                            bottom: 0,
+                            marginBottom: 4 * index,
+                          }
                         : {
-                          position: "absolute",
-                          right: 0,
-                          m: 1,
-                          bottom: 0,
-                          marginBottom: 4 * index,
-                        }
+                            position: "absolute",
+                            right: 0,
+                            m: 1,
+                            bottom: 0,
+                            marginBottom: 4 * index,
+                          }
                     }
                   />
                   {/* <Box

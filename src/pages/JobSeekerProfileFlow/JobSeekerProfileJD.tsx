@@ -57,7 +57,7 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   }, []);
 
   const getDataFill = async () => {
-    const profileDataFetched = await getJobSeekerProfile(props.profileDataId);
+    const profileDataFetched = await getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId);
     if(profileDataFetched?.data?.data?.jdQuestionsMap) {
        setPrefillDetails(
         {
@@ -68,7 +68,7 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
        )
       }
   };
-
+  
   const fetchForm = async () => {
     const formMarkup = await getFormData(
       JD_PATCH_FORM, "", props.contestId

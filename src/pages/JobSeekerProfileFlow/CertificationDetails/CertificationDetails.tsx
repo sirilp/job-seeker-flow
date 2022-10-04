@@ -173,7 +173,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
           <Button
             className="next-button"
             variant="contained"
-            onClick={handleServiceAdd}
+            onClick={ () => handleServiceAdd()}
           >
             <AddIcon className="add-icon" /> {CERTIFICATION_ADD_TEXT}
           </Button>

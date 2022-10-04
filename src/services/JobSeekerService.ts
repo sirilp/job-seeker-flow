@@ -52,7 +52,7 @@ export const contestLinkedJobsekeers = async (
 ) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers?contestId=${id}&page=${page}&size=${size}`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&page=${page}&size=${size}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
@@ -67,7 +67,7 @@ export const contestLinkedJobsekeers = async (
 export const getAggregateData = async (contestId: string) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers/aggregate?filterColumn=contestId&filterValue=${contestId}`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers/aggregate/consent-status?filterColumn=contestId&filterValue=${contestId}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
@@ -136,6 +136,102 @@ export const getContestAggregateStatistics = async () => {
   return await axios
     .get(
       `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profiles/aggregate/status`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const statusFilterContestLinkedJobsekeers = async (
+  id: string,
+  status: string,
+  page: number,
+  size: number
+) => {
+  return await axios
+    .get(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&filters=status:${status}&page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const consentStatusFilterContestLinkedJobsekeers = async (
+  id: string,
+  status: string,
+  page: number,
+  size: number
+) => {
+  return await axios
+    .get(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&filters=consentStatus:${status}&page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const jobseekerConsentStatusChangeWorkflow = async (
+  processPayload: any
+) => {
+  return axios
+    .post(
+      `${
+        process.env.REACT_APP_MAIN_SERVER_URL ||
+        "https://api.dev.hiringhood.com/"
+      }camunda/engine-rest/message`,
+      processPayload,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const getIncompleteUplodsStepCount = async () => {
+  return await axios
+    .get(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profiles/aggregate/step`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const getJobseekersOnStepCount = async (
+  step: number,
+  contestId: string,
+  page: number,
+  size: number
+) => {
+  return await axios
+    .get(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${contestId}&filters=matchedProfilesList.profileLastCompletedStep:${step}&page=${page}&size=${size}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,

@@ -226,7 +226,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
         <Button
           className="next-button stack-button"
           variant="contained"
-          onClick={handleServiceAdd}
+          onClick={ () => handleServiceAdd()}
         >
           <AddIcon className="add-icon" /> {OFFER_ADD_TEXT}
         </Button>
