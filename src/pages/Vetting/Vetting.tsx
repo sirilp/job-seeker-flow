@@ -30,7 +30,6 @@ import {
 } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
-import KeycloakService from "../../services/KeycloakService";
 
 const useStyles = makeStyles(() => ({
   deleteIcon: { color: "#4D6CD9", margin: "10px" },
@@ -58,11 +57,6 @@ const Vetting = (props) => {
     submitted: 0,
     consent: 0,
   });
-
-  const fetchToken = async () => {
-    const token = await KeycloakService.fetchTokenOtherUser();
-    sessionStorage.setItem("react-token", token);
-  };
 
   useEffect(() => {
     handleAggregateData(contestId);

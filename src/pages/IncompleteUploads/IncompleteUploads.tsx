@@ -28,7 +28,6 @@ import {
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import KeycloakService from "../../services/KeycloakService";
 
 const useStyles = makeStyles(() => ({
   iconStyle: { color: "#4D6CD9", margin: "5px" },
@@ -159,11 +158,6 @@ const IncompleteUploads = (props) => {
         step7: 0,
       });
     }
-  };
-
-  const fetchToken = async () => {
-    const token = await KeycloakService.fetchTokenOtherUser();
-    sessionStorage.setItem("react-token", token);
   };
 
   useEffect(() => {
