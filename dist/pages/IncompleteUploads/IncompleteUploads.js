@@ -62,7 +62,6 @@ import { getIncompleteUplodsStepCount, getJobseekersOnStepCount, } from "../../s
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-
 var useStyles = makeStyles(function () { return ({
     iconStyle: { color: "#4D6CD9", margin: "5px" },
 }); });
@@ -168,18 +167,6 @@ var IncompleteUploads = function (props) {
                             step7: 0,
                         });
                     }
-                    return [2 /*return*/];
-            }
-        });
-    }); };
-    var fetchToken = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenOtherUser()];
-                case 1:
-                    token = _a.sent();
-                    sessionStorage.setItem("react-token", token);
                     return [2 /*return*/];
             }
         });

@@ -62,7 +62,6 @@ import { PAGE_SIZE_ARRAY } from "../../constants";
 import { statusFilterContestLinkedJobsekeers, consentStatusFilterContestLinkedJobsekeers, getConsentAggregateData, getAggregateData, } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
-import KeycloakService from "../../services/KeycloakService";
 var useStyles = makeStyles(function () { return ({
     deleteIcon: { color: "#4D6CD9", margin: "10px" },
     actions1: { fontSize: "15px !important" },
@@ -87,18 +86,6 @@ var Vetting = function (props) {
         submitted: 0,
         consent: 0,
     }), agCount = _l[0], setAgCount = _l[1];
-    var fetchToken = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var token;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, KeycloakService.fetchTokenOtherUser()];
-                case 1:
-                    token = _a.sent();
-                    sessionStorage.setItem("react-token", token);
-                    return [2 /*return*/];
-            }
-        });
-    }); };
     useEffect(function () {
         handleAggregateData(contestId);
         getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
