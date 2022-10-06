@@ -62,6 +62,7 @@ import { getIncompleteUplodsStepCount, getJobseekersOnStepCount, } from "../../s
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+
 var useStyles = makeStyles(function () { return ({
     iconStyle: { color: "#4D6CD9", margin: "5px" },
 }); });
@@ -87,7 +88,7 @@ var IncompleteUploads = function (props) {
         step5: 0,
         step6: 0,
         step7: 0,
-    }), inStepCount = _l[0], setinStepCount = _l[1];
+    }), inStepCount = _l[0], setInStepCount = _l[1];
     var label = { inputProps: { "aria-label": "Checkbox demo" } };
     var setSelectedButton = function (id, filterValue) {
         console.log(filterValue, id);
@@ -96,7 +97,7 @@ var IncompleteUploads = function (props) {
         getTableRowData(filterValue, contestId, 0, 10);
     };
     var getTableRowData = function (filterValue, contestId, pageNo, pageSize) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, mapData, result;
+        var response, mapData, result, stateData;
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
@@ -107,11 +108,17 @@ var IncompleteUploads = function (props) {
                     if (response.data.success) {
                         mapData = response.data.data.content;
                         result = mapData.map(function (item, index) {
-                            item.dateOfBirth = moment(item.appliedDate).format("DD-MM-YYYY");
+                            var Data = __assign(__assign(__assign({}, item), item.matchedProfileLogsList[0]), item.matchedProfilesList[0]);
+                            return Data;
+                        });
+                        stateData = result.map(function (item, index) {
+                            item.dateOfBirth = moment(item.dateOfBirth).format("DD-MM-YYYY");
+                            item.updatedOn = moment(item.updatedOn).format("DD-MM-YYYY");
+                            item.ownershipTillDate = moment(item.ownershipTillDate).format("DD-MM-YYYY");
                             var Data = __assign({}, item);
                             return Data;
                         });
-                        setRowData(result);
+                        setRowData(stateData);
                         setTotalPages((_b = (_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.totalPages);
                         setPageNo((_d = (_c = response === null || response === void 0 ? void 0 : response.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.pageNo);
                         setPageSize((_f = (_e = response === null || response === void 0 ? void 0 : response.data) === null || _e === void 0 ? void 0 : _e.data) === null || _f === void 0 ? void 0 : _f.pageSize);
@@ -127,7 +134,7 @@ var IncompleteUploads = function (props) {
         var response, result1, result2, result3, result4, result5, result6, result7;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getIncompleteUplodsStepCount()];
+                case 0: return [4 /*yield*/, getIncompleteUplodsStepCount(contestId)];
                 case 1:
                     response = _a.sent();
                     console.log(response);
@@ -140,7 +147,7 @@ var IncompleteUploads = function (props) {
                         result5 = response.data.data.filter(function (data) { return data.profileLastCompletedStep === "5"; });
                         result6 = response.data.data.filter(function (data) { return data.profileLastCompletedStep === "6"; });
                         result7 = response.data.data.filter(function (data) { return data.profileLastCompletedStep === "7"; });
-                        setinStepCount({
+                        setInStepCount({
                             step1: (result1.length > 0 && result1[0].count) || 0,
                             step2: (result2.length > 0 && result2[0].count) || 0,
                             step3: (result3.length > 0 && result3[0].count) || 0,
@@ -151,18 +158,35 @@ var IncompleteUploads = function (props) {
                         });
                     }
                     else {
-                        // setAgCount({
-                        //   submitted: 0,
-                        //   consent: 0,
-                        // });
+                        setInStepCount({
+                            step1: 0,
+                            step2: 0,
+                            step3: 0,
+                            step4: 0,
+                            step5: 0,
+                            step6: 0,
+                            step7: 0,
+                        });
                     }
                     return [2 /*return*/];
             }
         });
     }); };
+    var fetchToken = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var token;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, KeycloakService.fetchTokenOtherUser()];
+                case 1:
+                    token = _a.sent();
+                    sessionStorage.setItem("react-token", token);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     useEffect(function () {
-        getTableRowData(selectedButtonValue, contestId, pageNo, pageSize);
         handleAggregateData();
+        getTableRowData(selectedButtonValue, contestId, pageNo, pageSize);
     }, [selectedButtonValue, contestId, pageNo, pageSize]);
     var autoGroupColumnDef = useMemo(function () {
         return {
@@ -283,8 +307,10 @@ var IncompleteUploads = function (props) {
                                 { _id: 6, count: inStepCount.step6 },
                                 { _id: 7, count: inStepCount.step7 },
                             ], setSelectedButton: setSelectedButton, selectedButton: selectedButtonId })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block" }, { children: [_jsx(Checkbox, {}), " ", selectedRows.length, " Selected", _jsx(BookmarkBorderIcon, { className: classes.iconStyle }), _jsx(MailOutlineIcon, { className: classes.iconStyle, onClick: function () {
-                                                return window.open("https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example");
-                                            } }), _jsx(MailOutlineIcon, { className: classes.iconStyle })] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
+                                                return window.open("https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com");
+                                            } }), _jsx(MailOutlineIcon, { className: classes.iconStyle, onClick: function () {
+                                                return window.open("https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com");
+                                            } })] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
                         return Object.assign({ headerName: cl.headerName, hide: !cl.hide });
                     }), setColumnsDisplay: setColumnsDisplay, onClose: setColumnsListOpen, open: columnsListOpen }), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx(AgGridWithPagination, { gridRef: gridRef, rowData: rowData, columnDefs: columnDefs, defaultColDef: defaultColDef, autoGroupColumnDef: autoGroupColumnDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, pageSize: pageSize, onSelectionChanged: onSelectionChanged, pageSizeArray: PAGE_SIZE_ARRAY, totalPages: totalPages, pageChange: pageChange, pageSizeChange: pageSizeChange }) }))] })) }));
 };

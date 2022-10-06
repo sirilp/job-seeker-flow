@@ -116,6 +116,7 @@ var JobSeekerProfileWorkStatus = function (props) {
                         props.setOpen(true);
                         props.setType(WARNING_KEY);
                         props.setDataMessage("Please enter all work status details");
+                        setLoader(false);
                         return [2 /*return*/];
                     }
                     ;

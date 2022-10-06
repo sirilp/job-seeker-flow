@@ -59,7 +59,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
-import { contestLinkedJobsekeers, getAggregateData, } from "../../services/JobSeekerService";
+import { statusFilterContestLinkedJobsekeers, getAggregateData, } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
 var useStyles = makeStyles(function () { return ({
@@ -129,7 +129,7 @@ var Manage = function (props) {
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
-                case 0: return [4 /*yield*/, contestLinkedJobsekeers(contestId, pageNo, pageSize)];
+                case 0: return [4 /*yield*/, statusFilterContestLinkedJobsekeers(contestId, "", pageNo, pageSize)];
                 case 1:
                     response = _g.sent();
                     if (response.data.success) {
@@ -202,10 +202,6 @@ var Manage = function (props) {
         });
         onUpdateColumns(newColumnDefs);
     };
-    useEffect(function () {
-        // call api with new pagenumber
-        getTableRowData(pageNo, pageSize, contestId);
-    }, [pageNo, pageSize, contestId]);
     var onUpdateColumns = useCallback(function (data) {
         if (gridRef === null || gridRef === void 0 ? void 0 : gridRef.current)
             gridRef.current.api.setColumnDefs(data);

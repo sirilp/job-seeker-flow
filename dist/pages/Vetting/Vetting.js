@@ -59,9 +59,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
-import { statusFilterContestLinkedJobsekeers, consentStatusFilterContestLinkedJobsekeers, getAggregateData, } from "../../services/JobSeekerService";
+import { statusFilterContestLinkedJobsekeers, consentStatusFilterContestLinkedJobsekeers, getConsentAggregateData, getAggregateData, } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
+import KeycloakService from "../../services/KeycloakService";
 var useStyles = makeStyles(function () { return ({
     deleteIcon: { color: "#4D6CD9", margin: "10px" },
     actions1: { fontSize: "15px !important" },
@@ -86,29 +87,46 @@ var Vetting = function (props) {
         submitted: 0,
         consent: 0,
     }), agCount = _l[0], setAgCount = _l[1];
+    var fetchToken = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var token;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, KeycloakService.fetchTokenOtherUser()];
+                case 1:
+                    token = _a.sent();
+                    sessionStorage.setItem("react-token", token);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     useEffect(function () {
-        getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
         handleAggregateData(contestId);
+        getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
     }, [pageNo, pageSize, contestId, selectedButtonValue]);
     var setSelectedButton = function (id, filterValue) {
-        console.log(filterValue, id);
         setSelectedButtonId(id);
         setSelectedButtonValue(filterValue);
         getTableRowData(0, 10, contestId, filterValue);
     };
     var handleAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, result1, result2, result3, result4;
+        var result1, statusCount, response, result2, result3, result4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getAggregateData(contestId)];
                 case 1:
+                    statusCount = _a.sent();
+                    if (statusCount.data.success) {
+                        result1 = statusCount.data.data.filter(function (data) { return data.status === "JOB_SEEKER_APPLIED"; });
+                    }
+                    else {
+                        result1 = [];
+                    }
+                    return [4 /*yield*/, getConsentAggregateData(contestId)];
+                case 2:
                     response = _a.sent();
-                    console.log(response);
                     if (response.data.success) {
-                        console.log(response.data.success);
-                        result1 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_APPLIED"; });
                         result2 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_CONSENT_PASS"; });
-                        result3 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKEER_CONSENT_PENDING"; });
+                        result3 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_CONSENT_PENDING"; });
                         result4 = response.data.data.filter(function (data) { return data.status === "JOB_SEEKER_CONSENT_FAIL"; });
                         setAgCount({
                             submitted: (result1.length > 0 && result1[0].count) || 0,
@@ -120,23 +138,23 @@ var Vetting = function (props) {
                     else {
                         setAgCount({
                             submitted: 0,
-                            consent: 0,
+                            consentPass: 0,
+                            consentPending: 0,
+                            consentFail: 0,
                         });
                     }
                     return [2 /*return*/];
             }
         });
     }); };
-    var getTableRowData = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, mapData, result, response, mapData, result;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
-        return __generator(this, function (_o) {
-            switch (_o.label) {
-                case 0:
-                    if (!(selectedButtonValue === "JOB_SEEKER_APPLIED")) return [3 /*break*/, 2];
-                    return [4 /*yield*/, statusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
+    var handlestatusFilterContestLinkedJobsekeers = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, mapData, result;
+        var _a, _b, _c, _d, _e, _f;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
+                case 0: return [4 /*yield*/, statusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
                 case 1:
-                    response = _o.sent();
+                    response = _g.sent();
                     if (response.data.success) {
                         mapData = response.data.data.content;
                         result = mapData.map(function (item, index) {
@@ -150,13 +168,20 @@ var Vetting = function (props) {
                         setPageSize((_f = (_e = response === null || response === void 0 ? void 0 : response.data) === null || _e === void 0 ? void 0 : _e.data) === null || _f === void 0 ? void 0 : _f.pageSize);
                     }
                     else {
-                        console.log("false");
                         setRowData([]);
                     }
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, consentStatusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
-                case 3:
-                    response = _o.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleconsentStatusFilterContestLinkedJobsekeers = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, mapData, result;
+        var _a, _b, _c, _d, _e, _f;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
+                case 0: return [4 /*yield*/, consentStatusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
+                case 1:
+                    response = _g.sent();
                     if (response.data.success) {
                         mapData = response.data.data.content;
                         result = mapData.map(function (item, index) {
@@ -165,17 +190,26 @@ var Vetting = function (props) {
                             return Data;
                         });
                         setRowData(result);
-                        setTotalPages((_h = (_g = response === null || response === void 0 ? void 0 : response.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.totalPages);
-                        setPageNo((_k = (_j = response === null || response === void 0 ? void 0 : response.data) === null || _j === void 0 ? void 0 : _j.data) === null || _k === void 0 ? void 0 : _k.pageNo);
-                        setPageSize((_m = (_l = response === null || response === void 0 ? void 0 : response.data) === null || _l === void 0 ? void 0 : _l.data) === null || _m === void 0 ? void 0 : _m.pageSize);
+                        setTotalPages((_b = (_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.totalPages);
+                        setPageNo((_d = (_c = response === null || response === void 0 ? void 0 : response.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.pageNo);
+                        setPageSize((_f = (_e = response === null || response === void 0 ? void 0 : response.data) === null || _e === void 0 ? void 0 : _e.data) === null || _f === void 0 ? void 0 : _f.pageSize);
                     }
                     else {
-                        console.log("false");
                         setRowData([]);
                     }
-                    _o.label = 4;
-                case 4: return [2 /*return*/];
+                    return [2 /*return*/];
             }
+        });
+    }); };
+    var getTableRowData = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (selectedButtonValue === "JOB_SEEKER_APPLIED") {
+                handlestatusFilterContestLinkedJobsekeers(pageNo, pageSize, contestId, selectedButtonValue);
+            }
+            else {
+                handleconsentStatusFilterContestLinkedJobsekeers(pageNo, pageSize, contestId, selectedButtonValue);
+            }
+            return [2 /*return*/];
         });
     }); };
     var autoGroupColumnDef = useMemo(function () {
@@ -228,10 +262,6 @@ var Vetting = function (props) {
         });
         onUpdateColumns(newColumnDefs);
     };
-    useEffect(function () {
-        // call api with new pagenumber
-        getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
-    }, [pageNo, pageSize, contestId]);
     var onUpdateColumns = useCallback(function (data) {
         if (gridRef === null || gridRef === void 0 ? void 0 : gridRef.current)
             gridRef.current.api.setColumnDefs(data);
@@ -259,19 +289,19 @@ var Vetting = function (props) {
                                 label: "Consent Pass",
                                 tooltip: "Consent Pass",
                                 id: 2,
-                                value: "JOB_SEEKEER_CONSENT_PASS",
+                                value: "JOB_SEEKER_CONSENT_PASS",
                             },
                             {
                                 label: "Consent Pending",
                                 tooltip: "Consent Pending",
                                 id: 3,
-                                value: "JOB_SEEKEER_CONSENT_PENDING",
+                                value: "JOB_SEEKER_CONSENT_PENDING",
                             },
                             {
                                 label: "Consent Fail",
                                 tooltip: "Consent Fail",
                                 id: 4,
-                                value: "JOB_SEEKEER_CONSENT_FAIL",
+                                value: "JOB_SEEKER_CONSENT_FAIL",
                             },
                         ], countsList: [
                             { _id: 1, count: agCount.submitted },
@@ -283,6 +313,3 @@ var Vetting = function (props) {
                 }), setColumnsDisplay: setColumnsDisplay, onClose: setColumnsListOpen, open: columnsListOpen }), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx(AgGridWithPagination, { gridRef: gridRef, rowData: rowData, columnDefs: columnDefs, defaultColDef: defaultColDef, autoGroupColumnDef: autoGroupColumnDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, pageSize: pageSize, onSelectionChanged: onSelectionChanged, pageSizeArray: PAGE_SIZE_ARRAY, totalPages: totalPages, pageChange: pageChange, pageSizeChange: pageSizeChange }) }))] })));
 };
 export default Vetting;
-function item(item) {
-    throw new Error("Function not implemented.");
-}

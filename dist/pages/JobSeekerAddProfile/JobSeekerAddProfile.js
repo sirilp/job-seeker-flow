@@ -12,7 +12,7 @@ var __assign = (this && this.__assign) || function () {
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useRef, useState, useMemo, useCallback, } from "react";
 import { TEMPLATE_BUTTON } from "../../constants";
-import { Typography } from "@mui/material";
+import { Typography, Button, Grid } from "@mui/material";
 import JobSeekerTempleteButton from "../../components/JobSeekerProfile/JobSeekerTempleteButton";
 import { makeStyles } from "@mui/styles";
 import "../JobSeekerBaseStyles.css";
@@ -21,6 +21,7 @@ import GridItem from "../GridItem/GridItem";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
+import RefreshIcon from "@mui/icons-material/Refresh";
 var useStyles = makeStyles(function () { return ({
     buttonCardContainer: {
         "&.MuiCardContent-root": {
@@ -128,7 +129,8 @@ var JobSeekerAddProfile = function (props) {
         fdcStatus: null,
         uploadProfile: "",
     };
-    var row = [r1, r2, r3, r4, r5];
+    // let row = [r1, r2, r3, r4, r5];
+    var row = [__assign({}, r1), __assign({}, r2), __assign({}, r3), __assign({}, r4), __assign({}, r5)];
     var defaultColDef = useMemo(function () {
         return {
             flex: 1,
@@ -186,12 +188,19 @@ var JobSeekerAddProfile = function (props) {
         }
     }, []);
     var onCellValueChanged = useCallback(function (event) {
-        console.log(event);
+        // console.log(event);
         // if (gridRef.current) {
         //   const rowSelection = gridRef.current.api.getSelectedRows();
         // }
     }, []);
-    return (_jsx("div", __assign({ className: "form-encapsulate" }, { children: _jsxs("div", __assign({ className: "form-card-holder" }, { children: [notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } })), _jsxs("div", { children: [_jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 0vw 2vw" }, { children: "For Bulk Duplication Check" })) }), _jsx("div", __assign({ style: { margin: "1vw 1vw 1vw 1vw" } }, { children: TEMPLATE_BUTTON.map(function (button) { return (_jsx(JobSeekerTempleteButton, { fileName: button.iconFileName, title: button.title })); }) })), _jsx("div", { children: _jsxs(Typography, __assign({ variant: "h6", gutterBottom: true, component: "div", color: "black", display: "flex", justifyContent: "center" }, { children: [_jsx("hr", { className: "line" }), "( OR )", _jsx("hr", { className: "line" })] })) })] }), _jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 2vw 2vw" }, { children: "Enter the Details Manually" })) }), _jsx("div", { children: _jsx(GridItem, { gridRef: gridRef, rowData: row, columnDefs: columnDefs, defaultColDef: defaultColDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, 
+    var clearTable = function () {
+        var _a;
+        // console.log(gridRef.current);
+        row = [__assign({}, r1), __assign({}, r2), __assign({}, r3), __assign({}, r4), __assign({}, r5)];
+        (_a = gridRef.current) === null || _a === void 0 ? void 0 : _a.api.setRowData(row);
+        // console.log(gridRef.current);
+    };
+    return (_jsx("div", __assign({ className: "form-encapsulate" }, { children: _jsxs("div", __assign({ className: "form-card-holder" }, { children: [notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } })), _jsxs("div", { children: [_jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 0vw 2vw" }, { children: "For Bulk Duplication Check" })) }), _jsx("div", __assign({ style: { margin: "1vw 1vw 1vw 1vw" } }, { children: TEMPLATE_BUTTON.map(function (button) { return (_jsx(JobSeekerTempleteButton, { fileName: button.iconFileName, title: button.title })); }) })), _jsx("div", { children: _jsxs(Typography, __assign({ variant: "h6", gutterBottom: true, component: "div", color: "black", display: "flex", justifyContent: "center" }, { children: [_jsx("hr", { className: "line" }), "( OR )", _jsx("hr", { className: "line" })] })) })] }), _jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 2vw 2vw" }, { children: "Enter the Details Manually" })) }), _jsx("div", { children: _jsx(Grid, __assign({ container: true, spacing: 3 }, { children: _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx("div", { children: _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return clearTable(); } }, { children: [_jsx(RefreshIcon, { className: "generic-icon" }), "Clear Table"] })) }), _jsx("div", {})] })) })) })) }), _jsx("div", { children: _jsx(GridItem, { gridRef: gridRef, rowData: row, columnDefs: columnDefs, defaultColDef: defaultColDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, 
                         // pageSize={pageSize}
                         onSelectionChanged: onSelectionChanged, 
                         // pageSizeArray={PAGE_SIZE_ARRAY}

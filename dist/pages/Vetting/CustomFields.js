@@ -99,7 +99,6 @@ export var ResumeUploaded = function (params) {
             switch (_a.label) {
                 case 0:
                     resumeId = params.getValue();
-                    console.log(resumeId);
                     return [4 /*yield*/, openFile(resumeId)];
                 case 1:
                     _a.sent();
@@ -116,19 +115,18 @@ export var Icons = function (params) {
     var classes = useStyles();
     var handleClick = function () { };
     var handleChat = function () {
-        console.log("Chat Icon clicked");
         setToggleDrawer(true);
     };
     return (_jsxs("div", __assign({ style: {
             textAlign: "center",
-        } }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsxs(Box, __assign({ sx: {
+        } }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ sx: {
                         width: "380px",
                         overflow: "hidden",
                         justifyContent: "center",
                         alignItems: "center",
                         top: 0,
                         left: 0,
-                    } }, { children: [_jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }), console.log("Left Drawer called")] })) }))] })));
+                    } }, { children: _jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }) })) }))] })));
 };
 export var CustomDropDown = function (params) {
     var _a = useState(false), disable = _a[0], setDisable = _a[1];
@@ -157,7 +155,6 @@ export var CustomDropDown = function (params) {
         body: "",
     }), option = _b[0], setOption = _b[1];
     useEffect(function () {
-        console.log(params.getValue());
         if (params.getValue() === "JOB_SEEKER_CONSENT_PENDING" ||
             params.getValue() === null ||
             params.getValue() === "") {
@@ -190,7 +187,6 @@ export var CustomDropDown = function (params) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(params.data);
                     payLoad = {
                         messageName: "consentArrived",
                         businessKey: params.data._id,

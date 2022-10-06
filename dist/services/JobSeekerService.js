@@ -67,11 +67,11 @@ export var fullDuplicationCheck = function (profileLogId, panNumber, dob) { retu
         }
     });
 }); };
-export var contestLinkedJobsekeers = function (id, page, size) { return __awaiter(void 0, void 0, void 0, function () {
+export var getConsentAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(id, "&page=").concat(page, "&size=").concat(size), {
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers/aggregate/consent-status?filterColumn=contestId&filterValue=").concat(contestId), {
                     headers: {
                         Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                     },
@@ -87,7 +87,7 @@ export var getAggregateData = function (contestId) { return __awaiter(void 0, vo
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers/aggregate/consent-status?filterColumn=contestId&filterValue=").concat(contestId), {
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers/aggregate/status?filterColumn=contestId&filterValue=").concat(contestId), {
                     headers: {
                         Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                     },
@@ -167,7 +167,7 @@ export var statusFilterContestLinkedJobsekeers = function (id, status, page, siz
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(id, "&filters=status:").concat(status, "&page=").concat(page, "&size=").concat(size), {
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(id, "&filters=").concat(status ? 'status:' + status : '', "&page=").concat(page, "&size=").concat(size), {
                     headers: {
                         Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                     },
@@ -209,11 +209,11 @@ export var jobseekerConsentStatusChangeWorkflow = function (processPayload) { re
             })];
     });
 }); };
-export var getIncompleteUplodsStepCount = function () { return __awaiter(void 0, void 0, void 0, function () {
+export var getIncompleteUplodsStepCount = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profiles/aggregate/step"), {
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profiles/aggregate/step?filterColumn=contestId&filterValue=").concat(contestId), {
                     headers: {
                         Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                     },

@@ -57,23 +57,23 @@ export var LISTING_GENERIC_HEADERS = [
         },
     },
     {
-        headerName: "Experience",
-        field: "experience",
+        headerName: "Experience(Years)",
+        field: "profileDetailsMap.totalExperience.totalExperienceYears",
         hide: false,
-        minWidth: 180,
+        minWidth: 240,
         filterParams: {
             buttons: ["apply", "clear"],
         },
-        filter: "agNumberColumnFilter",
+        filter: "agTextColumnFilter",
         floatingFilterComponentParams: {
             suppressFilterButton: true,
         },
     },
     {
-        headerName: "Expected CTC",
-        field: "expectedCTC",
+        headerName: "Expected CTC(LPA)",
+        field: "profileDetailsMap.expectedCtc.expectedCtcLakh",
         hide: false,
-        minWidth: 215,
+        minWidth: 240,
         filterParams: {
             buttons: ["apply", "clear"],
         },
@@ -111,7 +111,7 @@ export var LISTING_GENERIC_HEADERS = [
         field: "mobileNumber",
         hide: false,
         minWidth: 200,
-        filter: "agNumberColumnFilter",
+        filter: "agTextColumnFilter",
         floatingFilterComponentParams: {
             suppressFilterButton: true,
         },
@@ -134,7 +134,7 @@ export var LISTING_GENERIC_HEADERS = [
     },
     {
         headerName: "Current Location",
-        field: "currentLocation",
+        field: "profileWorkStatusMap.currentLocation",
         hide: false,
         minWidth: 200,
         filter: "agTextColumnFilter",
@@ -147,7 +147,7 @@ export var LISTING_GENERIC_HEADERS = [
     },
     {
         headerName: "Currently Working",
-        field: "currentlyWorking",
+        field: "profileNoticePeriodMap.currentlyWorking",
         hide: false,
         minWidth: 215,
         filter: "agNumberColumnFilter",
@@ -173,10 +173,6 @@ export var LISTING_GENERIC_HEADERS = [
         minWidth: 230,
         filter: "agTextColumnFilter",
         cellRenderer: CustomDropDown,
-        valueSetter: function (params) {
-            params.data.changeConsentStatus = params.newValue;
-            return true;
-        },
         floatingFilterComponentParams: {
             suppressFilterButton: true,
         },

@@ -1,4 +1,4 @@
-import { FirstNameInputBox, LastNameInputBox, MobileNumberInputBox, EmailTextInput, CustomDropDown, PanInputBox, CustomDOBInputBox, CustomUploadButton, PDCStatusCheckButton, FDCStatusCheckButton, } from "../ManualDataInputTableElement";
+import { FirstNameInputBox, LastNameInputBox, MobileNumberInputBox, EmailTextInput, CustomDropDown, PanInputBox, CustomDOBInputBox, CustomUploadButton, PDCStatusCheckButton, FDCStatusCheckButton, ClearRowButton, } from "../ManualDataInputTableElement";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 import "./JobSeekerAddProfile.css";
 export var dateFilterParams = {
@@ -37,6 +37,8 @@ export var LISTING_GENERIC_HEADERS = [
     {
         headerName: "Actions",
         floatingFilter: false,
+        editable: false,
+        cellRenderer: ClearRowButton,
     },
     {
         headerName: "First Name",
@@ -171,7 +173,7 @@ export var LISTING_GENERIC_HEADERS = [
     },
     {
         headerName: "Upload Profile",
-        // field: "bounty",
+        field: "uploadProfile",
         // hide: false,
         // filter: "agNumberColumnFilter",
         // floatingFilter: false,
