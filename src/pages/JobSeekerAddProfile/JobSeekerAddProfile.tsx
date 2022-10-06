@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { JOB_SEEKER_TABS, TEMPLATE_BUTTON } from "../../constants";
-import { Typography, Divider, Button } from "@mui/material";
+import { Typography, Divider, Button, Grid } from "@mui/material";
 import TabButton from "../../components/TabButtons/TabButtons";
 import JobSeekerTempleteButton from "../../components/JobSeekerProfile/JobSeekerTempleteButton";
 import JobSeekerProfileCard from "../../components/JobSeekerProfile/JobSeekerProfileCard";
@@ -22,6 +22,7 @@ import GridItem from "../GridItem/GridItem";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const useStyles = makeStyles(() => ({
   buttonCardContainer: {
@@ -139,7 +140,8 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     fdcStatus: null,
     uploadProfile: "",
   };
-  let row = [r1, r2, r3, r4, r5];
+  // let row = [r1, r2, r3, r4, r5];
+  let row = [{ ...r1 }, { ...r2 }, { ...r3 }, { ...r4 }, { ...r5 }];
   const defaultColDef = useMemo(() => {
     return {
       flex: 1,
@@ -200,12 +202,17 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
   }, []);
 
   const onCellValueChanged = useCallback((event) => {
-    console.log(event);
+    // console.log(event);
     // if (gridRef.current) {
     //   const rowSelection = gridRef.current.api.getSelectedRows();
-
     // }
   }, []);
+  const clearTable = () => {
+    // console.log(gridRef.current);
+    row = [{ ...r1 }, { ...r2 }, { ...r3 }, { ...r4 }, { ...r5 }];
+    gridRef.current?.api.setRowData(row);
+    // console.log(gridRef.current);
+  };
 
   return (
     <div className="form-encapsulate">
@@ -358,6 +365,26 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
           >
             Enter the Details Manually
           </Typography>
+        </div>
+        <div>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <div className="forms-button-container">
+                <div>
+                  <Button
+                    variant="outlined"
+                    className="save-draft-button"
+                    onClick={() => clearTable()}
+                    // disabled={columnsListOpen}
+                  >
+                    <RefreshIcon className="generic-icon" />
+                    Clear Table
+                  </Button>
+                </div>
+                <div></div>
+              </div>
+            </Grid>
+          </Grid>
         </div>
         <div>
           <GridItem

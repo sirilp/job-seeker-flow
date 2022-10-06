@@ -39,6 +39,7 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   const [formValidated, setFormValidated] = React.useState(false);
   const [prefillDetails, setPrefillDetails] = React.useState<any>({});
   const [postFormDetails, setPostFormDetails] = React.useState<any>({});
+  const [gotData, setGotData] = React.useState(false);
 
   const jdQueMap ={
     textField: 'Hy',
@@ -67,8 +68,9 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
         }
        )
       }
+      setLoader(false);
   };
-  
+  console.log(prefillDetails)
   const fetchForm = async () => {
     const formMarkup = await getFormData(
       JD_PATCH_FORM, "", props.contestId
@@ -80,6 +82,10 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
       if (jdMarkup?.data?.data?.components?.components) {
         setMenuForm(jdMarkup?.data?.data?.components);
         setLoader(false);
+      }
+      else {
+        setLoader(false);
+        setGotData(true);
       }
     }
   };
@@ -130,6 +136,9 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
         submission={ prefillDetails}
         onChange={(schema: any) => handleChange(schema)}
       />
+     <div className="head-title-text">
+          JD Specific Questions has not been configured for this contest
+      </div>
       <PreviousNextButtons
         handleNext={submitFormData}
         handleBack={props.handleBack}

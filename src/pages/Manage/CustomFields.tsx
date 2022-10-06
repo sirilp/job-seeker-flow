@@ -13,11 +13,18 @@ import {
   Drawer,
   Grid,
   Card,
+  Popover,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
@@ -40,6 +47,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -47,7 +55,6 @@ const useStyles = makeStyles(() => ({
       minWidth: "2vw",
     },
   },
-
   arrow: {
     "&:before": {
       border: "1px solid #36454F",
@@ -60,6 +67,135 @@ const useStyles = makeStyles(() => ({
   },
   uploadText: {
     color: "#4d6cd9",
+  },
+  viewAssessmentCard: {
+    border: "1px solid grey",
+    height: "200px ",
+    marginTop: "20px",
+    marginRight: "5px",
+    marginLeft: "5px",
+    fontSize: "15px",
+  },
+  assessmentActionButton: {
+    height: "2px",
+    width: "1px",
+    float: "right",
+    margin: "3px 3px 0px 0px",
+  },
+  assessmentDeleteAction: {
+    border: "1px solid gray",
+    borderRadius: 0,
+  },
+  deleteActionButton: {
+    width: "250px",
+    justifyContent: "left",
+    paddingLeft: "25px",
+    color: "gray",
+    height: "55px",
+    fontSize: "16px",
+  },
+  deleteIcon: {
+    size: "small",
+    marginRight: "15px",
+  },
+  assessmentUpdateAction: {
+    borderLeft: "1px solid gray",
+    borderRight: "1px solid gray",
+    borderBottom: "1px solid gray",
+    borderRadius: 0,
+  },
+  updateActionButton: {
+    width: "250px",
+    justifyContent: "left",
+    color: "gray",
+    height: "55px",
+    fontSize: "16px",
+  },
+  updateIcon: {
+    size: "small",
+    marginRight: "20px",
+    marginLeft: "25px",
+    backgroundColor: "gray",
+    color: "white",
+    borderRadius: "2px",
+    fontSize: "14px",
+  },
+  uploadIcon: {
+    size: "small",
+    marginRight: "18px",
+    marginLeft: "25px",
+    backgroundColor: "gray",
+    color: "white",
+    borderRadius: "2px",
+    fontSize: "14px",
+  },
+  assessmentDialogueBox: {
+    backgroundColor: "gray",
+    width: "600px",
+    textAlign: "center",
+  },
+  assessmentDialogueContent: {
+    paddingTop: "30px",
+    textAlign: "center",
+  },
+  assessmentDialogueAction: {
+    paddingTop: "10px",
+    paddingBottom: "40px",
+    justifyContent: "center",
+  },
+  delete: {
+    backgroundColor: "gray",
+    borderRadius: 20,
+    color: "black",
+    right: "30px",
+    paddingLeft: "30px",
+    paddingRight: "30px",
+    height: "30px",
+  },
+  cancel: {
+    backgroundColor: "gray",
+    borderRadius: 20,
+    color: "black",
+    left: "30px",
+    paddingLeft: "20px",
+    paddingRight: "20px",
+    height: "30px",
+  },
+  leftDrawerBox: {
+    width: "400px",
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 0,
+    overflowY: "auto",
+  },
+  viewAssessmentTitle: {
+    textAlign: "center",
+    backgroundColor: "#4D6CD9",
+    height: "50px",
+    width: "390px",
+    color: "#FFFFFF",
+    padding: "10px",
+    fontSize: "20px",
+    fontWeight: "bold",
+  },
+  assessmentDetailsCard: {
+    border: "1px solid grey",
+    height: "180px ",
+    marginTop: "20px",
+    marginRight: "5px",
+    marginLeft: "5px",
+    fontSize: "13px",
+  },
+  assessmentDetails: {
+    width: "190px",
+    "& legend": { display: "none" },
+    "& fieldset": { top: 0 },
+  },
+  partnerAssessment: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 }));
 
@@ -299,6 +435,15 @@ export const ViewAssessments = (params) => {
   const [assessmentPartner, setAssessmentPartner] = React.useState<string[]>(
     []
   );
+  const [anchorElView, setAnchorElView] = useState<HTMLButtonElement | null>(
+    null
+  );
+  const [anchorElUpload, setAnchorElUpload] =
+    useState<HTMLButtonElement | null>(null);
+  const [isDeleteBoxOpen, setIsDeleteBoxOpen] = useState(false);
+  const [isUpdateBoxOpen, setIsUpdateBoxOpen] = useState(false);
+  const [isUploadBoxOpen, setIsUploadBoxOpen] = useState(false);
+  const [isDeleteSuccessBoxOpen, setIsDeleteSuccessBoxOpen] = useState(false);
 
   const assessmentTypes = [
     "Assessment Services",
@@ -343,6 +488,314 @@ export const ViewAssessments = (params) => {
     setToggleDrawer(true);
   };
 
+  const handleCloseView = () => {
+    setAnchorElView(null);
+  };
+
+  const handleViewReport = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorElView(event.currentTarget);
+  };
+
+  const openViewPop = Boolean(anchorElView);
+
+  const ViewAssessmentReport = () => {
+    return (
+      <Card className={classes.viewAssessmentCard} elevation={3}>
+        <Box textAlign={"center"}>
+          <div style={{ margin: "10px" }}>
+            Assessment Type - Interview as a Service
+            <IconButton
+              onClick={handleViewReport}
+              className={classes.assessmentActionButton}
+            >
+              <FormatAlignJustifyIcon
+                sx={{
+                  color: "blue",
+                }}
+              />
+            </IconButton>
+            <Popover
+              id="view-popover"
+              open={openViewPop}
+              anchorEl={anchorElView}
+              onClose={handleCloseView}
+              anchorOrigin={{
+                vertical: "center",
+                horizontal: "left",
+              }}
+            >
+              <div className={classes.assessmentDeleteAction}>
+                <Button
+                  className={classes.deleteActionButton}
+                  onClick={() => {
+                    setIsDeleteBoxOpen(true);
+                  }}
+                >
+                  <DeleteForeverIcon className={classes.deleteIcon} />
+                  Delete
+                </Button>
+              </div>
+              <div className={classes.assessmentUpdateAction}>
+                <Button
+                  className={classes.updateActionButton}
+                  onClick={() => {
+                    setIsUpdateBoxOpen(true);
+                  }}
+                >
+                  <BorderColorIcon className={classes.updateIcon} />
+                  Update
+                </Button>
+              </div>
+            </Popover>
+          </div>
+          <div style={{ margin: "10px" }}>
+            Assessment Partner - Interviewplus
+          </div>
+          <div style={{ margin: "10px" }}>
+            Assessment Partner - Interviewplus
+          </div>
+          <div style={{ margin: "10px" }}>
+            Assessment Partner - Interviewplus
+          </div>
+        </Box>
+        <Box textAlign={"center"} mt={3}>
+          <Button variant="contained">View Assesment Report</Button>
+        </Box>
+      </Card>
+    );
+  };
+
+  const handleCloseUpload = () => {
+    setAnchorElUpload(null);
+  };
+
+  const handleUploadReport = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorElUpload(event.currentTarget);
+  };
+
+  const openUploadPop = Boolean(anchorElUpload);
+
+  const UploadAssessmentReport = () => {
+    return (
+      <Card className={classes.viewAssessmentCard} elevation={3}>
+        <Box textAlign={"center"}>
+          <div style={{ margin: "10px" }}>
+            Assessment Type - Interview as a Service
+            <IconButton
+              onClick={handleUploadReport}
+              className={classes.assessmentActionButton}
+            >
+              <FormatAlignJustifyIcon
+                sx={{
+                  color: "blue",
+                }}
+              />
+            </IconButton>
+            <Popover
+              id="upload-popover"
+              open={openUploadPop}
+              anchorEl={anchorElUpload}
+              onClose={handleCloseUpload}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <div className={classes.assessmentDeleteAction}>
+                <Button
+                  className={classes.deleteActionButton}
+                  onClick={() => {
+                    setIsDeleteBoxOpen(true);
+                  }}
+                >
+                  <DeleteForeverIcon className={classes.deleteIcon} />
+                  Delete
+                </Button>
+              </div>
+              <div className={classes.assessmentUpdateAction}>
+                <Button
+                  className={classes.updateActionButton}
+                  onClick={() => {
+                    setIsUploadBoxOpen(true);
+                  }}
+                >
+                  <BorderColorIcon className={classes.uploadIcon} />
+                  Upload
+                </Button>
+              </div>
+            </Popover>
+          </div>
+          <div style={{ margin: "10px" }}>
+            Assessment Partner - Interviewplus
+          </div>
+          <div style={{ margin: "10px" }}>
+            Assessment Partner - Interviewplus
+          </div>
+          <div style={{ margin: "10px" }}>
+            Assessment Partner - Interviewplus
+          </div>
+        </Box>
+        <Box textAlign={"center"} mt={3}>
+          <Button variant="contained">Upload Assesment Report</Button>
+        </Box>
+      </Card>
+    );
+  };
+
+  const handleDelete = () => {
+    //Delete Method
+
+    setIsDeleteBoxOpen(false);
+    setAnchorElUpload(null);
+    setAnchorElView(null);
+
+    setIsDeleteSuccessBoxOpen(true);
+  };
+
+  const DeleteAssessment = () => {
+    return (
+      <Dialog
+        open={isDeleteBoxOpen}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle
+          id="delete-dialog-title"
+          className={classes.assessmentDialogueBox}
+        >
+          {"Delete Assessment"}
+          <IconButton
+            onClick={() => {
+              setIsDeleteBoxOpen(false);
+            }}
+            className={classes.assessmentActionButton}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent className={classes.assessmentDialogueContent}>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to Delete Assessment of the Job Seeker from
+            the platfrom?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className={classes.assessmentDialogueAction}>
+          <Button
+            onClick={handleDelete}
+            className={classes.delete}
+            size="large"
+          >
+            Yes
+          </Button>
+          <Button
+            onClick={() => {
+              setIsDeleteBoxOpen(false);
+              setAnchorElUpload(null);
+              setAnchorElView(null);
+            }}
+            className={classes.cancel}
+            size="large"
+            autoFocus
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
+  const DeleteAssessmentSuccess = () => {
+    return (
+      <Dialog
+        open={isDeleteSuccessBoxOpen}
+        aria-labelledby="delete-success-dialog-title"
+        aria-describedby="delete-success-dialog-description"
+      >
+        <DialogTitle
+          id="delete-success-dialog-title"
+          className={classes.assessmentDialogueBox}
+        >
+          {"Delete Assessment"}
+          <IconButton
+            onClick={() => {
+              setIsDeleteSuccessBoxOpen(false);
+            }}
+            className={classes.assessmentActionButton}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent className={classes.assessmentDialogueContent}>
+          <DialogContentText id="delete-success-dialog-description">
+            Assessment has been deleted!
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  const UpdateAssessment = () => {
+    return (
+      <Dialog
+        open={isUpdateBoxOpen}
+        aria-labelledby="update-dialog-title"
+        aria-describedby="update-dialog-description"
+      >
+        <DialogTitle
+          id="update-dialog-title"
+          className={classes.assessmentDialogueBox}
+        >
+          {"Update Assessment"}
+          <IconButton
+            onClick={() => {
+              setIsUpdateBoxOpen(false);
+              setAnchorElView(null);
+            }}
+            className={classes.assessmentActionButton}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent className={classes.assessmentDialogueContent}>
+          <DialogContentText id="update-dialog-description">
+            Job Seeker Name -
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  const UploadAssessment = () => {
+    return (
+      <Dialog
+        open={isUploadBoxOpen}
+        aria-labelledby="upload-dialog-title"
+        aria-describedby="upload-dialog-description"
+      >
+        <DialogTitle
+          id="upload-dialog-title"
+          className={classes.assessmentDialogueBox}
+        >
+          {"Upload Assessment"}
+          <IconButton
+            onClick={() => {
+              setIsUploadBoxOpen(false);
+              setAnchorElUpload(null);
+            }}
+            className={classes.assessmentActionButton}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent className={classes.assessmentDialogueContent}>
+          <DialogContentText id="upload-dialog-description">
+            Job Seeker Name -
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   return (
     <div
       style={{
@@ -358,30 +811,10 @@ export const ViewAssessments = (params) => {
         open={toggleDrawer}
         onClose={() => setToggleDrawer(false)}
       >
-        <Box
-          sx={{
-            width: "400px",
-            overflow: "hidden",
-            justifyContent: "center",
-            alignItems: "center",
-            top: 0,
-            overflowY: "auto",
-          }}
-        >
+        <Box className={classes.leftDrawerBox}>
           <Grid>
             <Box>
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  backgroundColor: "#4D6CD9",
-                  height: "50px",
-                  width: "390px",
-                  color: "#FFFFFF",
-                  padding: "10px",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                }}
-              >
+              <Typography className={classes.viewAssessmentTitle}>
                 View Assessments
                 <CloseIcon
                   sx={{ float: "right" }}
@@ -392,17 +825,7 @@ export const ViewAssessments = (params) => {
             <Typography textAlign={"center"}>Request New Assessment</Typography>
             <Typography>Job Seeker Name - Rajesh Sharma</Typography>
             <Box>
-              <Card
-                sx={{
-                  border: "1px solid grey",
-                  height: "180px ",
-                  marginTop: "20px",
-                  marginRight: "5px",
-                  marginLeft: "5px",
-                  fontSize: "13px",
-                }}
-                elevation={3}
-              >
+              <Card className={classes.assessmentDetailsCard} elevation={3}>
                 <Box display={"flex"}>
                   <Typography p={2}>Assessment Type</Typography>
                   <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -417,11 +840,7 @@ export const ViewAssessments = (params) => {
                       onChange={handleChangeAssessmentType}
                       input={<OutlinedInput label="Tag" />}
                       renderValue={(selected) => selected.join(", ")}
-                      sx={{
-                        width: "190px",
-                        "& legend": { display: "none" },
-                        "& fieldset": { top: 0 },
-                      }}
+                      className={classes.assessmentDetails}
                     >
                       {assessmentTypes.map((name) => (
                         <MenuItem key={name} value={name}>
@@ -448,11 +867,7 @@ export const ViewAssessments = (params) => {
                       onChange={handleChangeAssessmentPartner}
                       input={<OutlinedInput label="Tag" />}
                       renderValue={(selected) => selected.join(", ")}
-                      sx={{
-                        width: "190px",
-                        "& legend": { display: "none" },
-                        "& fieldset": { top: 0 },
-                      }}
+                      className={classes.assessmentDetails}
                     >
                       {assessmentPartners.map((name) => (
                         <MenuItem key={name} value={name}>
@@ -469,80 +884,16 @@ export const ViewAssessments = (params) => {
                   <Button variant="contained">Request Assessment</Button>
                 </Box>
               </Card>
-              <Typography
-                sx={{
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
+              <Typography className={classes.partnerAssessment}>
                 Partner Assessment Reports
               </Typography>
-              <Card
-                sx={{
-                  border: "1px solid grey",
-                  height: "200px ",
-                  marginTop: "20px",
-                  marginRight: "5px",
-                  marginLeft: "5px",
-                  fontSize: "15px",
-                }}
-                elevation={3}
-              >
-                <Box textAlign={"center"}>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Type - Interview as a Service
-                    <FormatAlignJustifyIcon
-                      sx={{ color: "blue", float: "right" }}
-                    />
-                  </div>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Partner - Interviewplus
-                  </div>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Partner - Interviewplus
-                  </div>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Partner - Interviewplus
-                  </div>
-                </Box>
-                <Box textAlign={"center"} mt={3}>
-                  <Button variant="contained">View Assesment Report</Button>
-                </Box>
-              </Card>
+              <ViewAssessmentReport />
+              <UploadAssessmentReport />
 
-              <Card
-                sx={{
-                  border: "1px solid grey",
-                  height: "200px ",
-                  marginTop: "20px",
-                  marginRight: "5px",
-                  marginLeft: "5px",
-                  fontSize: "15px",
-                }}
-                elevation={3}
-              >
-                <Box textAlign={"center"}>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Type - Interview as a Service
-                    <FormatAlignJustifyIcon
-                      sx={{ color: "blue", float: "right" }}
-                    />
-                  </div>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Partner - Interviewplus
-                  </div>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Partner - Interviewplus
-                  </div>
-                  <div style={{ margin: "10px" }}>
-                    Assessment Partner - Interviewplus
-                  </div>
-                </Box>
-                <Box textAlign={"center"} mt={3}>
-                  <Button variant="contained">Upload Assesment Report</Button>
-                </Box>
-              </Card>
+              <DeleteAssessment />
+              <DeleteAssessmentSuccess />
+              <UpdateAssessment />
+              <UploadAssessment />
             </Box>
           </Grid>
         </Box>

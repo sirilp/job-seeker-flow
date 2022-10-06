@@ -146,7 +146,7 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "FDC Status Check on",
-    field: "fdcStatusCheckon",
+    field: "updatedOn",
     filter: "agDateColumnFilter",
     floatingFilterComponentParams: {
       suppressFilterButton: true,
@@ -157,7 +157,7 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Ownership Till",
-    field: "ownershipTill",
+    field: "ownershipTillDate",
     filter: "agDateColumnFilter",
     floatingFilterComponentParams: {
       suppressFilterButton: true,

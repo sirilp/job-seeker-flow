@@ -275,14 +275,14 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
             </div>
             <InlineInputs
               InlineInputsArray={YearMonthDetails}
-              disabled={!props.hasButtons}
+              disabled={!props.hasButtons || freshGraduate}
               setValues={handleTotalExperience}
               value={totalExperience}
             />
             <InlineInputs
               InlineInputsArray={YearMonthDetails}
               InlineInputTitle={RELEVANT_EXP_TEXT}
-              disabled={!props.hasButtons}
+              disabled={!props.hasButtons || freshGraduate}
               setValues={handleRelevantExperience}
               value={relevantExperience}
             />
@@ -301,8 +301,8 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
                     {WORK_STATUS_TEXT}
                   </InputLabel>
                   <Select
-                    disabled={!props.hasButtons}
-                    value={workStatus}
+                    disabled={!props.hasButtons || freshGraduate}
+                    value={freshGraduate ? WorkStatusArray[2] : workStatus}
                     label={WORK_STATUS_TEXT}
                     onChange={(e) => setWorkStatus(e.target.value)}
                   >
@@ -323,14 +323,14 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
             <InlineInputs
               InlineInputsArray={CTCDetails}
               InlineInputTitle={FIXED_CTC_TEXT}
-              disabled={!props.hasButtons}
+              disabled={!props.hasButtons || freshGraduate}
               setValues={handleFixedCtc}
               value={fixedCtc}
             />
             <InlineInputs
               InlineInputsArray={CTCDetails}
               InlineInputTitle={VARIABLE_CTC_TEXT}
-              disabled={!props.hasButtons}
+              disabled={!props.hasButtons || freshGraduate}
               setValues={handleVariableCtc}
               value={variableCtc}
             />
@@ -342,7 +342,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
               </div>
               <div className="inline-div">
                 <TextField
-                  disabled={!props.hasButtons}
+                  disabled={!props.hasButtons || freshGraduate}
                   type="text"
                   value={totalCtc}
                   onChange={(e) => setTotalCtc(e.target.value)}

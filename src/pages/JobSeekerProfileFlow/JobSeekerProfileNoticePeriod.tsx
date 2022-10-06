@@ -136,7 +136,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
         props.setType(SUCCESS_KEY);
         props.setDataMessage(FORM_SUBMISSION_SUCCESS);
         props.setOpen(true);
-        props.handleComplete(3);
+        props.handleComplete(4);
         props.handleNext();
       }
     } catch (error: any) {
@@ -489,6 +489,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                       multiline
                       fullWidth
                       rows={3}
+                      value={reasonOfResignation}
                       helperText={WORD_LIMIT_TEXT}
                       onChange={(e) => setReasonOfResignation(e.target.value)}
                       InputProps={{

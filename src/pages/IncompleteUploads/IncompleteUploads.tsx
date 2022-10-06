@@ -19,7 +19,6 @@ import ColumnSelection from "../../components/ColumnSelection/ColumnSelection";
 import BookmarkIcon from "../../assets/bookmark.svg";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
-import { contestLinkedJobsekeers } from "../../services/JobSeekerService";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { LISTING_GENERIC_HEADERS } from "./ColumnHeaders";
 import {
@@ -49,7 +48,7 @@ const IncompleteUploads = (props) => {
   const [columnsListOpen, setColumnsListOpen] = React.useState(false);
   const [floatingFilter, setFloatingFilter] = React.useState(true);
   const [selectedButtonValue, setSelectedButtonValue] = useState(1);
-  const [inStepCount, setinStepCount] = useState<any>({
+  const [inStepCount, setInStepCount] = useState<any>({
     step1: 0,
     step2: 0,
     step3: 0,
@@ -79,15 +78,29 @@ const IncompleteUploads = (props) => {
     if (response.data.success) {
       let mapData = response.data.data.content;
       let result = mapData.map((item, index) => {
-        item.dateOfBirth = moment(item.appliedDate).format("DD-MM-YYYY");
+        let Data = {
+          ...item,
+          ...item.matchedProfileLogsList[0],
+          ...item.matchedProfilesList[0],
+        };
 
+        return Data;
+      });
+
+      let stateData = result.map((item, index) => {
+        item.dateOfBirth = moment(item.dateOfBirth).format("DD-MM-YYYY");
+        item.updatedOn = moment(item.updatedOn).format("DD-MM-YYYY");
+        item.ownershipTillDate = moment(item.ownershipTillDate).format(
+          "DD-MM-YYYY"
+        );
         let Data = {
           ...item,
         };
 
         return Data;
       });
-      setRowData(result);
+
+      setRowData(stateData);
       setTotalPages(response?.data?.data?.totalPages);
       setPageNo(response?.data?.data?.pageNo);
       setPageSize(response?.data?.data?.pageSize);
@@ -97,7 +110,7 @@ const IncompleteUploads = (props) => {
   };
 
   const handleAggregateData = async () => {
-    const response: any = await getIncompleteUplodsStepCount();
+    const response: any = await getIncompleteUplodsStepCount(contestId);
     console.log(response);
 
     if (response.data.success) {
@@ -126,7 +139,7 @@ const IncompleteUploads = (props) => {
         (data) => data.profileLastCompletedStep === "7"
       );
 
-      setinStepCount({
+      setInStepCount({
         step1: (result1.length > 0 && result1[0].count) || 0,
         step2: (result2.length > 0 && result2[0].count) || 0,
         step3: (result3.length > 0 && result3[0].count) || 0,
@@ -136,16 +149,26 @@ const IncompleteUploads = (props) => {
         step7: (result7.length > 0 && result7[0].count) || 0,
       });
     } else {
-      // setAgCount({
-      //   submitted: 0,
-      //   consent: 0,
-      // });
+      setInStepCount({
+        step1: 0,
+        step2: 0,
+        step3: 0,
+        step4: 0,
+        step5: 0,
+        step6: 0,
+        step7: 0,
+      });
     }
   };
 
+  const fetchToken = async () => {
+    const token = await KeycloakService.fetchTokenOtherUser();
+    sessionStorage.setItem("react-token", token);
+  };
+
   useEffect(() => {
-    getTableRowData(selectedButtonValue, contestId, pageNo, pageSize);
     handleAggregateData();
+    getTableRowData(selectedButtonValue, contestId, pageNo, pageSize);
   }, [selectedButtonValue, contestId, pageNo, pageSize]);
 
   const autoGroupColumnDef = useMemo<ColDef>(() => {
@@ -311,11 +334,18 @@ const IncompleteUploads = (props) => {
                   className={classes.iconStyle}
                   onClick={() =>
                     window.open(
-                      "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example"
+                      "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
                     )
                   }
                 />
-                <MailOutlineIcon className={classes.iconStyle} />
+                <MailOutlineIcon
+                  className={classes.iconStyle}
+                  onClick={() =>
+                    window.open(
+                      "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
+                    )
+                  }
+                />
               </Box>
             </div>
           </div>

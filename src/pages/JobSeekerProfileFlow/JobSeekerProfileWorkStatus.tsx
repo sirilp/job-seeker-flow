@@ -104,6 +104,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
             props.setOpen(true);
             props.setType(WARNING_KEY);
             props.setDataMessage("Please enter all work status details");
+            setLoader(false);
             return
         };
         try {

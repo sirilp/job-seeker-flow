@@ -23,13 +23,14 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
 import {
-  contestLinkedJobsekeers,
   statusFilterContestLinkedJobsekeers,
   consentStatusFilterContestLinkedJobsekeers,
+  getConsentAggregateData,
   getAggregateData,
 } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
+import KeycloakService from "../../services/KeycloakService";
 
 const useStyles = makeStyles(() => ({
   deleteIcon: { color: "#4D6CD9", margin: "10px" },
@@ -58,39 +59,45 @@ const Vetting = (props) => {
     consent: 0,
   });
 
+  const fetchToken = async () => {
+    const token = await KeycloakService.fetchTokenOtherUser();
+    sessionStorage.setItem("react-token", token);
+  };
+
   useEffect(() => {
-    getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
     handleAggregateData(contestId);
+    getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
   }, [pageNo, pageSize, contestId, selectedButtonValue]);
 
   const setSelectedButton = (id: number, filterValue: string) => {
-    console.log(filterValue, id);
     setSelectedButtonId(id);
     setSelectedButtonValue(filterValue);
     getTableRowData(0, 10, contestId, filterValue);
   };
 
   const handleAggregateData = async (contestId) => {
-    const response: any = await getAggregateData(contestId);
-    console.log(response);
-
-    if (response.data.success) {
-      console.log(response.data.success);
-
-      const result1 = response.data.data.filter(
+    let result1: any;
+    const statusCount: any = await getAggregateData(contestId);
+    if (statusCount.data.success) {
+      result1 = statusCount.data.data.filter(
         (data) => data.status === "JOB_SEEKER_APPLIED"
       );
+    } else {
+      result1 = [];
+    }
 
+    const response: any = await getConsentAggregateData(contestId);
+
+    if (response.data.success) {
       const result2 = response.data.data.filter(
         (data) => data.status === "JOB_SEEKER_CONSENT_PASS"
       );
       const result3 = response.data.data.filter(
-        (data) => data.status === "JOB_SEEKEER_CONSENT_PENDING"
+        (data) => data.status === "JOB_SEEKER_CONSENT_PENDING"
       );
       const result4 = response.data.data.filter(
         (data) => data.status === "JOB_SEEKER_CONSENT_FAIL"
       );
-
       setAgCount({
         submitted: (result1.length > 0 && result1[0].count) || 0,
         consentPass: (result2.length > 0 && result2[0].count) || 0,
@@ -100,8 +107,81 @@ const Vetting = (props) => {
     } else {
       setAgCount({
         submitted: 0,
-        consent: 0,
+        consentPass: 0,
+        consentPending: 0,
+        consentFail: 0,
       });
+    }
+  };
+
+  const handlestatusFilterContestLinkedJobsekeers = async (
+    pageNo,
+    pageSize,
+    contestId,
+    selectedButtonValue
+  ) => {
+    const response: any = await statusFilterContestLinkedJobsekeers(
+      contestId,
+      selectedButtonValue,
+      pageNo,
+      pageSize
+    );
+
+    if (response.data.success) {
+      let mapData = response.data.data.content;
+      let result = mapData.map((item, index) => {
+        item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
+
+        let Data = {
+          ...item,
+          ...item.matchedProfileLogsList[0],
+          ...item.matchedProfilesList[0],
+        };
+
+        return Data;
+      });
+
+      setRowData(result);
+      setTotalPages(response?.data?.data?.totalPages);
+      setPageNo(response?.data?.data?.pageNo);
+      setPageSize(response?.data?.data?.pageSize);
+    } else {
+      setRowData([]);
+    }
+  };
+
+  const handleconsentStatusFilterContestLinkedJobsekeers = async (
+    pageNo,
+    pageSize,
+    contestId,
+    selectedButtonValue
+  ) => {
+    const response: any = await consentStatusFilterContestLinkedJobsekeers(
+      contestId,
+      selectedButtonValue,
+      pageNo,
+      pageSize
+    );
+
+    if (response.data.success) {
+      let mapData = response.data.data.content;
+      let result = mapData.map((item, index) => {
+        item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
+
+        let Data = {
+          ...item,
+          ...item.matchedProfileLogsList[0],
+          ...item.matchedProfilesList[0],
+        };
+
+        return Data;
+      });
+      setRowData(result);
+      setTotalPages(response?.data?.data?.totalPages);
+      setPageNo(response?.data?.data?.pageNo);
+      setPageSize(response?.data?.data?.pageSize);
+    } else {
+      setRowData([]);
     }
   };
 
@@ -112,63 +192,19 @@ const Vetting = (props) => {
     selectedButtonValue
   ) => {
     if (selectedButtonValue === "JOB_SEEKER_APPLIED") {
-      const response: any = await statusFilterContestLinkedJobsekeers(
-        contestId,
-        selectedButtonValue,
+      handlestatusFilterContestLinkedJobsekeers(
         pageNo,
-        pageSize
+        pageSize,
+        contestId,
+        selectedButtonValue
       );
-
-      if (response.data.success) {
-        let mapData = response.data.data.content;
-        let result = mapData.map((item, index) => {
-          item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
-
-          let Data = {
-            ...item,
-            ...item.matchedProfileLogsList[0],
-            ...item.matchedProfilesList[0],
-          };
-
-          return Data;
-        });
-        setRowData(result);
-        setTotalPages(response?.data?.data?.totalPages);
-        setPageNo(response?.data?.data?.pageNo);
-        setPageSize(response?.data?.data?.pageSize);
-      } else {
-        console.log("false");
-        setRowData([]);
-      }
     } else {
-      const response: any = await consentStatusFilterContestLinkedJobsekeers(
-        contestId,
-        selectedButtonValue,
+      handleconsentStatusFilterContestLinkedJobsekeers(
         pageNo,
-        pageSize
+        pageSize,
+        contestId,
+        selectedButtonValue
       );
-
-      if (response.data.success) {
-        let mapData = response.data.data.content;
-        let result = mapData.map((item, index) => {
-          item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
-
-          let Data = {
-            ...item,
-            ...item.matchedProfileLogsList[0],
-            ...item.matchedProfilesList[0],
-          };
-
-          return Data;
-        });
-        setRowData(result);
-        setTotalPages(response?.data?.data?.totalPages);
-        setPageNo(response?.data?.data?.pageNo);
-        setPageSize(response?.data?.data?.pageSize);
-      } else {
-        console.log("false");
-        setRowData([]);
-      }
     }
   };
 
@@ -226,11 +262,6 @@ const Vetting = (props) => {
     onUpdateColumns(newColumnDefs);
   };
 
-  useEffect(() => {
-    // call api with new pagenumber
-    getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
-  }, [pageNo, pageSize, contestId]);
-
   const onUpdateColumns = useCallback((data) => {
     if (gridRef?.current) gridRef.current.api.setColumnDefs(data);
   }, []);
@@ -264,19 +295,19 @@ const Vetting = (props) => {
               label: "Consent Pass",
               tooltip: "Consent Pass",
               id: 2,
-              value: "JOB_SEEKEER_CONSENT_PASS",
+              value: "JOB_SEEKER_CONSENT_PASS",
             },
             {
               label: "Consent Pending",
               tooltip: "Consent Pending",
               id: 3,
-              value: "JOB_SEEKEER_CONSENT_PENDING",
+              value: "JOB_SEEKER_CONSENT_PENDING",
             },
             {
               label: "Consent Fail",
               tooltip: "Consent Fail",
               id: 4,
-              value: "JOB_SEEKEER_CONSENT_FAIL",
+              value: "JOB_SEEKER_CONSENT_FAIL",
             },
           ]}
           countsList={[
@@ -354,6 +385,3 @@ const Vetting = (props) => {
 };
 
 export default Vetting;
-function item(item: any) {
-  throw new Error("Function not implemented.");
-}

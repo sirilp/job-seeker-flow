@@ -13,6 +13,7 @@ import {
   CustomUploadButton,
   PDCStatusCheckButton,
   FDCStatusCheckButton,
+  ClearRowButton,
 } from "../ManualDataInputTableElement";
 
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
@@ -65,6 +66,8 @@ export const LISTING_GENERIC_HEADERS = [
     headerName: "Actions",
 
     floatingFilter: false,
+    editable: false,
+    cellRenderer: ClearRowButton,
   },
   {
     headerName: "First Name",
@@ -205,7 +208,7 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Upload Profile",
-    // field: "bounty",
+    field: "uploadProfile",
     // hide: false,
     // filter: "agNumberColumnFilter",
     // floatingFilter: false,

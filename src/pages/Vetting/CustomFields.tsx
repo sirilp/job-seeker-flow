@@ -62,7 +62,6 @@ export const ResumeUploaded = (params) => {
 
   const handleViewResume = async () => {
     const resumeId = params.getValue();
-    console.log(resumeId);
     await openFile(resumeId);
   };
 
@@ -85,8 +84,6 @@ export const Icons = (params) => {
   const classes = useStyles();
   const handleClick = () => {};
   const handleChat = () => {
-    console.log("Chat Icon clicked");
-
     setToggleDrawer(true);
   };
 
@@ -125,7 +122,6 @@ export const Icons = (params) => {
           // onKeyDown={() => setToggleDrawer(false)}
         >
           <MessageBox closeIt={() => setToggleDrawer(false)} params={params} />
-          {console.log("Left Drawer called")}
         </Box>
       </Drawer>
     </div>
@@ -161,7 +157,6 @@ export const CustomDropDown = (params: any) => {
     body: "",
   });
   useEffect(() => {
-    console.log(params.getValue());
     if (
       params.getValue() === "JOB_SEEKER_CONSENT_PENDING" ||
       params.getValue() === null ||
@@ -193,8 +188,6 @@ export const CustomDropDown = (params: any) => {
 
   const [message, setMessage] = useState("");
   const handleChange = async (event: any) => {
-    console.log(params.data);
-
     let payLoad = {
       messageName: "consentArrived",
       businessKey: params.data._id,

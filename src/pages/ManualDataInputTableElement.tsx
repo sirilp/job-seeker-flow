@@ -9,6 +9,7 @@ import {
   tooltipClasses,
   Tooltip,
   ClickAwayListener,
+  IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
@@ -24,6 +25,7 @@ import {
 import moment from "moment";
 import { useAppDispatch } from "../services/StoreHooks";
 import { DUPLICATION_PASS, DUPLICATION_FAIL } from "../constants";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -43,6 +45,10 @@ const useStyles = makeStyles(() => ({
 export const FirstNameInputBox = (params: any) => {
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const [firstName, setFirstName] = useState(params.getValue());
+  useEffect(() => {
+    if (params.getValue().trim() == "") setFirstName(params.getValue());
+  }, [params.getValue()]);
+
   const handleChange = (event: any) => {
     if (/^[A-Za-z\s]+$/.test(event.target.value) || event.target.value == "") {
       setFirstName(event.target.value);
@@ -72,6 +78,9 @@ export const LastNameInputBox = (params: any) => {
       params.setValue(event.target.value);
     }
   };
+  useEffect(() => {
+    if (params.getValue().trim() == "") setLastName(params.getValue());
+  }, [params.getValue()]);
   return (
     <div>
       <input
@@ -94,6 +103,9 @@ export const MobileNumberInputBox = (params: any) => {
       params.setValue(event.target.value);
     }
   };
+  useEffect(() => {
+    if (params.getValue().trim() == "") setMobileNumber(params.getValue());
+  }, [params.getValue()]);
   return (
     <div>
       <input
@@ -110,11 +122,14 @@ export const MobileNumberInputBox = (params: any) => {
 
 export const EmailTextInput = (params: any) => {
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
-  const [message, setMessage] = useState(params.getValue());
+  const [email, setEmail] = useState(params.getValue());
   const handleChange = (event: any) => {
-    setMessage(event.target.value);
+    setEmail(event.target.value);
     params.setValue(event.target.value);
   };
+  useEffect(() => {
+    if (params.getValue().trim() == "") setEmail(params.getValue());
+  }, [params.getValue()]);
   return (
     <div>
       <input
@@ -122,7 +137,7 @@ export const EmailTextInput = (params: any) => {
         disabled={params.pdcDisabled}
         type="email"
         onChange={handleChange}
-        value={message}
+        value={email}
         style={{ width: "100%", border: "1px solid #DFE5FF" }}
       />
     </div>
@@ -156,9 +171,9 @@ export const CustomDropDown = (params: any) => {
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
 
-  const [message, setMessage] = useState(params.getValue());
+  const [isInterviewed, setIsInterviewed] = useState(params.getValue());
   const handleChange = (event: any) => {
-    setMessage(event.target.value);
+    setIsInterviewed(event.target.value);
     params.setValue(event.target.value);
     if (event.target.value == "yes") {
       setOption(yes);
@@ -204,13 +219,20 @@ export const CustomDropDown = (params: any) => {
       setOpen(false);
     }, 4000);
   };
+  useEffect(() => {
+    if (params.getValue() == "no") {
+      setOption(no);
+      setOpen(false);
+      setIsInterviewed(params.getValue());
+    }
+  }, [params.getValue()]);
   return (
     <>
       <div>
         <select
           id={id}
           style={{ border: "1px solid #DFE5FF" }}
-          value={message}
+          value={isInterviewed}
           onChange={handleChange}
         >
           <option value="no">No</option>
@@ -271,7 +293,7 @@ export const PDCStatusCheckButton = (params: any) => {
   const pass = {
     result: "Pass",
     color: "#22C55E",
-    title: "Pre Dublication Check Pass, job Seeker Id Created! ",
+    title: "Pre Duplication Check Pass, job Seeker Id Created! ",
     body: "",
   };
   const [result, setResult] = useState({
@@ -370,7 +392,7 @@ export const PDCStatusCheckButton = (params: any) => {
         if (response?.data.data.status == "PDC_SUCCESS") {
           setResult({
             ...DUPLICATION_PASS,
-            title: "Pre Dublication Check Pass, job Seeker Id Created! ",
+            title: "Pre Duplication Check Pass, job Seeker Id Created! ",
             body: response?.data.message,
           });
           params.setValue([true, response?.data.data.profileLogId]);
@@ -385,7 +407,7 @@ export const PDCStatusCheckButton = (params: any) => {
         } else {
           setResult({
             ...DUPLICATION_FAIL,
-            title: "Dublicate Found!",
+            title: "Duplicate Found!",
             body: response?.data.message,
           });
           params.setValue([false, response?.data.data.profileLogId]);
@@ -419,7 +441,7 @@ export const PDCStatusCheckButton = (params: any) => {
     } else if (params.getValue()) {
       setResult({
         ...DUPLICATION_PASS,
-        title: "Pre Dublication Check Pass, job Seeker Id Created!",
+        title: "Pre Duplication Check Pass, job Seeker Id Created!",
         // body: response?.data.message,
       });
     } else if (!params.getValue() == false) {
@@ -430,6 +452,17 @@ export const PDCStatusCheckButton = (params: any) => {
       });
     }
   }, []);
+  useEffect(() => {
+    if (params.getValue() == "0") {
+      setResult({
+        result: "",
+        color: "",
+        title: "",
+        body: "",
+      });
+      setOpen(false);
+    }
+  }, [params.getValue()]);
 
   return (
     <>
@@ -547,6 +580,9 @@ export const PanInputBox = (params: any) => {
       params.setValue(event.target.value);
     }
   };
+  useEffect(() => {
+    if (params.getValue().trim() == "") setPanNumber(params.getValue());
+  }, [params.getValue()]);
   return (
     <div>
       <input
@@ -572,7 +608,7 @@ export const FDCStatusCheckButton = (params: any) => {
   const pass = {
     result: "Pass",
     color: "#22C55E",
-    title: "Final Dublication Check Passed, ",
+    title: "Final Duplication Check Passed, ",
     body: "Press upload to start uploading the profile.",
   };
   const [result, setResult] = useState({
@@ -618,7 +654,6 @@ export const FDCStatusCheckButton = (params: any) => {
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
 
-  const ref = useRef(null);
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   const handleClick = (event: any) => {
@@ -687,10 +722,11 @@ export const FDCStatusCheckButton = (params: any) => {
         params.data.lastFiveDigitOfPan,
         params.data.dob
       ).then((response) => {
+        console.log(response)
         if (response?.data.data.status == "FDC_SUCCESS") {
           setResult({
             ...DUPLICATION_PASS,
-            title: "Final Dublication Check Passed, ",
+            title: "Final Duplication Check Passed, ",
             body: response?.data.message,
           });
           setOpen(true);
@@ -703,9 +739,10 @@ export const FDCStatusCheckButton = (params: any) => {
             JSON.stringify(params.data)
           );
         } else {
+          console.log(response?.data.status)
           setResult({
             ...DUPLICATION_FAIL,
-            title: "Final Dublication Check Passed, ",
+            title: "Final Duplication Check failed, ",
             body: response?.data.message,
           });
           setOpen(true);
@@ -740,17 +777,28 @@ export const FDCStatusCheckButton = (params: any) => {
     } else if (params.getValue()) {
       setResult({
         ...DUPLICATION_PASS,
-        title: "Final Dublication Check Passed, ",
+        title: "Final Duplication Check Passed, ",
         // body: response?.data.message,
       });
     } else if (!params.getValue() == false) {
       setResult({
         ...DUPLICATION_FAIL,
-        title: "Final Dublication Check Passed, ",
+        title: "Final Dublication Check Failed, ",
         // body: response?.data.message,
       });
     }
   }, []);
+  useEffect(() => {
+    if (params.getValue() == "0") {
+      setResult({
+        result: "",
+        color: "",
+        title: "",
+        body: "",
+      });
+      setOpen(false);
+    }
+  }, [params.getValue()]);
 
   return (
     <>
@@ -837,6 +885,38 @@ export const CustomUploadButton = (params: any) => {
       >
         Upload
       </Button>
+    </div>
+  );
+};
+export const ClearRowButton = (params: any) => {
+  const classes = useStyles();
+  const handleClick = () => {
+    params.node.setDataValue("firstName", "");
+    params.node.setDataValue("lastName", "");
+    params.node.setDataValue("phoneNumber", "");
+    params.node.setDataValue("email", "");
+    params.node.setDataValue("interviewed", "no");
+    params.node.setDataValue("pdcStatus", "0");
+    params.node.setDataValue("lastFiveDigitOfPan", "");
+    params.node.setDataValue("dob", "");
+    params.node.setDataValue("fdcStatus", "0");
+    params.node.setDataValue("uploadProfile", "");
+  };
+  // const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  return (
+    <div
+      style={{
+        textAlign: "center",
+      }}
+    >
+      <IconButton
+        // id={id}
+        // className={classes.buttonContainer}
+        onClick={handleClick}
+        aria-label="delete"
+      >
+        <DeleteIcon />
+      </IconButton>
     </div>
   );
 };

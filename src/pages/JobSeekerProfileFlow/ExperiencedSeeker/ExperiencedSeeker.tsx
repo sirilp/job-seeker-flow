@@ -278,7 +278,8 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                 <span className="asterisk-span"> *</span>
               </p>
               {props.workStatus === WorkStatusType.JOBLESS ? (
-                <TextField
+                <div className="institute-field">
+                  <TextField
                   required
                   id="lastEmployer"
                   disabled={props.disabled}
@@ -289,7 +290,10 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                   onChange={experiencedSeekerForm.handleChange}
                   value={experiencedSeekerForm.values.lastEmployer}
                 />
-              ) : (
+                </div>
+              ) : 
+              (
+                <div className="institute-field">
                 <TextField
                   required
                   id="currentEmployer"
@@ -301,6 +305,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                   onChange={experiencedSeekerForm.handleChange}
                   value={experiencedSeekerForm.values.currentEmployer}
                 />
+                </div>
               )}
             </Grid>
             <Grid

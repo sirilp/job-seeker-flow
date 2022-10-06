@@ -45,14 +45,10 @@ export const fullDuplicationCheck = async (
     });
 };
 
-export const contestLinkedJobsekeers = async (
-  id: string,
-  page: number,
-  size: number
-) => {
+export const getConsentAggregateData = async (contestId: string) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&page=${page}&size=${size}`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers/aggregate/consent-status?filterColumn=contestId&filterValue=${contestId}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
@@ -67,7 +63,7 @@ export const contestLinkedJobsekeers = async (
 export const getAggregateData = async (contestId: string) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers/aggregate/consent-status?filterColumn=contestId&filterValue=${contestId}`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers/aggregate/status?filterColumn=contestId&filterValue=${contestId}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
@@ -78,6 +74,7 @@ export const getAggregateData = async (contestId: string) => {
       console.log(error);
     });
 };
+
 export const getDuplicationFailedProfiles = async (
   filterValue: string,
   page: number,
@@ -155,7 +152,7 @@ export const statusFilterContestLinkedJobsekeers = async (
 ) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&filters=status:${status}&page=${page}&size=${size}`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&filters=${status ? 'status:' + status : ''}&page=${page}&size=${size}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
@@ -208,10 +205,10 @@ export const jobseekerConsentStatusChangeWorkflow = async (
     });
 };
 
-export const getIncompleteUplodsStepCount = async () => {
+export const getIncompleteUplodsStepCount = async (contestId: string) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profiles/aggregate/step`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profiles/aggregate/step?filterColumn=contestId&filterValue=${contestId}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,

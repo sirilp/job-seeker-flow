@@ -23,7 +23,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
 import {
-  contestLinkedJobsekeers,
+  statusFilterContestLinkedJobsekeers,
   getAggregateData,
 } from "../../services/JobSeekerService";
 import moment from "moment";
@@ -88,8 +88,9 @@ const Manage = (props) => {
   };
 
   const getTableRowData = async (pageNo, pageSize, contestId) => {
-    const response: any = await contestLinkedJobsekeers(
+    const response: any = await statusFilterContestLinkedJobsekeers(
       contestId,
+      "",
       pageNo,
       pageSize
     );
@@ -170,11 +171,6 @@ const Manage = (props) => {
     });
     onUpdateColumns(newColumnDefs);
   };
-
-  useEffect(() => {
-    // call api with new pagenumber
-    getTableRowData(pageNo, pageSize, contestId);
-  }, [pageNo, pageSize, contestId]);
 
   const onUpdateColumns = useCallback((data) => {
     if (gridRef?.current) gridRef.current.api.setColumnDefs(data);
