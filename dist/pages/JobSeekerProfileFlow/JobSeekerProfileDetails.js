@@ -140,7 +140,7 @@ var JobSeekerProfileDetails = function (props) {
                     _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, updateJobSeekerProfile({
                             profileId: props.profileDataId || userDataState.userData.profileId,
-                            profileData: { profileDetailsMap: profileDetailsMap },
+                            profileData: { profileDetailsMap: profileDetailsMap, profileLastCompletedStep: "3" },
                         })];
                 case 2:
                     profileDetailsResponse = _b.sent();
@@ -257,7 +257,41 @@ var JobSeekerProfileDetails = function (props) {
             setFreshGraduate(false);
         }
     };
-    return (_jsx(_Fragment, { children: !loader ? (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx("p", __assign({ className: "step-content-title-text" }, { children: EXPERIENCE_TITLE })), _jsxs("div", __assign({ className: "experience-details-card" }, { children: [_jsxs("div", __assign({ className: "experience-card-title" }, { children: [_jsx("div", { children: _jsxs("span", { children: [TOTAL_EXP_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) }), _jsxs("div", { children: [_jsx("span", { children: FRESHER_TEXT }), _jsx(Checkbox, { disabled: !props.hasButtons, checked: freshGraduate, onChange: function (e) { var _a; return setFreshGraduate((_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.checked); }, inputProps: { "aria-label": "controlled" } })] })] })), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, disabled: !props.hasButtons || freshGraduate, setValues: handleTotalExperience, value: totalExperience }), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, InlineInputTitle: RELEVANT_EXP_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleRelevantExperience, value: relevantExperience })] })), _jsx("div", __assign({ className: "generic-container" }, { children: _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", WORK_STATUS_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) }), _jsx("div", __assign({ className: "work-status-select" }, { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ id: "demo-simple-select-helper-label" }, { children: WORK_STATUS_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons || freshGraduate, value: freshGraduate ? WorkStatusArray[2] : workStatus, label: WORK_STATUS_TEXT, onChange: function (e) { return setWorkStatus(e.target.value); } }, { children: WorkStatusArray.map(function (item) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item)); }) }))] })) }))] })) })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "ctc-details-text" }, { children: [" ", CTC_DETAIL_TEXT] })) }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: FIXED_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleFixedCtc, value: fixedCtc }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: VARIABLE_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleVariableCtc, value: variableCtc }), _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("div", { children: _jsx("p", { children: TOTAL_CTC_TEXT }) }) })), _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx(TextField, { disabled: !props.hasButtons || freshGraduate, type: "text", value: totalCtc, onChange: function (e) { return setTotalCtc(e.target.value); }, label: TOTAL_CTC_LABEL, placeholder: TCTC_PLACEHOLDER, InputProps: {
+    var emptyExperienceCTCDetatils = function () {
+        setRelevantExperience({
+            relevantExperienceYears: "",
+            relevantExperienceMonths: ""
+        });
+        setTotalExperience({
+            totalExperienceMonths: "",
+            totalExperienceYears: "",
+        });
+        setFixedCtc({
+            fixedCtcLakh: "",
+            fixedCtcThousand: "",
+        });
+        setVariableCtc({
+            variableCtcLakh: "",
+            variableCtcThousand: "",
+        });
+    };
+    return (_jsx(_Fragment, { children: !loader ? (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx("p", __assign({ className: "step-content-title-text" }, { children: EXPERIENCE_TITLE })), _jsxs("div", __assign({ className: "experience-details-card" }, { children: [_jsxs("div", __assign({ className: "experience-card-title" }, { children: [_jsx("div", { children: _jsxs("span", { children: [TOTAL_EXP_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) }), _jsxs("div", { children: [_jsx("span", { children: FRESHER_TEXT }), _jsx(Checkbox, { disabled: !props.hasButtons, checked: freshGraduate, onChange: function (e) {
+                                                var _a;
+                                                setFreshGraduate((_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.checked);
+                                                if (e.target.checked === true) {
+                                                    emptyExperienceCTCDetatils();
+                                                }
+                                                setWorkStatus("Fresh Graduate");
+                                            }, inputProps: { "aria-label": "controlled" } })] })] })), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, disabled: !props.hasButtons || freshGraduate, setValues: handleTotalExperience, value: totalExperience }), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, InlineInputTitle: RELEVANT_EXP_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleRelevantExperience, value: relevantExperience })] })), _jsx("div", __assign({ className: "generic-container" }, { children: _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", WORK_STATUS_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) }), _jsx("div", __assign({ className: "work-status-select" }, { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ id: "demo-simple-select-helper-label" }, { children: WORK_STATUS_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons || freshGraduate, value: freshGraduate ? 'Fresh Graduate' : workStatus, label: WORK_STATUS_TEXT, onChange: function (e) {
+                                                if (e.target.value !== 'Fresh Graduate') {
+                                                    setFreshGraduate(false);
+                                                }
+                                                else {
+                                                    setFreshGraduate(true);
+                                                    emptyExperienceCTCDetatils();
+                                                }
+                                                setWorkStatus(e.target.value);
+                                            } }, { children: WorkStatusArray.map(function (item) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item)); }) }))] })) }))] })) })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "ctc-details-text" }, { children: [" ", CTC_DETAIL_TEXT] })) }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: FIXED_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleFixedCtc, value: fixedCtc }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: VARIABLE_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleVariableCtc, value: variableCtc }), _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("div", { children: _jsx("p", { children: TOTAL_CTC_TEXT }) }) })), _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx(TextField, { disabled: !props.hasButtons || freshGraduate, type: "text", value: totalCtc, onChange: function (e) { return setTotalCtc(e.target.value); }, label: TOTAL_CTC_LABEL, placeholder: TCTC_PLACEHOLDER, InputProps: {
                                                 inputProps: {
                                                     maxLength: 12,
                                                 },

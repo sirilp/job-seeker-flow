@@ -93,7 +93,8 @@ var IncompleteUploads = function (props) {
         console.log(filterValue, id);
         setSelectedButtonId(id);
         setSelectedButtonValue(filterValue);
-        getTableRowData(filterValue, contestId, 0, 10);
+        setPageNo(0);
+        setPageSize(10);
     };
     var getTableRowData = function (filterValue, contestId, pageNo, pageSize) { return __awaiter(void 0, void 0, void 0, function () {
         var response, mapData, result, stateData;
@@ -240,6 +241,7 @@ var IncompleteUploads = function (props) {
         setPageNo(pageNumber - 1);
     };
     var pageSizeChange = function (pageSizeChanged) {
+        setPageNo(0);
         setPageSize(pageSizeChanged);
     };
     return (_jsx(_Fragment, { children: _jsxs(Grid, __assign({ container: true, spacing: 3 }, { children: [_jsxs(Grid, __assign({ item: true, xs: 12, p: 2 }, { children: [_jsx(Typography, __assign({ fontSize: 30 }, { children: "Incomplete Uploads" })), _jsx(StepCount, { StepCountList: [

@@ -86,15 +86,17 @@ var Vetting = function (props) {
         submitted: 0,
         consent: 0,
     }), agCount = _l[0], setAgCount = _l[1];
+    var setSelectedButton = function (id, filterValue) {
+        setSelectedButtonId(id);
+        setSelectedButtonValue(filterValue);
+        setPageNo(0);
+        setPageSize(10);
+        // getTableRowData(0, 10, contestId, filterValue);
+    };
     useEffect(function () {
         handleAggregateData(contestId);
         getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
     }, [pageNo, pageSize, contestId, selectedButtonValue]);
-    var setSelectedButton = function (id, filterValue) {
-        setSelectedButtonId(id);
-        setSelectedButtonValue(filterValue);
-        getTableRowData(0, 10, contestId, filterValue);
-    };
     var handleAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
         var result1, statusCount, response, result2, result3, result4;
         return __generator(this, function (_a) {
@@ -263,6 +265,7 @@ var Vetting = function (props) {
         setPageNo(pageNumber - 1);
     };
     var pageSizeChange = function (pageSizeChanged) {
+        setPageNo(0);
         setPageSize(pageSizeChanged);
     };
     return (_jsxs(Grid, __assign({ container: true, spacing: 3 }, { children: [_jsxs(Grid, __assign({ item: true, xs: 12, p: 2 }, { children: [_jsx(Typography, __assign({ fontSize: 30 }, { children: "Profiles" })), _jsx(StepCount, { StepCountList: [
