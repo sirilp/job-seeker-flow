@@ -129,7 +129,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
         profileId: props.profileDataId || userDataState.userData.profileId,
-        profileData: { profileNoticePeriodMap },
+        profileData: { profileNoticePeriodMap, profileLastCompletedStep: "5" },
       });
       console.log(profileDetailsResponse?.data);
       if (profileDetailsResponse?.data?.success) {
@@ -211,7 +211,9 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
   const callPrefillData = async () => {
     try {
       setLoader(true);
-      const profileDataFetched = await getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId);
+      const profileDataFetched = await getJobSeekerProfile(
+        props.profileDataId || userDataState.userData.profileId
+      );
       if (profileDataFetched?.data?.data?.profileNoticePeriodMap) {
         patchNoticePeriodDetails(
           profileDataFetched?.data?.data?.profileNoticePeriodMap
@@ -509,7 +511,12 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                         setType={props.setType}
                         setOpen={props.setOpen}
                         setDataMessage={props.setDataMessage}
-                        prefilData={(props.profileDataId || userDataState.userData.profileId) ? offerData : null}
+                        prefilData={
+                          props.profileDataId ||
+                          userDataState.userData.profileId
+                            ? offerData
+                            : null
+                        }
                       />
                     </div>
                   </div>

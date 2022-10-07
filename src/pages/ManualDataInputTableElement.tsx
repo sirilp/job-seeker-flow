@@ -537,7 +537,8 @@ export const CustomDOBInputBox = (params: any) => {
     const dd = ("0" + newValue.$D).slice(-2);
     const mm = ("0" + (newValue.$M + 1)).slice(-2);
     const yy = newValue.$y;
-    setDate(`${dd}/${mm}/${yy}`);
+    // Date picker is handling the date in MM/DD/YYYY format
+    setDate(`${mm}/${dd}/${yy}`);
     params.setValue(`${dd}/${mm}/${yy}`);
   };
 
@@ -547,6 +548,7 @@ export const CustomDOBInputBox = (params: any) => {
         label="Custom input"
         views={["year", "month", "day"]}
         value={date}
+        inputFormat="DD/MM/YYYY"
         onChange={(newValue) => {
           handleChange(newValue);
         }}
@@ -890,6 +892,13 @@ export const CustomUploadButton = (params: any) => {
 };
 export const ClearRowButton = (params: any) => {
   const classes = useStyles();
+  const [disableButton, setdisableButton] = useState<any>(
+    params.data.pdcStatus
+  );
+  useEffect(() => {
+    setdisableButton(params.data.pdcStatus);
+  }, [params.data.pdcStatus]);
+
   const handleClick = () => {
     params.node.setDataValue("firstName", "");
     params.node.setDataValue("lastName", "");
@@ -914,6 +923,7 @@ export const ClearRowButton = (params: any) => {
         // className={classes.buttonContainer}
         onClick={handleClick}
         aria-label="delete"
+        disabled={disableButton === true ? true : false}
       >
         <DeleteIcon />
       </IconButton>

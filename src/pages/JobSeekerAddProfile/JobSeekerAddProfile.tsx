@@ -23,6 +23,7 @@ import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { createJobSeekerProfile } from "../../services/FormDataService";
 
 const useStyles = makeStyles(() => ({
   buttonCardContainer: {
@@ -33,7 +34,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
-
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const gridRef = useRef<AgGridReact<any>>();
@@ -46,23 +46,51 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
   const [totalPages, setTotalPages] = useState(1);
 
   const fulfillUpload = (data: any) => {
-    dispatchProfileLogId(data?.profileLogId);
+    callResumeUpload(data?.profileLogId);
     props.handleComplete(0);
     props.handleNext();
   };
 
-  const dispatchProfileLogId = (profileLogId) => {
+  const callResumeUpload = async (profileLogId: any) => {
+    const seekerProfile = await createJobSeekerProfile({
+      profileLogId: profileLogId,
+      profileData: {
+        profileLastCompletedStep: "1",
+      },
+    });
+    if (seekerProfile?.data?.success) {
+      dispatchProfileId(
+        seekerProfile?.data?.data?.profileId,
+        seekerProfile?.data?.data?.jobSeekerId
+      );
+    }
+  };
+  const dispatchProfileId = (profileId, jobSeekerId) => {
     dispatch({
       type: "USER_ADD",
       data: {
         userData: {
           ...userDataState.userData,
-          profileLogId,
+          profileId,
+          jobSeekerId,
         },
         userId: userDataState.userId,
       },
     });
   };
+
+  // const dispatchProfileLogId = (profileLogId) => {
+  //   dispatch({
+  //     type: "USER_ADD",
+  //     data: {
+  //       userData: {
+  //         ...userDataState.userData,
+  //         profileLogId,
+  //       },
+  //       userId: userDataState.userId,
+  //     },
+  //   });
+  // };
 
   const resetNotificationData = () => {
     dispatch({
@@ -217,14 +245,14 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
   return (
     <div className="form-encapsulate">
       <div className="form-card-holder">
-        { notifyDataState &&  (
+        {notifyDataState && (
           <Notification
-          open={notifyDataState.enable}
-          type={notifyDataState.type}
-          message={notifyDataState.message}
-          duration={notifyDataState.duration}
-          setOpen={() => resetNotificationData()}
-        />
+            open={notifyDataState.enable}
+            type={notifyDataState.type}
+            message={notifyDataState.message}
+            duration={notifyDataState.duration}
+            setOpen={() => resetNotificationData()}
+          />
         )}
         {/* <div className="forms-button-container">
             <div

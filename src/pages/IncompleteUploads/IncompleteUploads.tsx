@@ -63,7 +63,8 @@ const IncompleteUploads = (props) => {
     console.log(filterValue, id);
     setSelectedButtonId(id);
     setSelectedButtonValue(filterValue);
-    getTableRowData(filterValue, contestId, 0, 10);
+    setPageNo(0);
+    setPageSize(10);
   };
 
   const getTableRowData = async (filterValue, contestId, pageNo, pageSize) => {
@@ -234,6 +235,7 @@ const IncompleteUploads = (props) => {
     setPageNo(pageNumber - 1);
   };
   const pageSizeChange = (pageSizeChanged) => {
+    setPageNo(0);
     setPageSize(pageSizeChanged);
   };
 

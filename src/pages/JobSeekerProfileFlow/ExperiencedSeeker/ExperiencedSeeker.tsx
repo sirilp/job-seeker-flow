@@ -229,7 +229,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                   md={HALF_SIZE_GRID}
                   lg={HALF_SIZE_GRID}
                 >
-                  <p>{PAYROLL_NAME_TEXT}</p>
+                  <p className="institute-field">{PAYROLL_NAME_TEXT}</p>
                   <TextField
                     required
                     id="payrollEmployer"
@@ -249,7 +249,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                   md={HALF_SIZE_GRID}
                   lg={HALF_SIZE_GRID}
                 >
-                  <p>{END_CLIENT_TEXT}</p>
+                  <p className="institute-field">{END_CLIENT_TEXT}</p>
                   <TextField
                     required
                     id="endClient"
@@ -271,14 +271,14 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               md={HALF_SIZE_GRID}
               lg={HALF_SIZE_GRID}
             >
-              <p>
+              <p  className="institute-field">
                 {props.workStatus === WorkStatusType.JOBLESS
                   ? LAST_EMPLOYER_TEXT
                   : CURRENT_EMPLOYER_TEXT}
                 <span className="asterisk-span"> *</span>
               </p>
               {props.workStatus === WorkStatusType.JOBLESS ? (
-                <div className="institute-field">
+                <div>
                   <TextField
                   required
                   id="lastEmployer"
@@ -293,7 +293,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                 </div>
               ) : 
               (
-                <div className="institute-field">
+                <div>
                 <TextField
                   required
                   id="currentEmployer"
@@ -315,7 +315,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               md={HALF_SIZE_GRID}
               lg={HALF_SIZE_GRID}
             >
-              <p>
+              <p  className="institute-field">
                 {props.workStatus === WorkStatusType.JOBLESS
                   ? LAST_EMPLOYER_LOCATION_TEXT
                   : COMPANY_LOCATION_TEXT}
@@ -353,7 +353,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               md={HALF_SIZE_GRID}
               lg={HALF_SIZE_GRID}
             >
-              <p>
+              <p  className="institute-field">
                 {props.workStatus === WorkStatusType.JOBLESS
                   ? PREV_EMPLOYER_RELIEVING_TEXT
                   : CURRENT_EMPLOYER_JOINING_TEXT}

@@ -1,12 +1,12 @@
 import React, { ReactElement, FC, useEffect, useRef } from "react";
-import { 
-  Step, 
-  Button, 
-  MenuItem, 
-  Checkbox, 
-  FormControl, 
+import {
+  Step,
+  Button,
+  MenuItem,
+  Checkbox,
+  FormControl,
   CircularProgress,
-  Stack
+  Stack,
 } from "@mui/material";
 import "./JobSeekerProfileFlow.css";
 import {
@@ -29,7 +29,6 @@ import { Form } from "react-formio";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 
 const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
-
   const userDataState = useAppSelector((state) => state.currentUser);
   const dispatch = useAppDispatch();
   const myRefTag: any = useRef(Form);
@@ -41,16 +40,16 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   const [postFormDetails, setPostFormDetails] = React.useState<any>({});
   const [gotData, setGotData] = React.useState(false);
 
-  const jdQueMap ={
-    textField: 'Hy',
-    issuingCountry: '',
-    yes: 'yes',
-    dateOfExpiry: '09/23/2020',
-    dateOfIssue: '09/23/2016',
+  const jdQueMap = {
+    textField: "Hy",
+    issuingCountry: "",
+    yes: "yes",
+    dateOfExpiry: "09/23/2020",
+    dateOfIssue: "09/23/2016",
   };
 
   useEffect(() => {
-    if(props.profileDataId || userDataState.userData.profileId){
+    if (props.profileDataId || userDataState.userData.profileId) {
       setLoader(true);
       getDataFill();
     }
@@ -58,35 +57,33 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   }, []);
 
   const getDataFill = async () => {
-    const profileDataFetched = await getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId);
-    if(profileDataFetched?.data?.data?.jdQuestionsMap) {
-       setPrefillDetails(
-        {
-          data: {
-            ...profileDataFetched?.data?.data?.jdQuestionsMap,
-          }
-        }
-       )
-      }
-      setLoader(false);
-  };
-  console.log(prefillDetails)
-  const fetchForm = async () => {
-    const formMarkup = await getFormData(
-      JD_PATCH_FORM, "", props.contestId
+    const profileDataFetched = await getJobSeekerProfile(
+      props.profileDataId || userDataState.userData.profileId
     );
-      if (formMarkup?.data?.data[0]?.formData?.jdQuestionForm) {
+    if (profileDataFetched?.data?.data?.jdQuestionsMap) {
+      setPrefillDetails({
+        data: {
+          ...profileDataFetched?.data?.data?.jdQuestionsMap,
+        },
+      });
+    }
+    setLoader(false);
+  };
+  console.log(prefillDetails);
+  const fetchForm = async () => {
+    const formMarkup = await getFormData(JD_PATCH_FORM, "", props.contestId);
+    if (formMarkup?.data?.data[0]?.formData?.jdQuestionForm) {
       const jdMarkup = await getFormModeler(
         formMarkup?.data?.data[0]?.formData?.jdQuestionForm
       );
       if (jdMarkup?.data?.data?.components?.components) {
         setMenuForm(jdMarkup?.data?.data?.components);
         setLoader(false);
-      }
-      else {
-        setLoader(false);
-        setGotData(true);
-      }
+      } 
+    }
+    else {
+      setLoader(false);
+      setGotData(true);
     }
   };
 
@@ -108,10 +105,13 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
       const bodyPayload = {
         profileId: props.profileDataId || userDataState.userData.profileId,
         profileData: {
-          jdQuestionsMap
+          jdQuestionsMap,
+          profileLastCompletedStep: "6",
         },
       };
-      const profileJDDetailsResponse = await updateJobSeekerProfile(bodyPayload);
+      const profileJDDetailsResponse = await updateJobSeekerProfile(
+        bodyPayload
+      );
       if (profileJDDetailsResponse?.data?.success) {
         props.setType(SUCCESS_KEY);
         props.setDataMessage(FORM_SUBMISSION_SUCCESS);
@@ -127,27 +127,29 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
     }
     setLoader(false);
   };
-
+console.log(gotData)
   return (
     <div className="job-seeker-profile-content">
       <Form
         ref={myRefTag}
         form={menuForm}
-        submission={ prefillDetails}
+        submission={prefillDetails}
         onChange={(schema: any) => handleChange(schema)}
       />
-     <div className="head-title-text">
+      {gotData && (
+        <div className="head-title-text">
           JD Specific Questions has not been configured for this contest
-      </div>
+        </div>
+      )}
       <PreviousNextButtons
         handleNext={submitFormData}
         handleBack={props.handleBack}
       />
       {loader && (
-          <Stack alignItems="center">
-            <CircularProgress />
-          </Stack>
-        )}
+        <Stack alignItems="center">
+          <CircularProgress />
+        </Stack>
+      )}
     </div>
   );
 };

@@ -40,7 +40,7 @@
 
 .notice-details-card {
     padding-left: 0.6%;
-    padding-right: 0.4%;
+    padding-right: 0.5%;
     box-shadow: 0px 4px 16px rgba(206, 212, 240, 0.8);
     padding-top: 20px;
     padding-bottom: 30px;
@@ -111,5 +111,5 @@
 }
 
 .institute-field{
-    max-width: 160px;
+    font-size: 15px;
 }

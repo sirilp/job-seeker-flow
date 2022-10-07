@@ -58,16 +58,18 @@ const Vetting = (props) => {
     consent: 0,
   });
 
+  const setSelectedButton = (id: number, filterValue: string) => {
+    setSelectedButtonId(id);
+    setSelectedButtonValue(filterValue);
+    setPageNo(0);
+    setPageSize(10);
+    // getTableRowData(0, 10, contestId, filterValue);
+  };
+
   useEffect(() => {
     handleAggregateData(contestId);
     getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
   }, [pageNo, pageSize, contestId, selectedButtonValue]);
-
-  const setSelectedButton = (id: number, filterValue: string) => {
-    setSelectedButtonId(id);
-    setSelectedButtonValue(filterValue);
-    getTableRowData(0, 10, contestId, filterValue);
-  };
 
   const handleAggregateData = async (contestId) => {
     let result1: any;
@@ -270,6 +272,7 @@ const Vetting = (props) => {
     setPageNo(pageNumber - 1);
   };
   const pageSizeChange = (pageSizeChanged) => {
+    setPageNo(0);
     setPageSize(pageSizeChanged);
   };
 
