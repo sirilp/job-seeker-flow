@@ -357,7 +357,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                 {
                     additonalCertificationStatus === YesNoOptions[0] ?
 
-                    <div className="conditional-container">
+                    <div>
                         <div className="experience-card-title">
                             <p>{CERTIFICATION_ADD_TEXT}</p>
                         </div>
@@ -374,12 +374,12 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
 
                     : null
                 }
-                <div className="conditional-container">
+                <div>
                     <div className="experience-card-title">
                         <p>{WORK_STATUS_TEXT}: {jobStatus}</p>
                     </div>
                 </div>
-                <div className="conditional-container">
+                <div>
                     {
                         jobStatus === WorkStatusType.FRESHER ?
 
@@ -396,7 +396,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                         : null
                     }
                 </div>
-                <div className="conditional-container">
+                <div>
                     {
                         jobStatus !== WorkStatusType.FRESHER ?
                         <>

@@ -501,7 +501,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     />
                   </div>
                 ) : offerStatus === YesNoOptions[0] ? (
-                  <div className="notice-period-conditional">
+                  <div>
                     <div className="outline-div">
                       <CurrentOffers
                         setOfferData={setOfferData}

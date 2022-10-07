@@ -39,8 +39,8 @@
 }
 
 .notice-details-card {
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 6%;
+    padding-right: 5%;
     box-shadow: 0px 4px 16px rgba(206, 212, 240, 0.8);
     padding-top: 20px;
     padding-bottom: 30px;
@@ -105,7 +105,7 @@
 }
 
 .experienced-div {
-    padding: 2% 4% 2% 10%;
+    padding: 2% 4% 2% 5%;
     border: 1px solid var(--light-title);
     border-radius: 16px;
 }
