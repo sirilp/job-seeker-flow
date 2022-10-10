@@ -32,11 +32,7 @@ const JobSeekerTempleteButton: FC<any> = (props): ReactElement => {
               height: "49%",
             }}
           >
-            <img
-              src={`assets/images/${props.fileName}`}
-              width={"40%"}
-              height={"120%"}
-            />
+            <props.fileName sx={{ fontSize: "2.5rem" }} />
           </div>
           {/* <hr
             style={{

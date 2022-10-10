@@ -61,7 +61,7 @@ const Manage = (props) => {
   useEffect(() => {
     getTableRowData(pageNo, pageSize, contestId);
     handleAggregateData(contestId);
-  }, []);
+  }, [pageNo, pageSize, contestId]);
 
   const handleAggregateData = async (contestId) => {
     const response: any = await getAggregateData(contestId);
@@ -186,6 +186,7 @@ const Manage = (props) => {
     setPageNo(pageNumber - 1);
   };
   const pageSizeChange = (pageSizeChanged) => {
+    setPageNo(0);
     setPageSize(pageSizeChanged);
   };
 

@@ -29,7 +29,6 @@ import JobSeekerCompleteProfile from "../JobSeekerCompleteProfile/JobSeekerCompl
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 
 const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
-
   const [loader, setLoader] = React.useState(false);
   const [checkout, setCheckout] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(-1);
@@ -144,7 +143,7 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
     <>
       {submitted ? (
         <>
-          <JobSeekerCompleteProfile contestId={props.contestId} />
+          <JobSeekerCompleteProfile />
         </>
       ) : (
         <>

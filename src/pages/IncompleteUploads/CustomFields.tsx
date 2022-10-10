@@ -24,6 +24,9 @@ const useStyles = makeStyles(() => ({
   uploadText: {
     color: "#4d6cd9",
   },
+  commonAlignment:{
+    textAlign: "center",
+  },
 }));
 
 export const Icons = (params) => {
@@ -36,9 +39,7 @@ export const Icons = (params) => {
   return (
     <>
     <div
-      style={{
-        textAlign: "center",
-      }}
+      className={classes.commonAlignment}
     >
       <VisibilityIcon 
       className={classes.iconColor} 

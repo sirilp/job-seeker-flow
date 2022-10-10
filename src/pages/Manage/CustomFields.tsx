@@ -19,20 +19,19 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  FormGroup,
+  FormControlLabel,
+  Paper,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-
 import LocalPhoneRoundedIcon from "@mui/icons-material/LocalPhoneRounded";
 import CloseIcon from "@mui/icons-material/Close";
-
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -48,19 +47,12 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import Calendar from "../../components/Calendar/Calendar";
+import clsx from "clsx";
 
 const useStyles = makeStyles(() => ({
-  buttonContainer: {
-    "&.MuiButton-root": {
-      minWidth: "2vw",
-    },
-  },
-  arrow: {
-    "&:before": {
-      border: "1px solid #36454F",
-      color: "#ffffff",
-    },
-  },
   iconColor: {
     color: "#4d6cd9",
     margin: "8px",
@@ -71,7 +63,7 @@ const useStyles = makeStyles(() => ({
   viewAssessmentCard: {
     border: "1px solid grey",
     height: "200px ",
-    marginTop: "20px",
+    marginTop: "10px",
     marginRight: "5px",
     marginLeft: "5px",
     fontSize: "15px",
@@ -81,10 +73,24 @@ const useStyles = makeStyles(() => ({
     width: "1px",
     float: "right",
     margin: "3px 3px 0px 0px",
+    cursor: "pointer",
+  },
+  assessmentButton: {
+    textAlign: "center",
+    marginTop: 3,
   },
   assessmentDeleteAction: {
     border: "1px solid gray",
     borderRadius: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "left",
+    alignItems: "center",
+    paddingLeft: "40px",
+    width: "250px",
+    color: "gray",
+    height: "55px",
+    fontSize: "16px",
   },
   deleteActionButton: {
     width: "250px",
@@ -95,14 +101,23 @@ const useStyles = makeStyles(() => ({
     fontSize: "16px",
   },
   deleteIcon: {
-    size: "small",
     marginRight: "15px",
+    cursor: "pointer",
   },
   assessmentUpdateAction: {
     borderLeft: "1px solid gray",
     borderRight: "1px solid gray",
     borderBottom: "1px solid gray",
     borderRadius: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "left",
+    alignItems: "center",
+    paddingLeft: "43px",
+    width: "250px",
+    color: "gray",
+    height: "55px",
+    fontSize: "16px",
   },
   updateActionButton: {
     width: "250px",
@@ -112,13 +127,12 @@ const useStyles = makeStyles(() => ({
     fontSize: "16px",
   },
   updateIcon: {
-    size: "small",
-    marginRight: "20px",
-    marginLeft: "25px",
+    marginRight: "17px",
     backgroundColor: "gray",
     color: "white",
-    borderRadius: "2px",
-    fontSize: "14px",
+    borderRadius: 3,
+    cursor: "pointer",
+    padding: "2px",
   },
   uploadIcon: {
     size: "small",
@@ -130,39 +144,52 @@ const useStyles = makeStyles(() => ({
     fontSize: "14px",
   },
   assessmentDialogueBox: {
-    backgroundColor: "gray",
+    backgroundColor: "#4D6CD9",
     width: "600px",
     textAlign: "center",
   },
   assessmentDialogueContent: {
-    paddingTop: "30px",
+    textAlign: "center",
+  },
+  assessmentDialogueText: {
+    paddingTop: "50px",
+    paddingBottom: "40px",
+    justifyContent: "center",
     textAlign: "center",
   },
   assessmentDialogueAction: {
     paddingTop: "10px",
     paddingBottom: "40px",
+    display: "flex",
+    flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+    width: "600px",
   },
   delete: {
-    backgroundColor: "gray",
+    backgroundColor: "#4D6CD9",
     borderRadius: 20,
     color: "black",
-    right: "30px",
     paddingLeft: "30px",
     paddingRight: "30px",
     height: "30px",
+    paddingTop: "3px",
+    cursor: "pointer",
+    marginRight: "20px",
   },
   cancel: {
-    backgroundColor: "gray",
+    backgroundColor: "#4D6CD9",
     borderRadius: 20,
     color: "black",
-    left: "30px",
     paddingLeft: "20px",
     paddingRight: "20px",
     height: "30px",
+    paddingTop: "3px",
+    cursor: "pointer",
+    marginLeft: "20px",
   },
   leftDrawerBox: {
-    width: "400px",
+    width: "390px",
     overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
@@ -173,7 +200,7 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     backgroundColor: "#4D6CD9",
     height: "50px",
-    width: "390px",
+    // width: "390px",
     color: "#FFFFFF",
     padding: "10px",
     fontSize: "20px",
@@ -186,6 +213,7 @@ const useStyles = makeStyles(() => ({
     marginRight: "5px",
     marginLeft: "5px",
     fontSize: "13px",
+    marginBottom: "10px",
   },
   assessmentDetails: {
     width: "190px",
@@ -196,6 +224,69 @@ const useStyles = makeStyles(() => ({
     fontSize: "20px",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  mainContainer: {
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    height: 687,
+    width: 390,
+    margin: 1,
+    border: "1px solid #E5E5E5",
+  },
+  section1: {
+    textAlign: "center",
+    backgroundColor: "#4D6CD9",
+    height: "50px",
+    width: "390px",
+    color: "#FFFFFF",
+    padding: "10px",
+  },
+  section2: {
+    marginTop: "15px",
+    width: "390px",
+    textAlign: "center",
+  },
+  section3: {
+    marginTop: "15px",
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  card: {
+    marginLeft: "18px",
+    backgroundColor: "white",
+    width: "350px",
+    height: "auto",
+    borderRadius: "10px",
+  },
+  timeSlotTitleContainer: {
+    marginTop: "40px",
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  commonColor: {
+    color: "#4d6cd9",
+  },
+  commonMargin: {
+    margin: "10px",
+  },
+  dropdown: {
+    border: "1px solid #DFE5FF",
+  },
+  dropdownContent: {
+    display: "inline-flex",
+    alignItems: "center",
+  },
+  closeIcon: {
+    float: "right",
+  },
+  formControl: {
+    top: 5,
+    minWidth: 120,
   },
 }));
 
@@ -208,11 +299,7 @@ export const ResumeUploaded = (params) => {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-      }}
-    >
+    <div className={classes.assessmentDialogueContent}>
       <Typography onClick={handleViewResume} className={classes.uploadText}>
         View Resume Uploaded
       </Typography>
@@ -233,11 +320,7 @@ export const Icons = (params) => {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-      }}
-    >
+    <div className={classes.assessmentDialogueContent}>
       <VisibilityIcon className={classes.iconColor} onClick={handleClick} />
 
       <LocalPhoneRoundedIcon
@@ -254,18 +337,7 @@ export const Icons = (params) => {
         open={toggleDrawer}
         onClose={() => setToggleDrawer(false)}
       >
-        <Box
-          sx={{
-            width: "380px",
-            overflow: "hidden",
-            justifyContent: "center",
-            alignItems: "center",
-            top: 0,
-            left: 0,
-          }}
-          // onClick={() => setToggleDrawer(false)}
-          // onKeyDown={() => setToggleDrawer(false)}
-        >
+        <Box className={classes.leftDrawerBox}>
           <MessageBox closeIt={() => setToggleDrawer(false)} params={params} />
           {console.log("Left Drawer called")}
         </Box>
@@ -344,23 +416,23 @@ export const CustomDropDown = (params: any) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
-  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip
-      {...props}
-      placement="right"
-      arrow
-      classes={{ popper: className, arrow: classes.arrow }}
-      // className={classes.arrowStyle}
-    />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: "#ffffff",
-      border: `1px solid ${option.color}`,
-      maxWidth: 220,
-      fontSize: theme.typography.pxToRem(12),
-      borderRadius: "1vw",
-    },
-  }));
+  // const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  //   <Tooltip
+  //     {...props}
+  //     placement="right"
+  //     arrow
+  //     classes={{ popper: className, arrow: classes.arrow }}
+  //     // className={classes.arrowStyle}
+  //   />
+  // ))(({ theme }) => ({
+  //   [`& .${tooltipClasses.tooltip}`]: {
+  //     backgroundColor: "#ffffff",
+  //     border: `1px solid ${option.color}`,
+  //     maxWidth: 220,
+  //     fontSize: theme.typography.pxToRem(12),
+  //     borderRadius: "1vw",
+  //   },
+  // }));
   const handleTooltipClose = () => {
     setOpen(false);
   };
@@ -376,7 +448,7 @@ export const CustomDropDown = (params: any) => {
       <div>
         <select
           id={id}
-          style={{ border: "1px solid #DFE5FF" }}
+          className={classes.dropdown}
           value={option.option}
           onChange={handleChange}
           disabled
@@ -387,7 +459,7 @@ export const CustomDropDown = (params: any) => {
           <option value="failed">Failed</option>
         </select>
       </div>
-      <div style={{ display: "inline-flex", alignItems: "center" }}>
+      <div className={classes.dropdownContent}>
         {(() => {
           if (option.option == "passed") {
             return (
@@ -501,64 +573,55 @@ export const ViewAssessments = (params) => {
   const ViewAssessmentReport = () => {
     return (
       <Card className={classes.viewAssessmentCard} elevation={3}>
-        <Box textAlign={"center"}>
-          <div style={{ margin: "10px" }}>
+        <Box className={classes.assessmentDialogueContent}>
+          <div className={classes.commonMargin}>
             Assessment Type - Interview as a Service
             <IconButton
               onClick={handleViewReport}
               className={classes.assessmentActionButton}
             >
-              <FormatAlignJustifyIcon
-                sx={{
-                  color: "blue",
-                }}
-              />
+              <DehazeIcon className={classes.commonColor} />
             </IconButton>
             <Popover
               id="view-popover"
               open={openViewPop}
               anchorEl={anchorElView}
               onClose={handleCloseView}
-              anchorOrigin={{
-                vertical: "center",
-                horizontal: "left",
-              }}
+              anchorReference="anchorPosition"
+              anchorPosition={{ top: 345, left: 355 }}
             >
-              <div className={classes.assessmentDeleteAction}>
-                <Button
-                  className={classes.deleteActionButton}
+              <Box className={classes.assessmentDeleteAction}>
+                <DeleteForeverIcon
+                  className={classes.deleteIcon}
                   onClick={() => {
                     setIsDeleteBoxOpen(true);
                   }}
-                >
-                  <DeleteForeverIcon className={classes.deleteIcon} />
-                  Delete
-                </Button>
-              </div>
-              <div className={classes.assessmentUpdateAction}>
-                <Button
-                  className={classes.updateActionButton}
+                />
+                <Typography>Delete</Typography>
+              </Box>
+              <Box className={classes.assessmentUpdateAction}>
+                <BorderColorIcon
+                  className={classes.updateIcon}
                   onClick={() => {
                     setIsUpdateBoxOpen(true);
                   }}
-                >
-                  <BorderColorIcon className={classes.updateIcon} />
-                  Update
-                </Button>
-              </div>
+                  fontSize="small"
+                />
+                <Typography>Update</Typography>
+              </Box>
             </Popover>
           </div>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Partner - Interviewplus
           </div>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Partner - Interviewplus
           </div>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Partner - Interviewplus
           </div>
         </Box>
-        <Box textAlign={"center"} mt={3}>
+        <Box className={classes.assessmentButton}>
           <Button variant="contained">View Assesment Report</Button>
         </Box>
       </Card>
@@ -579,63 +642,54 @@ export const ViewAssessments = (params) => {
     return (
       <Card className={classes.viewAssessmentCard} elevation={3}>
         <Box textAlign={"center"}>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Type - Interview as a Service
             <IconButton
               onClick={handleUploadReport}
               className={classes.assessmentActionButton}
             >
-              <FormatAlignJustifyIcon
-                sx={{
-                  color: "blue",
-                }}
-              />
+              <DehazeIcon className={classes.commonColor} />
             </IconButton>
             <Popover
               id="upload-popover"
               open={openUploadPop}
               anchorEl={anchorElUpload}
               onClose={handleCloseUpload}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
+              anchorReference="anchorPosition"
+              anchorPosition={{ top: 565, left: 355 }}
             >
-              <div className={classes.assessmentDeleteAction}>
-                <Button
-                  className={classes.deleteActionButton}
+              <Box className={classes.assessmentDeleteAction}>
+                <DeleteForeverIcon
+                  className={classes.deleteIcon}
                   onClick={() => {
                     setIsDeleteBoxOpen(true);
                   }}
-                >
-                  <DeleteForeverIcon className={classes.deleteIcon} />
-                  Delete
-                </Button>
-              </div>
-              <div className={classes.assessmentUpdateAction}>
-                <Button
-                  className={classes.updateActionButton}
+                />
+                <Typography>Delete</Typography>
+              </Box>
+              <Box className={classes.assessmentUpdateAction}>
+                <BorderColorIcon
+                  className={classes.updateIcon}
                   onClick={() => {
                     setIsUploadBoxOpen(true);
                   }}
-                >
-                  <BorderColorIcon className={classes.uploadIcon} />
-                  Upload
-                </Button>
-              </div>
+                  fontSize="small"
+                />
+                <Typography>Upload</Typography>
+              </Box>
             </Popover>
           </div>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Partner - Interviewplus
           </div>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Partner - Interviewplus
           </div>
-          <div style={{ margin: "10px" }}>
+          <div className={classes.commonMargin}>
             Assessment Partner - Interviewplus
           </div>
         </Box>
-        <Box textAlign={"center"} mt={3}>
+        <Box className={classes.assessmentButton}>
           <Button variant="contained">Upload Assesment Report</Button>
         </Box>
       </Card>
@@ -664,42 +718,37 @@ export const ViewAssessments = (params) => {
           className={classes.assessmentDialogueBox}
         >
           {"Delete Assessment"}
-          <IconButton
+          <CloseIcon
             onClick={() => {
               setIsDeleteBoxOpen(false);
             }}
             className={classes.assessmentActionButton}
-          >
-            <CloseIcon />
-          </IconButton>
+          />
         </DialogTitle>
         <DialogContent className={classes.assessmentDialogueContent}>
-          <DialogContentText id="delete-dialog-description">
+          <DialogContentText
+            id="delete-dialog-description"
+            className={classes.assessmentDialogueText}
+          >
             Are you sure you want to Delete Assessment of the Job Seeker from
             the platfrom?
           </DialogContentText>
         </DialogContent>
-        <DialogActions className={classes.assessmentDialogueAction}>
-          <Button
-            onClick={handleDelete}
-            className={classes.delete}
-            size="large"
-          >
-            Yes
-          </Button>
-          <Button
+        <Box className={classes.assessmentDialogueAction}>
+          <Box className={classes.delete} onClick={handleDelete}>
+            <Typography>Yes</Typography>
+          </Box>
+          <Box
+            className={classes.cancel}
             onClick={() => {
               setIsDeleteBoxOpen(false);
               setAnchorElUpload(null);
               setAnchorElView(null);
             }}
-            className={classes.cancel}
-            size="large"
-            autoFocus
           >
-            Cancel
-          </Button>
-        </DialogActions>
+            <Typography>Cancel</Typography>
+          </Box>
+        </Box>
       </Dialog>
     );
   };
@@ -716,17 +765,18 @@ export const ViewAssessments = (params) => {
           className={classes.assessmentDialogueBox}
         >
           {"Delete Assessment"}
-          <IconButton
+          <CloseIcon
             onClick={() => {
               setIsDeleteSuccessBoxOpen(false);
             }}
             className={classes.assessmentActionButton}
-          >
-            <CloseIcon />
-          </IconButton>
+          />
         </DialogTitle>
         <DialogContent className={classes.assessmentDialogueContent}>
-          <DialogContentText id="delete-success-dialog-description">
+          <DialogContentText
+            id="delete-success-dialog-description"
+            className={classes.assessmentDialogueText}
+          >
             Assessment has been deleted!
           </DialogContentText>
         </DialogContent>
@@ -746,18 +796,19 @@ export const ViewAssessments = (params) => {
           className={classes.assessmentDialogueBox}
         >
           {"Update Assessment"}
-          <IconButton
+          <CloseIcon
             onClick={() => {
               setIsUpdateBoxOpen(false);
               setAnchorElView(null);
             }}
             className={classes.assessmentActionButton}
-          >
-            <CloseIcon />
-          </IconButton>
+          />
         </DialogTitle>
         <DialogContent className={classes.assessmentDialogueContent}>
-          <DialogContentText id="update-dialog-description">
+          <DialogContentText
+            id="update-dialog-description"
+            className={classes.assessmentDialogueText}
+          >
             Job Seeker Name -
           </DialogContentText>
         </DialogContent>
@@ -777,18 +828,19 @@ export const ViewAssessments = (params) => {
           className={classes.assessmentDialogueBox}
         >
           {"Upload Assessment"}
-          <IconButton
+          <CloseIcon
             onClick={() => {
               setIsUploadBoxOpen(false);
               setAnchorElUpload(null);
             }}
             className={classes.assessmentActionButton}
-          >
-            <CloseIcon />
-          </IconButton>
+          />
         </DialogTitle>
         <DialogContent className={classes.assessmentDialogueContent}>
-          <DialogContentText id="upload-dialog-description">
+          <DialogContentText
+            id="upload-dialog-description"
+            className={classes.assessmentDialogueText}
+          >
             Job Seeker Name -
           </DialogContentText>
         </DialogContent>
@@ -797,11 +849,7 @@ export const ViewAssessments = (params) => {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-      }}
-    >
+    <div className={classes.assessmentDialogueContent}>
       <Typography onClick={handleClick} className={classes.uploadText}>
         View Assessments
       </Typography>
@@ -817,18 +865,22 @@ export const ViewAssessments = (params) => {
               <Typography className={classes.viewAssessmentTitle}>
                 View Assessments
                 <CloseIcon
-                  sx={{ float: "right" }}
+                  className={classes.closeIcon}
                   onClick={() => setToggleDrawer(false)}
                 />
               </Typography>
             </Box>
-            <Typography textAlign={"center"}>Request New Assessment</Typography>
-            <Typography>Job Seeker Name - Rajesh Sharma</Typography>
+            <Typography className={classes.assessmentDialogueContent}>
+              Request New Assessment
+            </Typography>
+            <Typography className={classes.assessmentDialogueContent}>
+              Job Seeker Name - Rajesh Sharma
+            </Typography>
             <Box>
               <Card className={classes.assessmentDetailsCard} elevation={3}>
                 <Box display={"flex"}>
-                  <Typography p={2}>Assessment Type</Typography>
-                  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <Typography p={2.2}>Assessment Type</Typography>
+                  <FormControl className={classes.formControl} size="small">
                     {/* <InputLabel id="demo-multiple-checkbox-label">
                       Assessment Type
                     </InputLabel> */}
@@ -855,7 +907,7 @@ export const ViewAssessments = (params) => {
                 </Box>
                 <Box display={"flex"}>
                   <Typography p={1}>Assessment Partner</Typography>
-                  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <FormControl className={classes.formControl} size="small">
                     {/* <InputLabel id="demo-multiple-checkbox-label">
                       Assessment Type
                     </InputLabel> */}
@@ -880,7 +932,12 @@ export const ViewAssessments = (params) => {
                     </Select>
                   </FormControl>
                 </Box>
-                <Box textAlign={"center"}>
+                <Box
+                  className={clsx(
+                    classes.assessmentDialogueContent,
+                    classes.section3
+                  )}
+                >
                   <Button variant="contained">Request Assessment</Button>
                 </Box>
               </Card>
@@ -897,6 +954,75 @@ export const ViewAssessments = (params) => {
             </Box>
           </Grid>
         </Box>
+      </Drawer>
+    </div>
+  );
+};
+
+export const Interview = (params) => {
+  const classes = useStyles();
+
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+  const times = ["11:00am to 01:00pm", "03:00pm to 06:00pm"];
+
+  const Card = (props) => {
+    const handleOnChange = (e) => {
+      if (e.target.checked) {
+        const time = e.target.value;
+        alert(e.target.value);
+      }
+    };
+    return (
+      <Grid>
+        <Box>
+          <Typography className={classes.viewAssessmentTitle}>
+            Interview Scheduling
+            <CloseIcon onClick={handleClose} className={classes.closeIcon} />
+          </Typography>
+        </Box>
+        <Box className={classes.section2}>
+          <h5 className={classes.commonColor}>Phase - L1</h5>
+        </Box>
+        <Box className={classes.section3}>
+          <p>Choose Date</p>
+          <Box>
+            <Calendar status={true} />
+          </Box>
+        </Box>
+
+        <Box p={1} className={classes.timeSlotTitleContainer}>
+          <p>Time Slots Available</p>
+          <FormGroup>
+            {times.map((time) => (
+              <FormControlLabel
+                onChange={handleOnChange}
+                value={time}
+                control={<Checkbox />}
+                label={time}
+              />
+            ))}
+          </FormGroup>
+        </Box>
+      </Grid>
+    );
+  };
+
+  const handleClose = () => {
+    setToggleDrawer(false);
+  };
+
+  return (
+    <div className={classes.assessmentDialogueContent}>
+      <Button
+        size="small"
+        onClick={() => setToggleDrawer(true)}
+        variant="contained"
+        sx={{ background: "#4D6CD9", borderRadius: "15px", height: "25px" }}
+      >
+        Schedule
+      </Button>
+      <Drawer anchor="right" open={toggleDrawer} onClose={handleClose}>
+        <Card handleCloseIcon={handleClose} />
       </Drawer>
     </div>
   );

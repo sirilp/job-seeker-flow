@@ -56,6 +56,7 @@ const IncompleteUploads = (props) => {
     step6: 0,
     step7: 0,
   });
+  const [selectedEmails, setSelectedEmails] = useState<any>([]);
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -239,6 +240,15 @@ const IncompleteUploads = (props) => {
     setPageSize(pageSizeChanged);
   };
 
+  const filterEmailIds = () => {
+    const emails = selectedRows.map((item) => item.emailId);
+    setSelectedEmails(emails);
+  };
+
+  useEffect(() => {
+    filterEmailIds();
+  }, [selectedRows]);
+
   return (
     <>
       <Grid container spacing={3}>
@@ -330,7 +340,7 @@ const IncompleteUploads = (props) => {
                   className={classes.iconStyle}
                   onClick={() =>
                     window.open(
-                      "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
                     )
                   }
                 />
