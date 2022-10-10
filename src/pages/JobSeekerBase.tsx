@@ -10,12 +10,16 @@ import DuplicationFailed from "./DuplicationFailed/DuplicationFailed";
 import AllJs from "./AllJs/AllJs";
 import Manage from "./Manage/Manage";
 import IncompleteUploads from "./IncompleteUploads/IncompleteUploads";
+import { useAppSelector, useAppDispatch } from "../services/StoreHooks";
+import { initialAlertState } from "../modules/notificationState";
 
 const useStyles = makeStyles(() => ({}));
 
 const JobSeekerBase: FC<any> = (props): ReactElement => {
   const { id, contestId } = props;
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const notifyDataState = useAppSelector((state) => state.notificationAlert);
 
   const [activeTab, setActiveTab] = React.useState(0);
   const [dataMessage, setDataMessage] = React.useState("");
@@ -31,7 +35,8 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
           setType={setType}
           setOpen={setOpen}
           setDataMessage={setDataMessage}
-          contestId={props.id}
+          contestId={id}
+          id={contestId}
         />
       ),
     },
@@ -72,6 +77,18 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
     },
   ];
 
+  const resetNotificationData = () => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: initialAlertState.enable,
+        type: initialAlertState.type,
+        message: initialAlertState.message,
+        duration: initialAlertState.duration,
+      },
+    });
+  };
+
   return (
     <Grid container p={2}>
       <Notification
@@ -95,6 +112,15 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
           {tab.component}
         </TabPanel>
       ))}
+      {notifyDataState && (
+        <Notification
+          open={notifyDataState.enable}
+          type={notifyDataState.type}
+          message={notifyDataState.message}
+          duration={notifyDataState.duration}
+          setOpen={() => resetNotificationData()}
+        />
+      )}
     </Grid>
   );
 };

@@ -206,10 +206,10 @@ const MessageBox = ({ closeIt, params }) => {
           <CloseIcon sx={{ float: "right" }} onClick={closeIt} />
         </Box>
         <Box className={classes.section2}>
-          <h5 style={{ color: "#4D6CD9", marginLeft: 4 }}>
+          <h5 style={{ color: "#4D6CD9", marginLeft: 4, textAlign: 'center' }}>
             {params.data.firstName}
           </h5>
-          <p style={{ marginLeft: 4 }}>
+          <p style={{ marginLeft: 4, textAlign: 'center' }}>
             {" "}
             Profile Source: Name of the Recruiter
           </p>

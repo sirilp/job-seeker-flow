@@ -88,12 +88,14 @@ var IncompleteUploads = function (props) {
         step6: 0,
         step7: 0,
     }), inStepCount = _l[0], setInStepCount = _l[1];
+    var _m = useState([]), selectedEmails = _m[0], setSelectedEmails = _m[1];
     var label = { inputProps: { "aria-label": "Checkbox demo" } };
     var setSelectedButton = function (id, filterValue) {
         console.log(filterValue, id);
         setSelectedButtonId(id);
         setSelectedButtonValue(filterValue);
-        getTableRowData(filterValue, contestId, 0, 10);
+        setPageNo(0);
+        setPageSize(10);
     };
     var getTableRowData = function (filterValue, contestId, pageNo, pageSize) { return __awaiter(void 0, void 0, void 0, function () {
         var response, mapData, result, stateData;
@@ -240,8 +242,16 @@ var IncompleteUploads = function (props) {
         setPageNo(pageNumber - 1);
     };
     var pageSizeChange = function (pageSizeChanged) {
+        setPageNo(0);
         setPageSize(pageSizeChanged);
     };
+    var filterEmailIds = function () {
+        var emails = selectedRows.map(function (item) { return item.emailId; });
+        setSelectedEmails(emails);
+    };
+    useEffect(function () {
+        filterEmailIds();
+    }, [selectedRows]);
     return (_jsx(_Fragment, { children: _jsxs(Grid, __assign({ container: true, spacing: 3 }, { children: [_jsxs(Grid, __assign({ item: true, xs: 12, p: 2 }, { children: [_jsx(Typography, __assign({ fontSize: 30 }, { children: "Incomplete Uploads" })), _jsx(StepCount, { StepCountList: [
                                 {
                                     label: "Step 1",
@@ -294,7 +304,7 @@ var IncompleteUploads = function (props) {
                                 { _id: 6, count: inStepCount.step6 },
                                 { _id: 7, count: inStepCount.step7 },
                             ], setSelectedButton: setSelectedButton, selectedButton: selectedButtonId })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block" }, { children: [_jsx(Checkbox, {}), " ", selectedRows.length, " Selected", _jsx(BookmarkBorderIcon, { className: classes.iconStyle }), _jsx(MailOutlineIcon, { className: classes.iconStyle, onClick: function () {
-                                                return window.open("https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com");
+                                                return window.open("https://mail.google.com/mail/?view=cm&fs=1&to=".concat(selectedEmails.toString()));
                                             } }), _jsx(MailOutlineIcon, { className: classes.iconStyle, onClick: function () {
                                                 return window.open("https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com");
                                             } })] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {

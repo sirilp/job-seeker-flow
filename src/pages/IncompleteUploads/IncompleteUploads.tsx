@@ -56,6 +56,7 @@ const IncompleteUploads = (props) => {
     step6: 0,
     step7: 0,
   });
+  const [selectedEmails, setSelectedEmails] = useState<any>([]);
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -63,7 +64,8 @@ const IncompleteUploads = (props) => {
     console.log(filterValue, id);
     setSelectedButtonId(id);
     setSelectedButtonValue(filterValue);
-    getTableRowData(filterValue, contestId, 0, 10);
+    setPageNo(0);
+    setPageSize(10);
   };
 
   const getTableRowData = async (filterValue, contestId, pageNo, pageSize) => {
@@ -234,8 +236,18 @@ const IncompleteUploads = (props) => {
     setPageNo(pageNumber - 1);
   };
   const pageSizeChange = (pageSizeChanged) => {
+    setPageNo(0);
     setPageSize(pageSizeChanged);
   };
+
+  const filterEmailIds = () => {
+    const emails = selectedRows.map((item) => item.emailId);
+    setSelectedEmails(emails);
+  };
+
+  useEffect(() => {
+    filterEmailIds();
+  }, [selectedRows]);
 
   return (
     <>
@@ -328,7 +340,7 @@ const IncompleteUploads = (props) => {
                   className={classes.iconStyle}
                   onClick={() =>
                     window.open(
-                      "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
                     )
                   }
                 />

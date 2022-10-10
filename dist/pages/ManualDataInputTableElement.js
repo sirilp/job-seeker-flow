@@ -291,7 +291,7 @@ export var PDCStatusCheckButton = function (params) {
         else {
             var bodyPayload = {
                 referralCompanyId: "a2",
-                contestId: "CONTEST_07_1091",
+                contestId: params.data.contestId,
                 emailId: params.data.email,
                 mobileNumber: params.data.phoneNumber,
                 firstName: params.data.firstName,
@@ -378,10 +378,11 @@ export var CustomDOBInputBox = function (params) {
         var dd = ("0" + newValue.$D).slice(-2);
         var mm = ("0" + (newValue.$M + 1)).slice(-2);
         var yy = newValue.$y;
-        setDate("".concat(dd, "/").concat(mm, "/").concat(yy));
+        // Date picker is handling the date in MM/DD/YYYY format
+        setDate("".concat(mm, "/").concat(dd, "/").concat(yy));
         params.setValue("".concat(dd, "/").concat(mm, "/").concat(yy));
     };
-    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", views: ["year", "month", "day"], value: date, onChange: function (newValue) {
+    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", views: ["year", "month", "day"], value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
                 handleChange(newValue);
             }, maxDate: moment().subtract(18, "year"), renderInput: function (_a) {
                 var inputRef = _a.inputRef, inputProps = _a.inputProps, InputProps = _a.InputProps;
@@ -613,6 +614,10 @@ export var CustomUploadButton = function (params) {
 };
 export var ClearRowButton = function (params) {
     var classes = useStyles();
+    var _a = useState(params.data.pdcStatus), disableButton = _a[0], setdisableButton = _a[1];
+    useEffect(function () {
+        setdisableButton(params.data.pdcStatus);
+    }, [params.data.pdcStatus]);
     var handleClick = function () {
         params.node.setDataValue("firstName", "");
         params.node.setDataValue("lastName", "");
@@ -634,7 +639,7 @@ export var ClearRowButton = function (params) {
         , __assign({ 
             // id={id}
             // className={classes.buttonContainer}
-            onClick: handleClick, "aria-label": "delete" }, { children: _jsx(DeleteIcon, {}) })) })));
+            onClick: handleClick, "aria-label": "delete", disabled: disableButton === true ? true : false }, { children: _jsx(DeleteIcon, {}) })) })));
 };
 var ManualDataInputTableElement = function () {
     return _jsx("div", { children: "ManualDataInputTableElement" });

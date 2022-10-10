@@ -14,6 +14,7 @@ import JobSeekerProfileUpload from "./JobSeekerProfileUpload";
 import JobSeekerAddProfile from "../../pages/JobSeekerAddProfile/JobSeekerAddProfile";
 
 const JobSeekerProfileFlow: FC<any> = (props): ReactElement => {
+  const { contestId, id } = props;
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{
     [k: number]: boolean;
@@ -90,6 +91,7 @@ const JobSeekerProfileFlow: FC<any> = (props): ReactElement => {
           handleNext={handleNext}
           handleBack={handleBack}
           contestId={props.contestId}
+          id={id}
           handleComplete={handleComplete}
           setDataMessage={props.setDataMessage}
         />

@@ -9,7 +9,6 @@ const JobSeekerProfileCard = (props) => {
   const [contestData, setContestData] = React.useState<any>({});
   const [tagImage, setTagImage] = React.useState<any>("actively-hiring");
   const [badgeImage, setBadgeImage] = React.useState<any>("most-wanted");
-  
   const searchContestDeatils = async (contestId: string) => {
     const response = await getContestDetails(contestId);
     setContestData(response?.data?.data[0].formData);

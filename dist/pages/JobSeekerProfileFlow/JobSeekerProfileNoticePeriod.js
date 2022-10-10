@@ -160,7 +160,7 @@ var JobSeekerProfileNoticePeriod = function (props) {
                     _b.trys.push([4, 6, , 7]);
                     return [4 /*yield*/, updateJobSeekerProfile({
                             profileId: props.profileDataId || userDataState.userData.profileId,
-                            profileData: { profileNoticePeriodMap: profileNoticePeriodMap },
+                            profileData: { profileNoticePeriodMap: profileNoticePeriodMap, profileLastCompletedStep: "5" },
                         })];
                 case 5:
                     profileDetailsResponse = _b.sent();
@@ -311,6 +311,9 @@ var JobSeekerProfileNoticePeriod = function (props) {
                                                 inputProps: {
                                                     maxLength: 1200,
                                                 },
-                                            }, size: "small" })] }))) : offerStatus === YesNoOptions[0] ? (_jsx("div", __assign({ className: "notice-period-conditional" }, { children: _jsx("div", __assign({ className: "outline-div" }, { children: _jsx(CurrentOffers, { setOfferData: setOfferData, removeOfferData: removeOfferData, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, prefilData: (props.profileDataId || userDataState.userData.profileId) ? offerData : null }) })) }))) : null] })) : null] })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitNoticePeriodInfo, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
+                                            }, size: "small" })] }))) : offerStatus === YesNoOptions[0] ? (_jsx("div", { children: _jsx("div", __assign({ className: "outline-div" }, { children: _jsx(CurrentOffers, { setOfferData: setOfferData, removeOfferData: removeOfferData, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, prefilData: props.profileDataId ||
+                                                userDataState.userData.profileId
+                                                ? offerData
+                                                : null }) })) })) : null] })) : null] })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitNoticePeriodInfo, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
 };
 export default JobSeekerProfileNoticePeriod;

@@ -216,28 +216,28 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
           }
         );
         if (uploadResponse?.data?.success) {
-          if (imageName) {
-            const updateResumeReponse = await updateJobSeekerProfile({
-              profileId:
-                props.profileDataId || userDataState.userData.profileId,
-              profileData: {
-                resumeDocumentId: uploadResponse?.data?.data?.id,
-              },
-            });
-          } else {
-            const seekerProfile = await createJobSeekerProfile({
-              profileLogId: userDataState.userData.profileLogId,
-              profileData: {
-                resumeDocumentId: uploadResponse?.data?.data?.id,
-              },
-            });
-            if (seekerProfile?.data?.success) {
-              dispatchProfileId(
-                seekerProfile?.data?.data?.profileId,
-                seekerProfile?.data?.data?.jobSeekerId
-              );
-            }
-          }
+          // if (imageName) {
+          const updateResumeReponse = await updateJobSeekerProfile({
+            profileId: props.profileDataId || userDataState.userData.profileId,
+            profileData: {
+              resumeDocumentId: uploadResponse?.data?.data?.id,
+              profileLastCompletedStep: "2",
+            },
+          });
+          // } else {
+          //   const seekerProfile = await createJobSeekerProfile({
+          //     profileLogId: userDataState.userData.profileLogId,
+          //     profileData: {
+          //       resumeDocumentId: uploadResponse?.data?.data?.id,
+          //     },
+          //   });
+          //   if (seekerProfile?.data?.success) {
+          //     dispatchProfileId(
+          //       seekerProfile?.data?.data?.profileId,
+          //       seekerProfile?.data?.data?.jobSeekerId
+          //     );
+          //   }
+          // }
           props.setType(SUCCESS_KEY);
           props.setDataMessage(FORM_SUBMISSION_SUCCESS);
           props.setOpen(true);

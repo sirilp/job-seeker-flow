@@ -34,6 +34,7 @@ import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { openFile } from "../../services/DocumentService";
 import MessageBox from "../Broadcast/MessageBox";
 import { jobseekerConsentStatusChangeWorkflow } from "../../services/JobSeekerService";
+import { useAppDispatch } from "../../services/StoreHooks";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -55,6 +56,27 @@ const useStyles = makeStyles(() => ({
   uploadText: {
     color: "#4d6cd9",
   },
+  dropdown: {
+    border: "1px solid #DFE5FF",
+  },
+  dropdownAlignment: {
+    display: "inline-flex",
+    alignItems: "center",
+  },
+  commonAlignment: {
+    textAlign: "center",
+  },
+  dropdownIconAlignment: {
+    left: "18px",
+  },
+  chatBox: {
+    width: "390px",
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 0,
+    left: 0,
+  },
 }));
 
 export const ResumeUploaded = (params) => {
@@ -66,11 +88,7 @@ export const ResumeUploaded = (params) => {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-      }}
-    >
+    <div className={classes.commonAlignment}>
       <Typography onClick={handleViewResume} className={classes.uploadText}>
         View Resume Uploaded
       </Typography>
@@ -88,11 +106,7 @@ export const Icons = (params) => {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-      }}
-    >
+    <div className={classes.commonAlignment}>
       <VisibilityIcon className={classes.iconColor} onClick={handleClick} />
 
       <LocalPhoneRoundedIcon
@@ -109,18 +123,7 @@ export const Icons = (params) => {
         open={toggleDrawer}
         onClose={() => setToggleDrawer(false)}
       >
-        <Box
-          sx={{
-            width: "380px",
-            overflow: "hidden",
-            justifyContent: "center",
-            alignItems: "center",
-            top: 0,
-            left: 0,
-          }}
-          // onClick={() => setToggleDrawer(false)}
-          // onKeyDown={() => setToggleDrawer(false)}
-        >
+        <Box className={classes.chatBox}>
           <MessageBox closeIt={() => setToggleDrawer(false)} params={params} />
         </Box>
       </Drawer>
@@ -130,6 +133,7 @@ export const Icons = (params) => {
 
 export const CustomDropDown = (params: any) => {
   const [disable, setDisable] = useState<any>(false);
+  const dispatch = useAppDispatch();
 
   const Passed = {
     option: "JOB_SEEKER_CONSENT_PASS",
@@ -187,6 +191,19 @@ export const CustomDropDown = (params: any) => {
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
 
   const [message, setMessage] = useState("");
+
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
   const handleChange = async (event: any) => {
     let payLoad = {
       messageName: "consentArrived",
@@ -204,10 +221,20 @@ export const CustomDropDown = (params: any) => {
       const response = await jobseekerConsentStatusChangeWorkflow(payLoad);
       if (response) {
         setOption(Passed);
-        alert("Success");
+        dispatchNotificationData({
+          enable: true,
+          type: "success",
+          message: "Success",
+          duration: 2000,
+        });
       } else {
         setOption(Pending);
-        alert("Failed");
+        dispatchNotificationData({
+          enable: true,
+          type: "error",
+          message: "Failed",
+          duration: 2000,
+        });
       }
     } else if (event.target.value == "JOB_SEEKER_CONSENT_PENDING") {
       setOption(Pending);
@@ -215,10 +242,20 @@ export const CustomDropDown = (params: any) => {
       const response = await jobseekerConsentStatusChangeWorkflow(payLoad);
       if (response) {
         setOption(Passed);
-        alert("Success");
+        dispatchNotificationData({
+          enable: true,
+          type: "success",
+          message: "Success",
+          duration: 2000,
+        });
       } else {
         setOption(Pending);
-        alert("Failed");
+        dispatchNotificationData({
+          enable: true,
+          type: "error",
+          message: "Failed",
+          duration: 2000,
+        });
       }
     } else if (event.target.value == "") {
       setOption({
@@ -276,9 +313,19 @@ export const CustomDropDown = (params: any) => {
     };
     const response = await jobseekerConsentStatusChangeWorkflow(payLoad);
     if (response) {
-      alert("success");
+      dispatchNotificationData({
+        enable: true,
+        type: "success",
+        message: "Success",
+        duration: 2000,
+      });
     } else {
-      alert("Failed");
+      dispatchNotificationData({
+        enable: true,
+        type: "error",
+        message: "Failed",
+        duration: 2000,
+      });
     }
   };
 
@@ -287,7 +334,7 @@ export const CustomDropDown = (params: any) => {
       <div>
         <select
           id={id}
-          style={{ border: "1px solid #DFE5FF" }}
+          className={classes.dropdown}
           value={option.option || "JOB_SEEKER_CONSENT_PENDING"}
           onChange={handleChange}
           disabled={
@@ -302,12 +349,12 @@ export const CustomDropDown = (params: any) => {
           <option value="JOB_SEEKER_CONSENT_FAIL">Failed</option>
         </select>
       </div>
-      <div style={{ display: "inline-flex", alignItems: "center" }}>
+      <div className={classes.dropdownAlignment}>
         {(() => {
           if (option.option == "JOB_SEEKER_CONSENT_PASS") {
             return (
               <Tooltip title={option.body} placement="right-start">
-                <IconButton style={{ left: "18px" }}>
+                <IconButton className={classes.dropdownIconAlignment}>
                   <CheckCircleIcon
                     id={iconId}
                     sx={{ color: option.color, fontSize: "25px" }}
@@ -318,7 +365,7 @@ export const CustomDropDown = (params: any) => {
           } else if (option.option == "JOB_SEEKER_CONSENT_FAIL") {
             return (
               <Tooltip title={option.body} placement="right-start">
-                <IconButton style={{ left: "18px" }}>
+                <IconButton className={classes.dropdownIconAlignment}>
                   <ErrorIcon
                     id={iconId}
                     sx={{ color: option.color, fontSize: "25px" }}

@@ -45,21 +45,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Box, tooltipClasses, Tooltip, IconButton, Drawer, Grid, Card, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Typography, Button, Box, Tooltip, IconButton, Drawer, Grid, Card, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, FormGroup, FormControlLabel, } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -78,20 +66,10 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Calendar from "../../components/Calendar/Calendar";
+import clsx from "clsx";
 var useStyles = makeStyles(function () { return ({
-    buttonContainer: {
-        "&.MuiButton-root": {
-            minWidth: "2vw",
-        },
-    },
-    arrow: {
-        "&:before": {
-            border: "1px solid #36454F",
-            color: "#ffffff",
-        },
-    },
     iconColor: {
         color: "#4d6cd9",
         margin: "8px",
@@ -102,7 +80,7 @@ var useStyles = makeStyles(function () { return ({
     viewAssessmentCard: {
         border: "1px solid grey",
         height: "200px ",
-        marginTop: "20px",
+        marginTop: "10px",
         marginRight: "5px",
         marginLeft: "5px",
         fontSize: "15px",
@@ -112,10 +90,24 @@ var useStyles = makeStyles(function () { return ({
         width: "1px",
         float: "right",
         margin: "3px 3px 0px 0px",
+        cursor: "pointer",
+    },
+    assessmentButton: {
+        textAlign: "center",
+        marginTop: 3,
     },
     assessmentDeleteAction: {
         border: "1px solid gray",
         borderRadius: 0,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "left",
+        alignItems: "center",
+        paddingLeft: "40px",
+        width: "250px",
+        color: "gray",
+        height: "55px",
+        fontSize: "16px",
     },
     deleteActionButton: {
         width: "250px",
@@ -126,14 +118,23 @@ var useStyles = makeStyles(function () { return ({
         fontSize: "16px",
     },
     deleteIcon: {
-        size: "small",
         marginRight: "15px",
+        cursor: "pointer",
     },
     assessmentUpdateAction: {
         borderLeft: "1px solid gray",
         borderRight: "1px solid gray",
         borderBottom: "1px solid gray",
         borderRadius: 0,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "left",
+        alignItems: "center",
+        paddingLeft: "43px",
+        width: "250px",
+        color: "gray",
+        height: "55px",
+        fontSize: "16px",
     },
     updateActionButton: {
         width: "250px",
@@ -143,13 +144,12 @@ var useStyles = makeStyles(function () { return ({
         fontSize: "16px",
     },
     updateIcon: {
-        size: "small",
-        marginRight: "20px",
-        marginLeft: "25px",
+        marginRight: "17px",
         backgroundColor: "gray",
         color: "white",
-        borderRadius: "2px",
-        fontSize: "14px",
+        borderRadius: 3,
+        cursor: "pointer",
+        padding: "2px",
     },
     uploadIcon: {
         size: "small",
@@ -161,39 +161,52 @@ var useStyles = makeStyles(function () { return ({
         fontSize: "14px",
     },
     assessmentDialogueBox: {
-        backgroundColor: "gray",
+        backgroundColor: "#4D6CD9",
         width: "600px",
         textAlign: "center",
     },
     assessmentDialogueContent: {
-        paddingTop: "30px",
+        textAlign: "center",
+    },
+    assessmentDialogueText: {
+        paddingTop: "50px",
+        paddingBottom: "40px",
+        justifyContent: "center",
         textAlign: "center",
     },
     assessmentDialogueAction: {
         paddingTop: "10px",
         paddingBottom: "40px",
+        display: "flex",
+        flexDirection: "row",
         justifyContent: "center",
+        alignItems: "center",
+        width: "600px",
     },
     delete: {
-        backgroundColor: "gray",
+        backgroundColor: "#4D6CD9",
         borderRadius: 20,
         color: "black",
-        right: "30px",
         paddingLeft: "30px",
         paddingRight: "30px",
         height: "30px",
+        paddingTop: "3px",
+        cursor: "pointer",
+        marginRight: "20px",
     },
     cancel: {
-        backgroundColor: "gray",
+        backgroundColor: "#4D6CD9",
         borderRadius: 20,
         color: "black",
-        left: "30px",
         paddingLeft: "20px",
         paddingRight: "20px",
         height: "30px",
+        paddingTop: "3px",
+        cursor: "pointer",
+        marginLeft: "20px",
     },
     leftDrawerBox: {
-        width: "400px",
+        width: "390px",
         overflow: "hidden",
         justifyContent: "center",
         alignItems: "center",
@@ -204,7 +217,7 @@ var useStyles = makeStyles(function () { return ({
         textAlign: "center",
         backgroundColor: "#4D6CD9",
         height: "50px",
-        width: "390px",
+        // width: "390px",
         color: "#FFFFFF",
         padding: "10px",
         fontSize: "20px",
@@ -217,6 +230,7 @@ var useStyles = makeStyles(function () { return ({
         marginRight: "5px",
         marginLeft: "5px",
         fontSize: "13px",
+        marginBottom: "10px",
     },
     assessmentDetails: {
         width: "190px",
@@ -227,6 +241,69 @@ var useStyles = makeStyles(function () { return ({
         fontSize: "20px",
         fontWeight: "bold",
         textAlign: "center",
+    },
+    mainContainer: {
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap",
+        height: 687,
+        width: 390,
+        margin: 1,
+        border: "1px solid #E5E5E5",
+    },
+    section1: {
+        textAlign: "center",
+        backgroundColor: "#4D6CD9",
+        height: "50px",
+        width: "390px",
+        color: "#FFFFFF",
+        padding: "10px",
+    },
+    section2: {
+        marginTop: "15px",
+        width: "390px",
+        textAlign: "center",
+    },
+    section3: {
+        marginTop: "15px",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    card: {
+        marginLeft: "18px",
+        backgroundColor: "white",
+        width: "350px",
+        height: "auto",
+        borderRadius: "10px",
+    },
+    timeSlotTitleContainer: {
+        marginTop: "40px",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    commonColor: {
+        color: "#4d6cd9",
+    },
+    commonMargin: {
+        margin: "10px",
+    },
+    dropdown: {
+        border: "1px solid #DFE5FF",
+    },
+    dropdownContent: {
+        display: "inline-flex",
+        alignItems: "center",
+    },
+    closeIcon: {
+        float: "right",
+    },
+    formControl: {
+        top: 5,
+        minWidth: 120,
     },
 }); });
 export var ResumeUploaded = function (params) {
@@ -245,9 +322,7 @@ export var ResumeUploaded = function (params) {
             }
         });
     }); };
-    return (_jsx("div", __assign({ style: {
-            textAlign: "center",
-        } }, { children: _jsx(Typography, __assign({ onClick: handleViewResume, className: classes.uploadText }, { children: "View Resume Uploaded" })) })));
+    return (_jsx("div", __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(Typography, __assign({ onClick: handleViewResume, className: classes.uploadText }, { children: "View Resume Uploaded" })) })));
 };
 export var Icons = function (params) {
     var _a = useState(false), toggleDrawer = _a[0], setToggleDrawer = _a[1];
@@ -259,16 +334,7 @@ export var Icons = function (params) {
         console.log("Chat Icon clicked");
         setToggleDrawer(true);
     };
-    return (_jsxs("div", __assign({ style: {
-            textAlign: "center",
-        } }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsxs(Box, __assign({ sx: {
-                        width: "380px",
-                        overflow: "hidden",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        top: 0,
-                        left: 0,
-                    } }, { children: [_jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }), console.log("Left Drawer called")] })) }))] })));
+    return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsxs(Box, __assign({ className: classes.leftDrawerBox }, { children: [_jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }), console.log("Left Drawer called")] })) }))] })));
 };
 export var CustomDropDown = function (params) {
     // console.log("Vetting custom feild", params);
@@ -342,22 +408,23 @@ export var CustomDropDown = function (params) {
     };
     var classes = useStyles();
     var _c = React.useState(false), open = _c[0], setOpen = _c[1];
-    var HtmlTooltip = styled(function (_a) {
-        var className = _a.className, props = __rest(_a, ["className"]);
-        return (_jsx(Tooltip, __assign({}, props, { placement: "right", arrow: true, classes: { popper: className, arrow: classes.arrow } })));
-    })(function (_a) {
-        var _b;
-        var theme = _a.theme;
-        return (_b = {},
-            _b["& .".concat(tooltipClasses.tooltip)] = {
-                backgroundColor: "#ffffff",
-                border: "1px solid ".concat(option.color),
-                maxWidth: 220,
-                fontSize: theme.typography.pxToRem(12),
-                borderRadius: "1vw",
-            },
-            _b);
-    });
+    // const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    //   <Tooltip
+    //     {...props}
+    //     placement="right"
+    //     arrow
+    //     classes={{ popper: className, arrow: classes.arrow }}
+    //     // className={classes.arrowStyle}
+    //   />
+    // ))(({ theme }) => ({
+    //   [`& .${tooltipClasses.tooltip}`]: {
+    //     backgroundColor: "#ffffff",
+    //     border: `1px solid ${option.color}`,
+    //     maxWidth: 220,
+    //     fontSize: theme.typography.pxToRem(12),
+    //     borderRadius: "1vw",
+    //   },
+    // }));
     var handleTooltipClose = function () {
         setOpen(false);
     };
@@ -367,7 +434,7 @@ export var CustomDropDown = function (params) {
             setOpen(false);
         }, 4000);
     };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsxs("select", __assign({ id: id, style: { border: "1px solid #DFE5FF" }, value: option.option, onChange: handleChange, disabled: true }, { children: [_jsx("option", __assign({ value: "" }, { children: "Null" })), _jsx("option", __assign({ value: "passed" }, { children: "Passed" })), _jsx("option", __assign({ value: "pending" }, { children: "Pending" })), _jsx("option", __assign({ value: "failed" }, { children: "Failed" }))] })) }), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: (function () {
+    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsxs("select", __assign({ id: id, className: classes.dropdown, value: option.option, onChange: handleChange, disabled: true }, { children: [_jsx("option", __assign({ value: "" }, { children: "Null" })), _jsx("option", __assign({ value: "passed" }, { children: "Passed" })), _jsx("option", __assign({ value: "pending" }, { children: "Pending" })), _jsx("option", __assign({ value: "failed" }, { children: "Failed" }))] })) }), _jsx("div", __assign({ className: classes.dropdownContent }, { children: (function () {
                     if (option.option == "passed") {
                         return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, { children: _jsx(CheckCircleIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) }) })));
                     }
@@ -426,16 +493,11 @@ export var ViewAssessments = function (params) {
     };
     var openViewPop = Boolean(anchorElView);
     var ViewAssessmentReport = function () {
-        return (_jsxs(Card, __assign({ className: classes.viewAssessmentCard, elevation: 3 }, { children: [_jsxs(Box, __assign({ textAlign: "center" }, { children: [_jsxs("div", __assign({ style: { margin: "10px" } }, { children: ["Assessment Type - Interview as a Service", _jsx(IconButton, __assign({ onClick: handleViewReport, className: classes.assessmentActionButton }, { children: _jsx(FormatAlignJustifyIcon, { sx: {
-                                            color: "blue",
-                                        } }) })), _jsxs(Popover, __assign({ id: "view-popover", open: openViewPop, anchorEl: anchorElView, onClose: handleCloseView, anchorOrigin: {
-                                        vertical: "center",
-                                        horizontal: "left",
-                                    } }, { children: [_jsx("div", __assign({ className: classes.assessmentDeleteAction }, { children: _jsxs(Button, __assign({ className: classes.deleteActionButton, onClick: function () {
-                                                    setIsDeleteBoxOpen(true);
-                                                } }, { children: [_jsx(DeleteForeverIcon, { className: classes.deleteIcon }), "Delete"] })) })), _jsx("div", __assign({ className: classes.assessmentUpdateAction }, { children: _jsxs(Button, __assign({ className: classes.updateActionButton, onClick: function () {
-                                                    setIsUpdateBoxOpen(true);
-                                                } }, { children: [_jsx(BorderColorIcon, { className: classes.updateIcon }), "Update"] })) }))] }))] })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" }))] })), _jsx(Box, __assign({ textAlign: "center", mt: 3 }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "View Assesment Report" })) }))] })));
+        return (_jsxs(Card, __assign({ className: classes.viewAssessmentCard, elevation: 3 }, { children: [_jsxs(Box, __assign({ className: classes.assessmentDialogueContent }, { children: [_jsxs("div", __assign({ className: classes.commonMargin }, { children: ["Assessment Type - Interview as a Service", _jsx(IconButton, __assign({ onClick: handleViewReport, className: classes.assessmentActionButton }, { children: _jsx(DehazeIcon, { className: classes.commonColor }) })), _jsxs(Popover, __assign({ id: "view-popover", open: openViewPop, anchorEl: anchorElView, onClose: handleCloseView, anchorReference: "anchorPosition", anchorPosition: { top: 345, left: 355 } }, { children: [_jsxs(Box, __assign({ className: classes.assessmentDeleteAction }, { children: [_jsx(DeleteForeverIcon, { className: classes.deleteIcon, onClick: function () {
+                                                        setIsDeleteBoxOpen(true);
+                                                    } }), _jsx(Typography, { children: "Delete" })] })), _jsxs(Box, __assign({ className: classes.assessmentUpdateAction }, { children: [_jsx(BorderColorIcon, { className: classes.updateIcon, onClick: function () {
+                                                        setIsUpdateBoxOpen(true);
+                                                    }, fontSize: "small" }), _jsx(Typography, { children: "Update" })] }))] }))] })), _jsx("div", __assign({ className: classes.commonMargin }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ className: classes.commonMargin }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ className: classes.commonMargin }, { children: "Assessment Partner - Interviewplus" }))] })), _jsx(Box, __assign({ className: classes.assessmentButton }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "View Assesment Report" })) }))] })));
     };
     var handleCloseUpload = function () {
         setAnchorElUpload(null);
@@ -445,16 +507,11 @@ export var ViewAssessments = function (params) {
     };
     var openUploadPop = Boolean(anchorElUpload);
     var UploadAssessmentReport = function () {
-        return (_jsxs(Card, __assign({ className: classes.viewAssessmentCard, elevation: 3 }, { children: [_jsxs(Box, __assign({ textAlign: "center" }, { children: [_jsxs("div", __assign({ style: { margin: "10px" } }, { children: ["Assessment Type - Interview as a Service", _jsx(IconButton, __assign({ onClick: handleUploadReport, className: classes.assessmentActionButton }, { children: _jsx(FormatAlignJustifyIcon, { sx: {
-                                            color: "blue",
-                                        } }) })), _jsxs(Popover, __assign({ id: "upload-popover", open: openUploadPop, anchorEl: anchorElUpload, onClose: handleCloseUpload, anchorOrigin: {
-                                        vertical: "bottom",
-                                        horizontal: "right",
-                                    } }, { children: [_jsx("div", __assign({ className: classes.assessmentDeleteAction }, { children: _jsxs(Button, __assign({ className: classes.deleteActionButton, onClick: function () {
-                                                    setIsDeleteBoxOpen(true);
-                                                } }, { children: [_jsx(DeleteForeverIcon, { className: classes.deleteIcon }), "Delete"] })) })), _jsx("div", __assign({ className: classes.assessmentUpdateAction }, { children: _jsxs(Button, __assign({ className: classes.updateActionButton, onClick: function () {
-                                                    setIsUploadBoxOpen(true);
-                                                } }, { children: [_jsx(BorderColorIcon, { className: classes.uploadIcon }), "Upload"] })) }))] }))] })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ style: { margin: "10px" } }, { children: "Assessment Partner - Interviewplus" }))] })), _jsx(Box, __assign({ textAlign: "center", mt: 3 }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "Upload Assesment Report" })) }))] })));
+        return (_jsxs(Card, __assign({ className: classes.viewAssessmentCard, elevation: 3 }, { children: [_jsxs(Box, __assign({ textAlign: "center" }, { children: [_jsxs("div", __assign({ className: classes.commonMargin }, { children: ["Assessment Type - Interview as a Service", _jsx(IconButton, __assign({ onClick: handleUploadReport, className: classes.assessmentActionButton }, { children: _jsx(DehazeIcon, { className: classes.commonColor }) })), _jsxs(Popover, __assign({ id: "upload-popover", open: openUploadPop, anchorEl: anchorElUpload, onClose: handleCloseUpload, anchorReference: "anchorPosition", anchorPosition: { top: 565, left: 355 } }, { children: [_jsxs(Box, __assign({ className: classes.assessmentDeleteAction }, { children: [_jsx(DeleteForeverIcon, { className: classes.deleteIcon, onClick: function () {
+                                                        setIsDeleteBoxOpen(true);
+                                                    } }), _jsx(Typography, { children: "Delete" })] })), _jsxs(Box, __assign({ className: classes.assessmentUpdateAction }, { children: [_jsx(BorderColorIcon, { className: classes.updateIcon, onClick: function () {
+                                                        setIsUploadBoxOpen(true);
+                                                    }, fontSize: "small" }), _jsx(Typography, { children: "Upload" })] }))] }))] })), _jsx("div", __assign({ className: classes.commonMargin }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ className: classes.commonMargin }, { children: "Assessment Partner - Interviewplus" })), _jsx("div", __assign({ className: classes.commonMargin }, { children: "Assessment Partner - Interviewplus" }))] })), _jsx(Box, __assign({ className: classes.assessmentButton }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "Upload Assesment Report" })) }))] })));
     };
     var handleDelete = function () {
         //Delete Method
@@ -464,34 +521,50 @@ export var ViewAssessments = function (params) {
         setIsDeleteSuccessBoxOpen(true);
     };
     var DeleteAssessment = function () {
-        return (_jsxs(Dialog, __assign({ open: isDeleteBoxOpen, "aria-labelledby": "delete-dialog-title", "aria-describedby": "delete-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "delete-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Delete Assessment", _jsx(IconButton, __assign({ onClick: function () {
+        return (_jsxs(Dialog, __assign({ open: isDeleteBoxOpen, "aria-labelledby": "delete-dialog-title", "aria-describedby": "delete-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "delete-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Delete Assessment", _jsx(CloseIcon, { onClick: function () {
                                 setIsDeleteBoxOpen(false);
-                            }, className: classes.assessmentActionButton }, { children: _jsx(CloseIcon, {}) }))] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "delete-dialog-description" }, { children: "Are you sure you want to Delete Assessment of the Job Seeker from the platfrom?" })) })), _jsxs(DialogActions, __assign({ className: classes.assessmentDialogueAction }, { children: [_jsx(Button, __assign({ onClick: handleDelete, className: classes.delete, size: "large" }, { children: "Yes" })), _jsx(Button, __assign({ onClick: function () {
+                            }, className: classes.assessmentActionButton })] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "delete-dialog-description", className: classes.assessmentDialogueText }, { children: "Are you sure you want to Delete Assessment of the Job Seeker from the platfrom?" })) })), _jsxs(Box, __assign({ className: classes.assessmentDialogueAction }, { children: [_jsx(Box, __assign({ className: classes.delete, onClick: handleDelete }, { children: _jsx(Typography, { children: "Yes" }) })), _jsx(Box, __assign({ className: classes.cancel, onClick: function () {
                                 setIsDeleteBoxOpen(false);
                                 setAnchorElUpload(null);
                                 setAnchorElView(null);
-                            }, className: classes.cancel, size: "large", autoFocus: true }, { children: "Cancel" }))] }))] })));
+                            } }, { children: _jsx(Typography, { children: "Cancel" }) }))] }))] })));
     };
     var DeleteAssessmentSuccess = function () {
-        return (_jsxs(Dialog, __assign({ open: isDeleteSuccessBoxOpen, "aria-labelledby": "delete-success-dialog-title", "aria-describedby": "delete-success-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "delete-success-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Delete Assessment", _jsx(IconButton, __assign({ onClick: function () {
+        return (_jsxs(Dialog, __assign({ open: isDeleteSuccessBoxOpen, "aria-labelledby": "delete-success-dialog-title", "aria-describedby": "delete-success-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "delete-success-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Delete Assessment", _jsx(CloseIcon, { onClick: function () {
                                 setIsDeleteSuccessBoxOpen(false);
-                            }, className: classes.assessmentActionButton }, { children: _jsx(CloseIcon, {}) }))] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "delete-success-dialog-description" }, { children: "Assessment has been deleted!" })) }))] })));
+                            }, className: classes.assessmentActionButton })] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "delete-success-dialog-description", className: classes.assessmentDialogueText }, { children: "Assessment has been deleted!" })) }))] })));
     };
     var UpdateAssessment = function () {
-        return (_jsxs(Dialog, __assign({ open: isUpdateBoxOpen, "aria-labelledby": "update-dialog-title", "aria-describedby": "update-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "update-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Update Assessment", _jsx(IconButton, __assign({ onClick: function () {
+        return (_jsxs(Dialog, __assign({ open: isUpdateBoxOpen, "aria-labelledby": "update-dialog-title", "aria-describedby": "update-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "update-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Update Assessment", _jsx(CloseIcon, { onClick: function () {
                                 setIsUpdateBoxOpen(false);
                                 setAnchorElView(null);
-                            }, className: classes.assessmentActionButton }, { children: _jsx(CloseIcon, {}) }))] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "update-dialog-description" }, { children: "Job Seeker Name -" })) }))] })));
+                            }, className: classes.assessmentActionButton })] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "update-dialog-description", className: classes.assessmentDialogueText }, { children: "Job Seeker Name -" })) }))] })));
     };
     var UploadAssessment = function () {
-        return (_jsxs(Dialog, __assign({ open: isUploadBoxOpen, "aria-labelledby": "upload-dialog-title", "aria-describedby": "upload-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "upload-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Upload Assessment", _jsx(IconButton, __assign({ onClick: function () {
+        return (_jsxs(Dialog, __assign({ open: isUploadBoxOpen, "aria-labelledby": "upload-dialog-title", "aria-describedby": "upload-dialog-description" }, { children: [_jsxs(DialogTitle, __assign({ id: "upload-dialog-title", className: classes.assessmentDialogueBox }, { children: ["Upload Assessment", _jsx(CloseIcon, { onClick: function () {
                                 setIsUploadBoxOpen(false);
                                 setAnchorElUpload(null);
-                            }, className: classes.assessmentActionButton }, { children: _jsx(CloseIcon, {}) }))] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "upload-dialog-description" }, { children: "Job Seeker Name -" })) }))] })));
+                            }, className: classes.assessmentActionButton })] })), _jsx(DialogContent, __assign({ className: classes.assessmentDialogueContent }, { children: _jsx(DialogContentText, __assign({ id: "upload-dialog-description", className: classes.assessmentDialogueText }, { children: "Job Seeker Name -" })) }))] })));
     };
-    return (_jsxs("div", __assign({ style: {
-            textAlign: "center",
-        } }, { children: [_jsx(Typography, __assign({ onClick: handleClick, className: classes.uploadText }, { children: "View Assessments" })), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ className: classes.leftDrawerBox }, { children: _jsxs(Grid, { children: [_jsx(Box, { children: _jsxs(Typography, __assign({ className: classes.viewAssessmentTitle }, { children: ["View Assessments", _jsx(CloseIcon, { sx: { float: "right" }, onClick: function () { return setToggleDrawer(false); } })] })) }), _jsx(Typography, __assign({ textAlign: "center" }, { children: "Request New Assessment" })), _jsx(Typography, { children: "Job Seeker Name - Rajesh Sharma" }), _jsxs(Box, { children: [_jsxs(Card, __assign({ className: classes.assessmentDetailsCard, elevation: 3 }, { children: [_jsxs(Box, __assign({ display: "flex" }, { children: [_jsx(Typography, __assign({ p: 2 }, { children: "Assessment Type" })), _jsx(FormControl, __assign({ sx: { m: 1, minWidth: 120 }, size: "small" }, { children: _jsx(Select, __assign({ labelId: "demo-multiple-checkbox-label", id: "demo-multiple-checkbox", multiple: true, value: assessmentType, onChange: handleChangeAssessmentType, input: _jsx(OutlinedInput, { label: "Tag" }), renderValue: function (selected) { return selected.join(", "); }, className: classes.assessmentDetails }, { children: assessmentTypes.map(function (name) { return (_jsxs(MenuItem, __assign({ value: name }, { children: [_jsx(Checkbox, { checked: assessmentType.indexOf(name) > -1 }), _jsx(ListItemText, { primary: name })] }), name)); }) })) }))] })), _jsxs(Box, __assign({ display: "flex" }, { children: [_jsx(Typography, __assign({ p: 1 }, { children: "Assessment Partner" })), _jsx(FormControl, __assign({ sx: { m: 1, minWidth: 120 }, size: "small" }, { children: _jsx(Select, __assign({ labelId: "demo-multiple-checkbox-label", id: "demo-multiple-checkbox", multiple: true, value: assessmentPartner, onChange: handleChangeAssessmentPartner, input: _jsx(OutlinedInput, { label: "Tag" }), renderValue: function (selected) { return selected.join(", "); }, className: classes.assessmentDetails }, { children: assessmentPartners.map(function (name) { return (_jsxs(MenuItem, __assign({ value: name }, { children: [_jsx(Checkbox, { checked: assessmentPartner.indexOf(name) > -1 }), _jsx(ListItemText, { primary: name })] }), name)); }) })) }))] })), _jsx(Box, __assign({ textAlign: "center" }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "Request Assessment" })) }))] })), _jsx(Typography, __assign({ className: classes.partnerAssessment }, { children: "Partner Assessment Reports" })), _jsx(ViewAssessmentReport, {}), _jsx(UploadAssessmentReport, {}), _jsx(DeleteAssessment, {}), _jsx(DeleteAssessmentSuccess, {}), _jsx(UpdateAssessment, {}), _jsx(UploadAssessment, {})] })] }) })) }))] })));
+    return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(Typography, __assign({ onClick: handleClick, className: classes.uploadText }, { children: "View Assessments" })), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ className: classes.leftDrawerBox }, { children: _jsxs(Grid, { children: [_jsx(Box, { children: _jsxs(Typography, __assign({ className: classes.viewAssessmentTitle }, { children: ["View Assessments", _jsx(CloseIcon, { className: classes.closeIcon, onClick: function () { return setToggleDrawer(false); } })] })) }), _jsx(Typography, __assign({ className: classes.assessmentDialogueContent }, { children: "Request New Assessment" })), _jsx(Typography, __assign({ className: classes.assessmentDialogueContent }, { children: "Job Seeker Name - Rajesh Sharma" })), _jsxs(Box, { children: [_jsxs(Card, __assign({ className: classes.assessmentDetailsCard, elevation: 3 }, { children: [_jsxs(Box, __assign({ display: "flex" }, { children: [_jsx(Typography, __assign({ p: 2.2 }, { children: "Assessment Type" })), _jsx(FormControl, __assign({ className: classes.formControl, size: "small" }, { children: _jsx(Select, __assign({ labelId: "demo-multiple-checkbox-label", id: "demo-multiple-checkbox", multiple: true, value: assessmentType, onChange: handleChangeAssessmentType, input: _jsx(OutlinedInput, { label: "Tag" }), renderValue: function (selected) { return selected.join(", "); }, className: classes.assessmentDetails }, { children: assessmentTypes.map(function (name) { return (_jsxs(MenuItem, __assign({ value: name }, { children: [_jsx(Checkbox, { checked: assessmentType.indexOf(name) > -1 }), _jsx(ListItemText, { primary: name })] }), name)); }) })) }))] })), _jsxs(Box, __assign({ display: "flex" }, { children: [_jsx(Typography, __assign({ p: 1 }, { children: "Assessment Partner" })), _jsx(FormControl, __assign({ className: classes.formControl, size: "small" }, { children: _jsx(Select, __assign({ labelId: "demo-multiple-checkbox-label", id: "demo-multiple-checkbox", multiple: true, value: assessmentPartner, onChange: handleChangeAssessmentPartner, input: _jsx(OutlinedInput, { label: "Tag" }), renderValue: function (selected) { return selected.join(", "); }, className: classes.assessmentDetails }, { children: assessmentPartners.map(function (name) { return (_jsxs(MenuItem, __assign({ value: name }, { children: [_jsx(Checkbox, { checked: assessmentPartner.indexOf(name) > -1 }), _jsx(ListItemText, { primary: name })] }), name)); }) })) }))] })), _jsx(Box, __assign({ className: clsx(classes.assessmentDialogueContent, classes.section3) }, { children: _jsx(Button, __assign({ variant: "contained" }, { children: "Request Assessment" })) }))] })), _jsx(Typography, __assign({ className: classes.partnerAssessment }, { children: "Partner Assessment Reports" })), _jsx(ViewAssessmentReport, {}), _jsx(UploadAssessmentReport, {}), _jsx(DeleteAssessment, {}), _jsx(DeleteAssessmentSuccess, {}), _jsx(UpdateAssessment, {}), _jsx(UploadAssessment, {})] })] }) })) }))] })));
+};
+export var Interview = function (params) {
+    var classes = useStyles();
+    var _a = useState(false), toggleDrawer = _a[0], setToggleDrawer = _a[1];
+    var times = ["11:00am to 01:00pm", "03:00pm to 06:00pm"];
+    var Card = function (props) {
+        var handleOnChange = function (e) {
+            if (e.target.checked) {
+                var time = e.target.value;
+                alert(e.target.value);
+            }
+        };
+        return (_jsxs(Grid, { children: [_jsx(Box, { children: _jsxs(Typography, __assign({ className: classes.viewAssessmentTitle }, { children: ["Interview Scheduling", _jsx(CloseIcon, { onClick: handleClose, className: classes.closeIcon })] })) }), _jsx(Box, __assign({ className: classes.section2 }, { children: _jsx("h5", __assign({ className: classes.commonColor }, { children: "Phase - L1" })) })), _jsxs(Box, __assign({ className: classes.section3 }, { children: [_jsx("p", { children: "Choose Date" }), _jsx(Box, { children: _jsx(Calendar, { status: true }) })] })), _jsxs(Box, __assign({ p: 1, className: classes.timeSlotTitleContainer }, { children: [_jsx("p", { children: "Time Slots Available" }), _jsx(FormGroup, { children: times.map(function (time) { return (_jsx(FormControlLabel, { onChange: handleOnChange, value: time, control: _jsx(Checkbox, {}), label: time })); }) })] }))] }));
+    };
+    var handleClose = function () {
+        setToggleDrawer(false);
+    };
+    return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(Button, __assign({ size: "small", onClick: function () { return setToggleDrawer(true); }, variant: "contained", sx: { background: "#4D6CD9", borderRadius: "15px", height: "25px" } }, { children: "Schedule" })), _jsx(Drawer, __assign({ anchor: "right", open: toggleDrawer, onClose: handleClose }, { children: _jsx(Card, { handleCloseIcon: handleClose }) }))] })));
 };
 var CustomFields = function () {
     return _jsx("div", { children: "CustomFields" });

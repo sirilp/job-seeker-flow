@@ -87,7 +87,7 @@ export var LISTING_GENERIC_HEADERS = [
         field: "mobileNumber",
         hide: false,
         minWidth: 200,
-        filter: "agNumberColumnFilter",
+        filter: "agTextColumnFilter",
         floatingFilterComponentParams: {
             suppressFilterButton: true,
         },

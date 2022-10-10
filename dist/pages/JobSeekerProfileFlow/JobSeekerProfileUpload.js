@@ -52,7 +52,7 @@ import { makeStyles } from "@mui/styles";
 import { useDropzone } from "react-dropzone";
 import DownloadIcon from "@mui/icons-material/Download";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
-import { UploadFiles, getJobSeekerProfile, createJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
+import { UploadFiles, getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import { ERROR_KEY, SUCCESS_KEY, IMAGE_UPLOAD_ERROR, JOB_SEEKER_RESUME, FORM_SUBMISSION_SUCCESS, } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import { getFileDetails } from "../../services/DocumentService";
@@ -205,16 +205,16 @@ var JobSeekerProfileUpload = function (props) {
         };
     };
     var callResumeUpload = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var uploadResponse, updateResumeReponse, seekerProfile, error_1;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        return __generator(this, function (_l) {
-            switch (_l.label) {
+        var uploadResponse, updateResumeReponse, error_1;
+        var _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
                     setLoader(true);
-                    if (!(acceptedFilesResume.length > 0)) return [3 /*break*/, 9];
-                    _l.label = 1;
+                    if (!(acceptedFilesResume.length > 0)) return [3 /*break*/, 6];
+                    _d.label = 1;
                 case 1:
-                    _l.trys.push([1, 8, , 9]);
+                    _d.trys.push([1, 5, , 6]);
                     return [4 /*yield*/, UploadFiles(uploadPayloadBuild()).catch(function (error) {
                             props.setType(ERROR_KEY);
                             props.setDataMessage(IMAGE_UPLOAD_ERROR);
@@ -222,46 +222,46 @@ var JobSeekerProfileUpload = function (props) {
                             console.log(error);
                         })];
                 case 2:
-                    uploadResponse = _l.sent();
-                    if (!((_a = uploadResponse === null || uploadResponse === void 0 ? void 0 : uploadResponse.data) === null || _a === void 0 ? void 0 : _a.success)) return [3 /*break*/, 7];
-                    if (!imageName) return [3 /*break*/, 4];
+                    uploadResponse = _d.sent();
+                    if (!((_a = uploadResponse === null || uploadResponse === void 0 ? void 0 : uploadResponse.data) === null || _a === void 0 ? void 0 : _a.success)) return [3 /*break*/, 4];
                     return [4 /*yield*/, updateJobSeekerProfile({
                             profileId: props.profileDataId || userDataState.userData.profileId,
                             profileData: {
                                 resumeDocumentId: (_c = (_b = uploadResponse === null || uploadResponse === void 0 ? void 0 : uploadResponse.data) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.id,
+                                profileLastCompletedStep: "2",
                             },
                         })];
                 case 3:
-                    updateResumeReponse = _l.sent();
-                    return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, createJobSeekerProfile({
-                        profileLogId: userDataState.userData.profileLogId,
-                        profileData: {
-                            resumeDocumentId: (_e = (_d = uploadResponse === null || uploadResponse === void 0 ? void 0 : uploadResponse.data) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.id,
-                        },
-                    })];
-                case 5:
-                    seekerProfile = _l.sent();
-                    if ((_f = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _f === void 0 ? void 0 : _f.success) {
-                        dispatchProfileId((_h = (_g = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.profileId, (_k = (_j = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _j === void 0 ? void 0 : _j.data) === null || _k === void 0 ? void 0 : _k.jobSeekerId);
-                    }
-                    _l.label = 6;
-                case 6:
+                    updateResumeReponse = _d.sent();
+                    // } else {
+                    //   const seekerProfile = await createJobSeekerProfile({
+                    //     profileLogId: userDataState.userData.profileLogId,
+                    //     profileData: {
+                    //       resumeDocumentId: uploadResponse?.data?.data?.id,
+                    //     },
+                    //   });
+                    //   if (seekerProfile?.data?.success) {
+                    //     dispatchProfileId(
+                    //       seekerProfile?.data?.data?.profileId,
+                    //       seekerProfile?.data?.data?.jobSeekerId
+                    //     );
+                    //   }
+                    // }
                     props.setType(SUCCESS_KEY);
                     props.setDataMessage(FORM_SUBMISSION_SUCCESS);
                     props.setOpen(true);
                     props.handleComplete(1);
                     props.handleNext();
-                    _l.label = 7;
-                case 7: return [3 /*break*/, 9];
-                case 8:
-                    error_1 = _l.sent();
+                    _d.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    error_1 = _d.sent();
                     console.log(error_1);
                     props.setType(ERROR_KEY);
                     props.setDataMessage(error_1 === null || error_1 === void 0 ? void 0 : error_1.message);
                     props.setOpen(true);
-                    return [3 /*break*/, 9];
-                case 9:
+                    return [3 /*break*/, 6];
+                case 6:
                     setLoader(false);
                     return [2 /*return*/];
             }

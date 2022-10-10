@@ -71,6 +71,7 @@ import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { openFile } from "../../services/DocumentService";
 import MessageBox from "../Broadcast/MessageBox";
 import { jobseekerConsentStatusChangeWorkflow } from "../../services/JobSeekerService";
+import { useAppDispatch } from "../../services/StoreHooks";
 var useStyles = makeStyles(function () { return ({
     buttonContainer: {
         "&.MuiButton-root": {
@@ -90,6 +91,27 @@ var useStyles = makeStyles(function () { return ({
     uploadText: {
         color: "#4d6cd9",
     },
+    dropdown: {
+        border: "1px solid #DFE5FF",
+    },
+    dropdownAlignment: {
+        display: "inline-flex",
+        alignItems: "center",
+    },
+    commonAlignment: {
+        textAlign: "center",
+    },
+    dropdownIconAlignment: {
+        left: "18px",
+    },
+    chatBox: {
+        width: "390px",
+        overflow: "hidden",
+        justifyContent: "center",
+        alignItems: "center",
+        top: 0,
+        left: 0,
+    },
 }); });
 export var ResumeUploaded = function (params) {
     var classes = useStyles();
@@ -106,9 +128,7 @@ export var ResumeUploaded = function (params) {
             }
         });
     }); };
-    return (_jsx("div", __assign({ style: {
-            textAlign: "center",
-        } }, { children: _jsx(Typography, __assign({ onClick: handleViewResume, className: classes.uploadText }, { children: "View Resume Uploaded" })) })));
+    return (_jsx("div", __assign({ className: classes.commonAlignment }, { children: _jsx(Typography, __assign({ onClick: handleViewResume, className: classes.uploadText }, { children: "View Resume Uploaded" })) })));
 };
 export var Icons = function (params) {
     var _a = useState(false), toggleDrawer = _a[0], setToggleDrawer = _a[1];
@@ -117,19 +137,11 @@ export var Icons = function (params) {
     var handleChat = function () {
         setToggleDrawer(true);
     };
-    return (_jsxs("div", __assign({ style: {
-            textAlign: "center",
-        } }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ sx: {
-                        width: "380px",
-                        overflow: "hidden",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        top: 0,
-                        left: 0,
-                    } }, { children: _jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }) })) }))] })));
+    return (_jsxs("div", __assign({ className: classes.commonAlignment }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ className: classes.chatBox }, { children: _jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }) })) }))] })));
 };
 export var CustomDropDown = function (params) {
     var _a = useState(false), disable = _a[0], setDisable = _a[1];
+    var dispatch = useAppDispatch();
     var Passed = {
         option: "JOB_SEEKER_CONSENT_PASS",
         color: "#22C55E",
@@ -182,6 +194,17 @@ export var CustomDropDown = function (params) {
     var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
     var _c = useState(""), message = _c[0], setMessage = _c[1];
+    var dispatchNotificationData = function (notifyData) {
+        dispatch({
+            type: "SEND_ALERT",
+            data: {
+                enable: notifyData.enable,
+                type: notifyData.type,
+                message: notifyData.message,
+                duration: notifyData.duration,
+            },
+        });
+    };
     var handleChange = function (event) { return __awaiter(void 0, void 0, void 0, function () {
         var payLoad, response, response;
         return __generator(this, function (_a) {
@@ -204,11 +227,21 @@ export var CustomDropDown = function (params) {
                     response = _a.sent();
                     if (response) {
                         setOption(Passed);
-                        alert("Success");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "Success",
+                            duration: 2000,
+                        });
                     }
                     else {
                         setOption(Pending);
-                        alert("Failed");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "Failed",
+                            duration: 2000,
+                        });
                     }
                     return [3 /*break*/, 6];
                 case 2:
@@ -222,11 +255,21 @@ export var CustomDropDown = function (params) {
                     response = _a.sent();
                     if (response) {
                         setOption(Passed);
-                        alert("Success");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "Success",
+                            duration: 2000,
+                        });
                     }
                     else {
                         setOption(Pending);
-                        alert("Failed");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "Failed",
+                            duration: 2000,
+                        });
                     }
                     return [3 /*break*/, 6];
                 case 5:
@@ -294,24 +337,34 @@ export var CustomDropDown = function (params) {
                 case 1:
                     response = _a.sent();
                     if (response) {
-                        alert("success");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "Success",
+                            duration: 2000,
+                        });
                     }
                     else {
-                        alert("Failed");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "Failed",
+                            duration: 2000,
+                        });
                     }
                     return [2 /*return*/];
             }
         });
     }); };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsxs("select", __assign({ id: id, style: { border: "1px solid #DFE5FF" }, value: option.option || "JOB_SEEKER_CONSENT_PENDING", onChange: handleChange, disabled: true
+    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsxs("select", __assign({ id: id, className: classes.dropdown, value: option.option || "JOB_SEEKER_CONSENT_PENDING", onChange: handleChange, disabled: true
                         ? option.option === "JOB_SEEKER_CONSENT_FAIL" ||
                             option.option === "JOB_SEEKER_CONSENT_PASS"
-                        : false }, { children: [_jsx("option", __assign({ value: "JOB_SEEKER_CONSENT_PASS" }, { children: "Passed" })), _jsx("option", __assign({ value: "JOB_SEEKER_CONSENT_PENDING" }, { children: "Pending" })), _jsx("option", __assign({ value: "JOB_SEEKER_CONSENT_FAIL" }, { children: "Failed" }))] })) }), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: (function () {
+                        : false }, { children: [_jsx("option", __assign({ value: "JOB_SEEKER_CONSENT_PASS" }, { children: "Passed" })), _jsx("option", __assign({ value: "JOB_SEEKER_CONSENT_PENDING" }, { children: "Pending" })), _jsx("option", __assign({ value: "JOB_SEEKER_CONSENT_FAIL" }, { children: "Failed" }))] })) }), _jsx("div", __assign({ className: classes.dropdownAlignment }, { children: (function () {
                     if (option.option == "JOB_SEEKER_CONSENT_PASS") {
-                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, __assign({ style: { left: "18px" } }, { children: _jsx(CheckCircleIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) })) })));
+                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, __assign({ className: classes.dropdownIconAlignment }, { children: _jsx(CheckCircleIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) })) })));
                     }
                     else if (option.option == "JOB_SEEKER_CONSENT_FAIL") {
-                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, __assign({ style: { left: "18px" } }, { children: _jsx(ErrorIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) })) })));
+                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, __assign({ className: classes.dropdownIconAlignment }, { children: _jsx(ErrorIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) })) })));
                     }
                     else {
                         return (_jsxs(_Fragment, { children: [_jsx(ColorButton, __assign({ variant: "contained", onClick: function () { return handleResend(params); } }, { children: "Resend" })), _jsx(Tooltip, __assign({ title: option.body || "Pending", placement: "right-start" }, { children: _jsx(IconButton, { children: _jsx(PauseCircleFilledIcon, { id: iconId, sx: {

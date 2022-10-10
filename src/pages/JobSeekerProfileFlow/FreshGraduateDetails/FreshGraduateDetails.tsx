@@ -136,8 +136,8 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               lg={HALF_SIZE_GRID}
               className="add-team-grid"
             >
-              <div className="institute-field">
-                <p>{INSTITUTE_NAME_TEXT}</p>
+              <div>
+                <p className="institute-field">{INSTITUTE_NAME_TEXT}</p>
                 <TextField
                   disabled={props.disabled}
                   label={COLLEGE_NAME_LABEL}
@@ -158,7 +158,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               lg={HALF_SIZE_GRID}
               className="add-team-grid"
             >
-              <p>{INSTITUTE_LOCATION_TEXT}</p>
+              <p className="institute-field">{INSTITUTE_LOCATION_TEXT}</p>
               <Stack direction="row" spacing={3}>
                 <TextField
                   disabled={props.disabled}
@@ -190,7 +190,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               lg={HALF_SIZE_GRID}
               className="add-team-grid"
             >
-              <p>{COLLEGE_START_TEXT}</p>
+              <p className="institute-field">{COLLEGE_START_TEXT}</p>
               <Calendar setDate={handleStartDate} />
             </Grid>
             <Grid
@@ -201,7 +201,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               lg={HALF_SIZE_GRID}
               className="add-team-grid"
             >
-              <p>{COLLEGE_END_TEXT}</p>
+              <p className="institute-field">{COLLEGE_END_TEXT}</p>
               <Calendar setDate={handleEndDate} status={false} />
             </Grid>
           </Grid>

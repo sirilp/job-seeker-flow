@@ -5,6 +5,7 @@ import {
 import {
   CustomDropDown,
   Icons,
+  Interview,
   ResumeUploaded,
   ViewAssessments,
 } from "./CustomFields";
@@ -76,23 +77,23 @@ export const LISTING_GENERIC_HEADERS = [
     },
   },
   {
-    headerName: "Experience",
-    field: "experience",
+    headerName: "Experience(Years)",
+    field: "profileDetailsMap.totalExperience.totalExperienceYears",
     hide: false,
-    minWidth: 180,
+    minWidth: 230,
     filterParams: {
       buttons: ["apply", "clear"],
     },
-    filter: "agNumberColumnFilter",
+    filter: "agTextColumnFilter",
     floatingFilterComponentParams: {
       suppressFilterButton: true,
     },
   },
   {
-    headerName: "Expected CTC",
-    field: "expectedCTC",
+    headerName: "Expected CTC(LPA)",
+    field: "profileDetailsMap.expectedCtc.expectedCtcLakh",
     hide: false,
-    minWidth: 215,
+    minWidth: 230,
     filterParams: {
       buttons: ["apply", "clear"],
     },
@@ -130,7 +131,7 @@ export const LISTING_GENERIC_HEADERS = [
     field: "mobileNumber",
     hide: false,
     minWidth: 200,
-    filter: "agNumberColumnFilter",
+    filter: "agTextColumnFilter",
     floatingFilterComponentParams: {
       suppressFilterButton: true,
     },
@@ -153,7 +154,7 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Current Location",
-    field: "currentLocation",
+    field: "profileWorkStatusMap.currentLocation",
     hide: false,
     minWidth: 200,
     filter: "agTextColumnFilter",
@@ -166,10 +167,10 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Currently Working",
-    field: "currentlyWorking",
+    field: "profileNoticePeriodMap.currentlyWorking",
     hide: false,
     minWidth: 215,
-    filter: "agNumberColumnFilter",
+    filter: "agTextColumnFilter",
     // floatingFilterComponent: ,
     filterParams: {
       buttons: ["apply", "clear"],
@@ -258,6 +259,7 @@ export const LISTING_GENERIC_HEADERS = [
   {
     headerName: "Interview Scheduling",
     field: "interviewScheduling",
+    cellRenderer: Interview,
     hide: false,
     minWidth: 230,
   },
@@ -289,19 +291,6 @@ export const LISTING_GENERIC_HEADERS = [
     field: "sendReward",
     hide: false,
 
-    minWidth: 230,
-  },
-  {
-    headerName: "Send Reward",
-    field: "sendReward",
-    hide: false,
-    filter: "agDateColumnFilter",
-    filterParams: {
-      buttons: ["apply", "clear"],
-    },
-    floatingFilterComponentParams: {
-      suppressFilterButton: true,
-    },
     minWidth: 230,
   },
 ];

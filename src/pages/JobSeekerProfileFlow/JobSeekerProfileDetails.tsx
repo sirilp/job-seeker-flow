@@ -141,7 +141,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
         profileId: props.profileDataId || userDataState.userData.profileId,
-        profileData: { profileDetailsMap },
+        profileData: { profileDetailsMap, profileLastCompletedStep: "3" },
       });
       console.log(profileDetailsResponse?.data);
       if (profileDetailsResponse?.data?.success) {
@@ -250,6 +250,25 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     }
   };
 
+  const emptyExperienceCTCDetatils = () => {
+     setRelevantExperience({
+      relevantExperienceYears: "",
+      relevantExperienceMonths: "" 
+     })
+     setTotalExperience({
+      totalExperienceMonths: "",
+      totalExperienceYears: "",
+     })
+     setFixedCtc({
+      fixedCtcLakh: "",
+      fixedCtcThousand: "",
+    });
+    setVariableCtc({
+      variableCtcLakh: "",
+      variableCtcThousand: "",
+    });
+  }
+
   return (
     <>
       {!loader ? (
@@ -268,7 +287,11 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
                 <Checkbox
                   disabled={!props.hasButtons}
                   checked={freshGraduate}
-                  onChange={(e) => setFreshGraduate(e?.target?.checked)}
+                  onChange={(e) => {
+                    setFreshGraduate(e?.target?.checked)
+                    if(e.target.checked === true){emptyExperienceCTCDetatils()}
+                    setWorkStatus("Fresh Graduate");
+                  }}
                   inputProps={{ "aria-label": "controlled" }}
                 />
               </div>
@@ -302,9 +325,19 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
                   </InputLabel>
                   <Select
                     disabled={!props.hasButtons || freshGraduate}
-                    value={freshGraduate ? WorkStatusArray[2] : workStatus}
+                    value={freshGraduate ? 'Fresh Graduate' : workStatus}
                     label={WORK_STATUS_TEXT}
-                    onChange={(e) => setWorkStatus(e.target.value)}
+                    onChange={(e) =>{
+                      if(e.target.value !== 'Fresh Graduate'){
+                       setFreshGraduate(false);
+                      }
+                      else{
+                        setFreshGraduate(true);
+                        emptyExperienceCTCDetatils();
+                      }
+                      setWorkStatus(e.target.value)
+                    }}
+                    
                   >
                     {WorkStatusArray.map((item: string) => (
                       <MenuItem key={item} value={item}>

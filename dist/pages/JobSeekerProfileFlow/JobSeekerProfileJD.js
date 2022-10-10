@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useEffect, useRef } from "react";
-import { CircularProgress, Stack } from "@mui/material";
+import { CircularProgress, Stack, } from "@mui/material";
 import "./JobSeekerProfileFlow.css";
 import { getFormData, getFormModeler, getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
@@ -65,11 +65,11 @@ var JobSeekerProfileJD = function (props) {
     var _e = React.useState({}), postFormDetails = _e[0], setPostFormDetails = _e[1];
     var _f = React.useState(false), gotData = _f[0], setGotData = _f[1];
     var jdQueMap = {
-        textField: 'Hy',
-        issuingCountry: '',
-        yes: 'yes',
-        dateOfExpiry: '09/23/2020',
-        dateOfIssue: '09/23/2016',
+        textField: "Hy",
+        issuingCountry: "",
+        yes: "yes",
+        dateOfExpiry: "09/23/2020",
+        dateOfIssue: "09/23/2016",
     };
     useEffect(function () {
         if (props.profileDataId || userDataState.userData.profileId) {
@@ -88,7 +88,7 @@ var JobSeekerProfileJD = function (props) {
                     profileDataFetched = _e.sent();
                     if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.jdQuestionsMap) {
                         setPrefillDetails({
-                            data: __assign({}, (_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.jdQuestionsMap)
+                            data: __assign({}, (_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.jdQuestionsMap),
                         });
                     }
                     setLoader(false);
@@ -113,12 +113,12 @@ var JobSeekerProfileJD = function (props) {
                         setMenuForm((_l = (_k = jdMarkup === null || jdMarkup === void 0 ? void 0 : jdMarkup.data) === null || _k === void 0 ? void 0 : _k.data) === null || _l === void 0 ? void 0 : _l.components);
                         setLoader(false);
                     }
-                    else {
-                        setLoader(false);
-                        setGotData(true);
-                    }
-                    _m.label = 3;
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 3:
+                    setLoader(false);
+                    setGotData(true);
+                    _m.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
     }); };
@@ -146,7 +146,8 @@ var JobSeekerProfileJD = function (props) {
                     bodyPayload = {
                         profileId: props.profileDataId || userDataState.userData.profileId,
                         profileData: {
-                            jdQuestionsMap: jdQuestionsMap
+                            jdQuestionsMap: jdQuestionsMap,
+                            profileLastCompletedStep: "6",
                         },
                     };
                     return [4 /*yield*/, updateJobSeekerProfile(bodyPayload)];
@@ -173,6 +174,7 @@ var JobSeekerProfileJD = function (props) {
             }
         });
     }); };
-    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), _jsx("div", __assign({ className: "head-title-text" }, { children: "JD Specific Questions has not been configured for this contest" })), _jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: props.handleBack }), loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
+    console.log(gotData);
+    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), gotData && (_jsx("div", __assign({ className: "head-title-text" }, { children: "JD Specific Questions has not been configured for this contest" }))), _jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: props.handleBack }), loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
 };
 export default JobSeekerProfileJD;
