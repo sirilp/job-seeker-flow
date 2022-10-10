@@ -155,7 +155,7 @@ var JobSeekerProfileReview = function (props) {
             }
         });
     }); };
-    return (_jsx(_Fragment, { children: submitted ? (_jsx(_Fragment, { children: _jsx(JobSeekerCompleteProfile, { contestId: props.contestId }) })) : (_jsx(_Fragment, { children: _jsx("div", __assign({ className: "form-internal-body" }, { children: checkout ? (
+    return (_jsx(_Fragment, { children: submitted ? (_jsx(_Fragment, { children: _jsx(JobSeekerCompleteProfile, {}) })) : (_jsx(_Fragment, { children: _jsx("div", __assign({ className: "form-internal-body" }, { children: checkout ? (
                 // <SignupSuccess
                 //     setCheckout={setCheckout}
                 //     setActiveStep={props.setActiveStep}

@@ -92,7 +92,7 @@ var Manage = function (props) {
     useEffect(function () {
         getTableRowData(pageNo, pageSize, contestId);
         handleAggregateData(contestId);
-    }, []);
+    }, [pageNo, pageSize, contestId]);
     var handleAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
@@ -216,6 +216,7 @@ var Manage = function (props) {
         setPageNo(pageNumber - 1);
     };
     var pageSizeChange = function (pageSizeChanged) {
+        setPageNo(0);
         setPageSize(pageSizeChanged);
     };
     return (_jsxs(Grid, __assign({ container: true, spacing: 3 }, { children: [_jsxs(Grid, __assign({ item: true, xs: 12, p: 2 }, { children: [_jsx(Typography, __assign({ fontSize: 30 }, { children: "Profiles" })), _jsx(StepCount, { StepCountList: [

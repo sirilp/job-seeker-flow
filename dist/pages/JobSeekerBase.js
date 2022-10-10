@@ -22,10 +22,14 @@ import DuplicationFailed from "./DuplicationFailed/DuplicationFailed";
 import AllJs from "./AllJs/AllJs";
 import Manage from "./Manage/Manage";
 import IncompleteUploads from "./IncompleteUploads/IncompleteUploads";
+import { useAppSelector, useAppDispatch } from "../services/StoreHooks";
+import { initialAlertState } from "../modules/notificationState";
 var useStyles = makeStyles(function () { return ({}); });
 var JobSeekerBase = function (props) {
     var id = props.id, contestId = props.contestId;
     var classes = useStyles();
+    var dispatch = useAppDispatch();
+    var notifyDataState = useAppSelector(function (state) { return state.notificationAlert; });
     var _a = React.useState(0), activeTab = _a[0], setActiveTab = _a[1];
     var _b = React.useState(""), dataMessage = _b[0], setDataMessage = _b[1];
     var _c = React.useState(false), open = _c[0], setOpen = _c[1];
@@ -72,6 +76,17 @@ var JobSeekerBase = function (props) {
             component: _jsx("div", { children: "Page Not Avaliable" }),
         },
     ];
-    return (_jsxs(Grid, __assign({ container: true, p: 2 }, { children: [_jsx(Notification, { open: open, type: type, message: dataMessage, setOpen: setOpen }), _jsx(TabWrapper, { tabIndex: activeTab, setTabIndex: setActiveTab, tabsList: jobSeekerTabs }), jobSeekerTabs.map(function (tab) { return (_jsx(TabPanel, __assign({ value: activeTab, index: tab.index, disablePadding: true }, { children: tab.component }), tab.index)); })] })));
+    var resetNotificationData = function () {
+        dispatch({
+            type: "SEND_ALERT",
+            data: {
+                enable: initialAlertState.enable,
+                type: initialAlertState.type,
+                message: initialAlertState.message,
+                duration: initialAlertState.duration,
+            },
+        });
+    };
+    return (_jsxs(Grid, __assign({ container: true, p: 2 }, { children: [_jsx(Notification, { open: open, type: type, message: dataMessage, setOpen: setOpen }), _jsx(TabWrapper, { tabIndex: activeTab, setTabIndex: setActiveTab, tabsList: jobSeekerTabs }), jobSeekerTabs.map(function (tab) { return (_jsx(TabPanel, __assign({ value: activeTab, index: tab.index, disablePadding: true }, { children: tab.component }), tab.index)); }), notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } }))] })));
 };
 export default JobSeekerBase;

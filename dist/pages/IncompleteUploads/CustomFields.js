@@ -33,15 +33,16 @@ var useStyles = makeStyles(function () { return ({
     uploadText: {
         color: "#4d6cd9",
     },
+    commonAlignment: {
+        textAlign: "center",
+    },
 }); });
 export var Icons = function (params) {
     var classes = useStyles();
     var handleClick = function () {
         console.log("Hello");
     };
-    return (_jsx(_Fragment, { children: _jsxs("div", __assign({ style: {
-                textAlign: "center",
-            } }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick })] })) }));
+    return (_jsx(_Fragment, { children: _jsxs("div", __assign({ className: classes.commonAlignment }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick })] })) }));
 };
 var CustomFields = function () {
     return _jsx("div", { children: "CustomFields" });

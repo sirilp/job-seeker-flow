@@ -1,3 +1,6 @@
+import GroupsIcon from "@mui/icons-material/Groups";
+import UploadIcon from "@mui/icons-material/Upload";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 export var PageStatus;
 (function (PageStatus) {
     PageStatus["SIGNUP"] = "signup";
@@ -89,16 +92,19 @@ export var JOB_SEEKER_TABS = [
     { name: "Manage Profiles", status: "" },
 ];
 export var TEMPLATE_BUTTON = [
-    { iconFileName: "Group.png", title: "Import From Job Seeker Collections" },
     {
-        iconFileName: "Download.png",
+        iconFileName: GroupsIcon,
+        title: "Import From Job Seeker Collections",
+    },
+    {
+        iconFileName: FileDownloadIcon,
         title: "Download the Pre Dupliation Template",
     },
     {
-        iconFileName: "Download.png",
+        iconFileName: FileDownloadIcon,
         title: "Download the Full Dupliation Template",
     },
-    { iconFileName: "upload.png", title: "Upload Template" },
+    { iconFileName: UploadIcon, title: "Upload Template" },
 ];
 export var WorkStatusType;
 (function (WorkStatusType) {
