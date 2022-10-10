@@ -145,6 +145,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
+        contestId: props.id,
     };
     var r2 = {
         firstName: "",
@@ -158,6 +159,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
+        contestId: props.id,
     };
     var r3 = {
         firstName: "",
@@ -171,6 +173,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
+        contestId: props.id,
     };
     var r4 = {
         firstName: "",
@@ -184,6 +187,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
+        contestId: props.id,
     };
     var r5 = {
         firstName: "",
@@ -197,6 +201,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
+        contestId: props.id,
     };
     // let row = [r1, r2, r3, r4, r5];
     var row = [__assign({}, r1), __assign({}, r2), __assign({}, r3), __assign({}, r4), __assign({}, r5)];

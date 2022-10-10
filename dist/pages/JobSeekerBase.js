@@ -38,7 +38,7 @@ var JobSeekerBase = function (props) {
         {
             title: "Add Profile",
             index: 0,
-            component: (_jsx(JobSeekerProfileFlow, { setType: setType, setOpen: setOpen, setDataMessage: setDataMessage, contestId: props.id })),
+            component: (_jsx(JobSeekerProfileFlow, { setType: setType, setOpen: setOpen, setDataMessage: setDataMessage, contestId: id, id: contestId })),
         },
         {
             title: "Duplication Failed",

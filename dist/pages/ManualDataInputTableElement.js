@@ -291,7 +291,7 @@ export var PDCStatusCheckButton = function (params) {
         else {
             var bodyPayload = {
                 referralCompanyId: "a2",
-                contestId: "CONTEST_07_1091",
+                contestId: params.data.contestId,
                 emailId: params.data.email,
                 mobileNumber: params.data.phoneNumber,
                 firstName: params.data.firstName,
