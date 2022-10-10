@@ -156,8 +156,7 @@ var JobSeekerProfileWorkStatus = function (props) {
     var validateWorkStatusMap = function (data) {
         var _a;
         if (!data.currentLocation ||
-            !data.preferredLocation ||
-            !data.profileFetchLocation)
+            !data.preferredLocation)
             return false;
         else if (data.additonalCertificationStatus === YesNoOptions[0]) {
             if (((_a = data.certificationDetails) === null || _a === void 0 ? void 0 : _a.length) < 1)

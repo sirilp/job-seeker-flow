@@ -138,8 +138,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     const validateWorkStatusMap = (data) => {
         if(
             !data.currentLocation ||
-            !data.preferredLocation ||
-            !data.profileFetchLocation
+            !data.preferredLocation
         ) return false
         else if(data.additonalCertificationStatus === YesNoOptions[0]) {
             if(data.certificationDetails?.length < 1) return false;
