@@ -115,6 +115,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     lastFiveDigitOfPan: "",
     fdcStatus: null,
     uploadProfile: "",
+    contestId: props.id,
   };
   let r2 = {
     firstName: "",
@@ -128,6 +129,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     lastFiveDigitOfPan: "",
     fdcStatus: null,
     uploadProfile: "",
+    contestId: props.id,
   };
   let r3 = {
     firstName: "",
@@ -141,6 +143,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     lastFiveDigitOfPan: "",
     fdcStatus: null,
     uploadProfile: "",
+    contestId: props.id,
   };
   let r4 = {
     firstName: "",
@@ -154,6 +157,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     lastFiveDigitOfPan: "",
     fdcStatus: null,
     uploadProfile: "",
+    contestId: props.id,
   };
   let r5 = {
     firstName: "",
@@ -167,6 +171,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
     lastFiveDigitOfPan: "",
     fdcStatus: null,
     uploadProfile: "",
+    contestId: props.id,
   };
   // let row = [r1, r2, r3, r4, r5];
   let row = [{ ...r1 }, { ...r2 }, { ...r3 }, { ...r4 }, { ...r5 }];

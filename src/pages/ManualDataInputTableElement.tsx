@@ -381,7 +381,7 @@ export const PDCStatusCheckButton = (params: any) => {
     } else {
       const bodyPayload = {
         referralCompanyId: "a2",
-        contestId: "CONTEST_07_1091",
+        contestId: params.data.contestId,
         emailId: params.data.email,
         mobileNumber: params.data.phoneNumber,
         firstName: params.data.firstName,
@@ -724,7 +724,7 @@ export const FDCStatusCheckButton = (params: any) => {
         params.data.lastFiveDigitOfPan,
         params.data.dob
       ).then((response) => {
-        console.log(response)
+        console.log(response);
         if (response?.data.data.status == "FDC_SUCCESS") {
           setResult({
             ...DUPLICATION_PASS,
@@ -741,7 +741,7 @@ export const FDCStatusCheckButton = (params: any) => {
             JSON.stringify(params.data)
           );
         } else {
-          console.log(response?.data.status)
+          console.log(response?.data.status);
           setResult({
             ...DUPLICATION_FAIL,
             title: "Final Duplication Check failed, ",
