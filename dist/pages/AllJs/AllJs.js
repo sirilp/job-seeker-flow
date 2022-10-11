@@ -109,7 +109,7 @@ var AllJs = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
-            cellStyle: { "border-right-color": "#DFE5FF" },
+            cellStyle: { "borderRightColor": "#DFE5FF" },
         };
     }, []);
     var setColumnsDisplay = function (columnList) {

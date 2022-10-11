@@ -69,7 +69,7 @@ var useStyles = makeStyles(function () { return ({
 }); });
 var Manage = function (props) {
     var classes = useStyles();
-    var contestId = props.contestId;
+    var contestId = props.contestId, id = props.id;
     var gridRef = useRef();
     var _a = useState(LISTING_GENERIC_HEADERS), columnDefs = _a[0], setColumnDefs = _a[1];
     var _b = useState(10), pageSize = _b[0], setPageSize = _b[1];
@@ -92,14 +92,14 @@ var Manage = function (props) {
     var _l = useState([]), selectedEmails = _l[0], setSelectedEmails = _l[1];
     var _m = useState(false), isMailCheckEnable = _m[0], setIsMailCheckEnable = _m[1];
     useEffect(function () {
-        getTableRowData(pageNo, pageSize, contestId);
-        handleAggregateData(contestId);
-    }, [pageNo, pageSize, contestId]);
-    var handleAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
+        getTableRowData(pageNo, pageSize, id);
+        handleAggregateData(id);
+    }, [pageNo, pageSize, id]);
+    var handleAggregateData = function (id) { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getAggregateData(contestId)];
+                case 0: return [4 /*yield*/, getAggregateData(id)];
                 case 1:
                     response = _a.sent();
                     if (response.data.success) {
@@ -126,12 +126,12 @@ var Manage = function (props) {
             }
         });
     }); };
-    var getTableRowData = function (pageNo, pageSize, contestId) { return __awaiter(void 0, void 0, void 0, function () {
+    var getTableRowData = function (pageNo, pageSize, id) { return __awaiter(void 0, void 0, void 0, function () {
         var response, mapData, result;
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
-                case 0: return [4 /*yield*/, statusFilterContestLinkedJobsekeers(contestId, "", pageNo, pageSize)];
+                case 0: return [4 /*yield*/, statusFilterContestLinkedJobsekeers(id, "", pageNo, pageSize)];
                 case 1:
                     response = _g.sent();
                     if (response.data.success) {
@@ -185,7 +185,7 @@ var Manage = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
-            cellStyle: { "border-right-color": "#DFE5FF" },
+            cellStyle: { "borderRightColor": "#DFE5FF" },
         };
     }, []);
     var setColumnsDisplay = function (columnList) {
@@ -267,7 +267,8 @@ var Manage = function (props) {
                             { _id: 5, count: agCount.offerRolled },
                             { _id: 6, count: agCount.coolingPeriod },
                         ], setSelectedButton: setSelectedButton, selectedButton: selectedButton })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block", className: classes.actions1 }, { children: [_jsx(Checkbox, { disabled: selectedRows.length > 0 ? false : true, checked: isMailCheckEnable, onChange: function () { return setIsMailCheckEnable(!isMailCheckEnable); } }), " ", selectedRows.length, " Selected", _jsx(Tooltip, __assign({ title: "Mail All Jobseekers", placement: "top", arrow: true }, { children: _jsx(MailOutlineIcon, { className: classes.mailIcon, onClick: function () {
-                                                return isMailCheckEnable && window.open("https://mail.google.com/mail/?view=cm&fs=1&to=".concat(selectedEmails.toString()));
+                                                return isMailCheckEnable &&
+                                                    window.open("https://mail.google.com/mail/?view=cm&fs=1&to=".concat(selectedEmails.toString()));
                                             } }) })), _jsx(Tooltip, __assign({ title: "Bookmark", placement: "top", arrow: true }, { children: _jsx(BookmarkBorderIcon, { className: classes.bookmarkIcon }) }))] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
                     return Object.assign({ headerName: cl.headerName, hide: !cl.hide });
                 }), setColumnsDisplay: setColumnsDisplay, onClose: setColumnsListOpen, open: columnsListOpen }), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx(AgGridWithPagination, { gridRef: gridRef, rowData: rowData, columnDefs: columnDefs, defaultColDef: defaultColDef, autoGroupColumnDef: autoGroupColumnDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, pageSize: pageSize, onSelectionChanged: onSelectionChanged, pageSizeArray: PAGE_SIZE_ARRAY, totalPages: totalPages, pageChange: pageChange, pageSizeChange: pageSizeChange }) }))] })));

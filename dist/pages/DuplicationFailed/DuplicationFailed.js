@@ -84,7 +84,7 @@ var DuplicationFailed = function (props) {
         var response, result, t_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getDuplicationFailedProfilesAggregate()];
+                case 0: return [4 /*yield*/, getDuplicationFailedProfilesAggregate(props.contestId)];
                 case 1:
                     response = _a.sent();
                     if (response.data.success) {
@@ -133,7 +133,7 @@ var DuplicationFailed = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
-            cellStyle: { "border-right-color": "#DFE5FF" },
+            cellStyle: { "borderRightColor": "#DFE5FF" },
         };
     }, []);
     var autoGroupColumnDef = useMemo(function () {

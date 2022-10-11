@@ -117,11 +117,11 @@ export var getDuplicationFailedProfiles = function (filterValue, page, size, con
         }
     });
 }); };
-export var getDuplicationFailedProfilesAggregate = function () { return __awaiter(void 0, void 0, void 0, function () {
+export var getDuplicationFailedProfilesAggregate = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile-logs/aggregate"), {
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/profile-logs/aggregate/status?filterColumn=contestId&filterValue=").concat(contestId), {
                     headers: {
                         Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                     },

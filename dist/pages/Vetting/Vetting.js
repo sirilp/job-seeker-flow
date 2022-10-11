@@ -69,7 +69,7 @@ var useStyles = makeStyles(function () { return ({
 }); });
 var Vetting = function (props) {
     var classes = useStyles();
-    var contestId = props.contestId;
+    var contestId = props.contestId, id = props.id;
     var gridRef = useRef();
     var _a = useState(LISTING_GENERIC_HEADERS), columnDefs = _a[0], setColumnDefs = _a[1];
     var _b = useState(10), pageSize = _b[0], setPageSize = _b[1];
@@ -95,17 +95,17 @@ var Vetting = function (props) {
         setSelectedButtonValue(filterValue);
         setPageNo(0);
         setPageSize(10);
-        // getTableRowData(0, 10, contestId, filterValue);
+        // getTableRowData(0, 10, id, filterValue);
     };
     useEffect(function () {
-        handleAggregateData(contestId);
-        getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
-    }, [pageNo, pageSize, contestId, selectedButtonValue]);
-    var handleAggregateData = function (contestId) { return __awaiter(void 0, void 0, void 0, function () {
+        handleAggregateData(id);
+        getTableRowData(pageNo, pageSize, id, selectedButtonValue);
+    }, [pageNo, pageSize, id, selectedButtonValue]);
+    var handleAggregateData = function (id) { return __awaiter(void 0, void 0, void 0, function () {
         var result1, statusCount, response, result2, result3, result4;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getAggregateData(contestId)];
+                case 0: return [4 /*yield*/, getAggregateData(id)];
                 case 1:
                     statusCount = _a.sent();
                     if (statusCount.data.success) {
@@ -114,7 +114,7 @@ var Vetting = function (props) {
                     else {
                         result1 = [];
                     }
-                    return [4 /*yield*/, getConsentAggregateData(contestId)];
+                    return [4 /*yield*/, getConsentAggregateData(id)];
                 case 2:
                     response = _a.sent();
                     if (response.data.success) {
@@ -140,12 +140,12 @@ var Vetting = function (props) {
             }
         });
     }); };
-    var handlestatusFilterContestLinkedJobsekeers = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+    var handlestatusFilterContestLinkedJobsekeers = function (pageNo, pageSize, id, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
         var response, mapData, result;
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
-                case 0: return [4 /*yield*/, statusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
+                case 0: return [4 /*yield*/, statusFilterContestLinkedJobsekeers(id, selectedButtonValue, pageNo, pageSize)];
                 case 1:
                     response = _g.sent();
                     if (response.data.success) {
@@ -167,12 +167,12 @@ var Vetting = function (props) {
             }
         });
     }); };
-    var handleconsentStatusFilterContestLinkedJobsekeers = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+    var handleconsentStatusFilterContestLinkedJobsekeers = function (pageNo, pageSize, id, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
         var response, mapData, result;
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
-                case 0: return [4 /*yield*/, consentStatusFilterContestLinkedJobsekeers(contestId, selectedButtonValue, pageNo, pageSize)];
+                case 0: return [4 /*yield*/, consentStatusFilterContestLinkedJobsekeers(id, selectedButtonValue, pageNo, pageSize)];
                 case 1:
                     response = _g.sent();
                     if (response.data.success) {
@@ -194,13 +194,13 @@ var Vetting = function (props) {
             }
         });
     }); };
-    var getTableRowData = function (pageNo, pageSize, contestId, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
+    var getTableRowData = function (pageNo, pageSize, id, selectedButtonValue) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             if (selectedButtonValue === "JOB_SEEKER_APPLIED") {
-                handlestatusFilterContestLinkedJobsekeers(pageNo, pageSize, contestId, selectedButtonValue);
+                handlestatusFilterContestLinkedJobsekeers(pageNo, pageSize, id, selectedButtonValue);
             }
             else {
-                handleconsentStatusFilterContestLinkedJobsekeers(pageNo, pageSize, contestId, selectedButtonValue);
+                handleconsentStatusFilterContestLinkedJobsekeers(pageNo, pageSize, id, selectedButtonValue);
             }
             return [2 /*return*/];
         });
@@ -236,7 +236,7 @@ var Vetting = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
-            cellStyle: { "border-right-color": "#DFE5FF" },
+            cellStyle: { "borderRightColor": "#DFE5FF" },
         };
     }, []);
     var setColumnsDisplay = function (columnList) {
@@ -310,7 +310,8 @@ var Vetting = function (props) {
                             { _id: 3, count: agCount.consentPending },
                             { _id: 4, count: agCount.consentFail },
                         ], setSelectedButton: setSelectedButton, selectedButton: selectedButtonId })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block", className: classes.actions1 }, { children: [_jsx(Checkbox, { disabled: selectedRows.length > 0 ? false : true, checked: isMailCheckEnable, onChange: function () { return setIsMailCheckEnable(!isMailCheckEnable); } }), " ", selectedRows.length, " Selected", _jsx(Tooltip, __assign({ title: "Mail All Jobseekers", placement: "top", arrow: true }, { children: _jsx(MailOutlineIcon, { className: classes.mailIcon, onClick: function () {
-                                                return isMailCheckEnable && window.open("https://mail.google.com/mail/?view=cm&fs=1&to=".concat(selectedEmails.toString()));
+                                                return isMailCheckEnable &&
+                                                    window.open("https://mail.google.com/mail/?view=cm&fs=1&to=".concat(selectedEmails.toString()));
                                             } }) })), _jsx(Tooltip, __assign({ title: "Bookmark", placement: "top", arrow: true }, { children: _jsx(BookmarkBorderIcon, { className: classes.bookmarkIcon }) }))] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
                     return Object.assign({ headerName: cl.headerName, hide: !cl.hide });
                 }), setColumnsDisplay: setColumnsDisplay, onClose: setColumnsListOpen, open: columnsListOpen }), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx(AgGridWithPagination, { gridRef: gridRef, rowData: rowData, columnDefs: columnDefs, defaultColDef: defaultColDef, autoGroupColumnDef: autoGroupColumnDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, pageSize: pageSize, onSelectionChanged: onSelectionChanged, pageSizeArray: PAGE_SIZE_ARRAY, totalPages: totalPages, pageChange: pageChange, pageSizeChange: pageSizeChange }) }))] })));
