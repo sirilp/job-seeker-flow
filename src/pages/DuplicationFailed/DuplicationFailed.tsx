@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useEffect,
   useCallback,
+  FC
 } from "react";
 import { Button, Grid, Typography, Box, Checkbox } from "@mui/material";
 import StepCount from "../../components/StepCount";
@@ -23,7 +24,7 @@ import {
   getDuplicationFailedProfilesAggregate,
 } from "../../services/JobSeekerService";
 
-const DuplicationFailed = () => {
+const DuplicationFailed: FC<any> = (props) => {
   const [selectedButtonId, setSelectedButtonId] = useState<Number>(1);
   const [selectedButtonValue, setSelectedButtonValue] = useState("SUBMITTED");
 
@@ -72,7 +73,8 @@ const DuplicationFailed = () => {
     const response: any = await getDuplicationFailedProfiles(
       filterValue,
       page,
-      size
+      size,
+      props.contestId
     );
     if (response?.data?.success) {
       const duplicationFailedRecords = response?.data?.data?.content;

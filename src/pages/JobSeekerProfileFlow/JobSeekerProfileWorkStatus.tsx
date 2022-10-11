@@ -150,21 +150,26 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     };
   };
 
-    const validateWorkStatusMap = (data) => {
-        if(
-            !data.currentLocation ||
-            !data.preferredLocation
-        ) return false
-        else if(data.additonalCertificationStatus === YesNoOptions[0]) {
-            if(data.certificationDetails?.length < 1) return false;
-        } else if(jobStatus === WorkStatusType.FRESHER) {
-            if(
-                !data.instituteName || !data.instituteCity || !data.instituteCountry
-                || !data.collegeEndDate || !data.collegeStartDate
-            ) return false
-        }
-        return true
+  const validateWorkStatusMap = (data) => {
+    if (
+      !data.currentLocation ||
+      !data.preferredLocation
+    )
+      return false;
+    else if (data.additonalCertificationStatus === YesNoOptions[0]) {
+      if (data.certificationDetails?.length < 1) return false;
+    } else if (jobStatus === WorkStatusType.FRESHER) {
+      if (
+        !data.instituteName ||
+        !data.instituteCity ||
+        !data.instituteCountry ||
+        !data.collegeEndDate ||
+        !data.collegeStartDate
+      )
+        return false;
     }
+    return true;
+  };
 
   const handleCertifications = (certification) => {
     delete certification.saveStatus;
@@ -191,10 +196,13 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
 
   const callPrefillData = async () => {
     try {
-      setLoader(false);
+      setLoader(true);
       const profileDataFetched = await getJobSeekerProfile(
         props.profileDataId || userDataState.userData.profileId
       );
+      if(profileDataFetched?.data?.data?.profileDetailsMap?.workStatus) {
+        setJobStatus(profileDataFetched?.data?.data?.profileDetailsMap.workStatus)
+      }
       if (profileDataFetched?.data?.data?.profileWorkStatusMap) {
         patchWorkStatusDetails(
           profileDataFetched?.data?.data?.profileWorkStatusMap
@@ -210,8 +218,6 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
   };
 
   const patchWorkStatusDetails = (patchData: any) => {
-    console.log(patchData);
-    setJobStatus(patchData.jobStatus);
     setCurrentLocation(patchData.currentLocation);
     setPreferredLocation(patchData.preferredLocation);
     setProfileFetchLocation(patchData.profileFetchLocation);
@@ -235,6 +241,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
         city: patchObject.city,
         country: patchObject.country,
         endClient: patchObject?.endClient,
+        joiningDate: patchObject?.joiningDate,
         lastEmployer: patchObject?.lastEmployer,
         relievingDate: patchObject?.relievingDate,
         currentEmployer: patchObject?.currentEmployer,
@@ -428,7 +435,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                     setOpen={props.setOpen}
                     setDataMessage={props.setDataMessage}
                     experiencedPrefillData={
-                      props.profileDataId ? experiencedDetails : null
+                      props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null
                     }
                   />
                 ) : (
@@ -441,7 +448,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                     setOpen={props.setOpen}
                     setDataMessage={props.setDataMessage}
                     experiencedPrefillData={
-                      props.profileDataId ? experiencedDetails : null
+                      props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null
                     }
                   />
                 )}

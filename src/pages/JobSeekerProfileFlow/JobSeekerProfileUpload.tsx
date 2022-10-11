@@ -197,8 +197,8 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
   const uploadPayloadBuild = () => {
     return {
       documentTypeId: JOB_SEEKER_RESUME,
-      documentPath: `resume/${userDataState.userData.profileLogId}`,
-      documentName: userDataState.userData.profileLogId,
+      documentPath: `resume/${userDataState.userData.profileId}`,
+      documentName: userDataState.userData.profileId,
       files: acceptedFilesResume,
     };
   };

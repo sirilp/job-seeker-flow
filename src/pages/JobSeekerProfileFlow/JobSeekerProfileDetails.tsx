@@ -171,6 +171,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
       relevantExperience,
       freshGraduate: freshGraduate.toString(),
       workStatus,
+      currentlyWorking: workStatus === WorkStatusArray[0] ? "Yes" : "No" 
     };
   };
 
@@ -204,7 +205,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     } catch (error: any) {
       console.log(error);
       props.setType(ERROR_KEY);
-      props.setDataMessage("Somrthing went wrong");
+      props.setDataMessage("Something went wrong");
       props.setOpen(true);
     }
     setLoader(false);

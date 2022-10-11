@@ -43,7 +43,7 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
     {
       title: "Duplication Failed",
       index: 1,
-      component: <DuplicationFailed />,
+      component: <DuplicationFailed contestId={contestId} id={id} />,
     },
     {
       title: "Incomplete Uploads ",

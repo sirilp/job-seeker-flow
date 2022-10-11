@@ -1,14 +1,14 @@
 import React, { ReactElement, FC, useState, useEffect } from "react";
-import { Divider, Grid, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import GraphCo from "../../assets/GraphCo.png";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
-import { domainToASCII } from "url";
 import { getContestAggregateStatistics } from "../../services/JobSeekerService";
 
 const useStyles = makeStyles({
   graphImg: {
     position: "absolute",
+    left: "16vw",
     top: 0,
     width: "850px",
   },
@@ -149,8 +149,8 @@ const Graph: FC<any> = (props): ReactElement => {
 
   return (
     <Box position="relative">
-      <Grid container display="flex" justifyContent={"center"}>
-        <Grid item xs={0.1} display="flex" flexDirection={"column"}>
+      <Box display="flex" justifyContent={"center"}>
+        <Box display="flex" flexDirection={"column"}>
           <Item className={classes.leftItem1}>
             {contestStatistics?.PROFILE_DUPLICATE?.percentage || "_ _"}
           </Item>
@@ -173,20 +173,16 @@ const Graph: FC<any> = (props): ReactElement => {
           <Item className={classes.leftItem8}>
             {contestStatistics?.PROFILE_ACTIVE?.percentage || "_ _"}
           </Item>
-        </Grid>
-        <Grid item xs={4} md={7} lg={5.5} xl={3.3}>
+        </Box>
+        <Box>
           <img
             className={classes.graphImg}
             src={GraphCo}
             alt="Graph"
             loading="lazy"
           />
-        </Grid>
-        <Grid
-          item
-          xs={4}
-          //   md={3}
-          //   position={"relative"}
+        </Box>
+        <Box
           alignItems={"end"}
           display="flex"
           flexDirection={"column"}
@@ -211,8 +207,8 @@ const Graph: FC<any> = (props): ReactElement => {
           <Item className={classes.rightItem8}>
             {contestStatistics?.PROFILE_ACTIVE?.count || "_ _"}
           </Item>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import { Button, Grid, Typography, Box, Tooltip } from "@mui/material";
 import GridItem from "../GridItem/GridItem";
 import { AgGridReact } from "ag-grid-react";
 import { ColDef } from "ag-grid-community";
@@ -31,6 +31,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 const useStyles = makeStyles(() => ({
   iconStyle: { color: "#4D6CD9", margin: "5px" },
+  action1: { fontSize: "15px !important" },
 }));
 
 const IncompleteUploads = (props) => {
@@ -57,6 +58,7 @@ const IncompleteUploads = (props) => {
     step7: 0,
   });
   const [selectedEmails, setSelectedEmails] = useState<any>([]);
+  const [isMailCheckEnable, setIsMailCheckEnable] = useState(false);
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -333,25 +335,35 @@ const IncompleteUploads = (props) => {
               </Button>
             </div>
             <div>
-              <Box display={"inline-block"}>
-                <Checkbox /> {selectedRows.length} Selected
-                <BookmarkBorderIcon className={classes.iconStyle} />
-                <MailOutlineIcon
-                  className={classes.iconStyle}
-                  onClick={() =>
-                    window.open(
-                      `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
-                    )
-                  }
-                />
-                <MailOutlineIcon
-                  className={classes.iconStyle}
-                  onClick={() =>
-                    window.open(
-                      "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
-                    )
-                  }
-                />
+              <Box display={"inline-block"} className={classes.action1}>
+                <Checkbox
+                  disabled={selectedRows.length > 0 ? false : true}
+                  checked={isMailCheckEnable}
+                  onChange={() => setIsMailCheckEnable(!isMailCheckEnable)}
+                /> {selectedRows.length} Selected
+                <Tooltip title="Bookmark" placement="top" arrow>
+                  <BookmarkBorderIcon className={classes.iconStyle} />
+                </Tooltip>
+                <Tooltip title="Mail All Jobseekers" placement="top" arrow>
+                  <MailOutlineIcon
+                    className={classes.iconStyle}
+                    onClick={() =>
+                      isMailCheckEnable && window.open(
+                        `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
+                      )
+                    }
+                  />
+                </Tooltip>
+                <Tooltip title="Mail All Recruiters" placement="top" arrow>
+                  <MailOutlineIcon
+                    className={classes.iconStyle}
+                    onClick={() =>
+                      isMailCheckEnable && window.open(
+                        "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
+                      )
+                    }
+                  />
+                </Tooltip>
               </Box>
             </div>
           </div>
@@ -384,7 +396,7 @@ const IncompleteUploads = (props) => {
             totalPages={totalPages}
             pageChange={pageChange}
             pageSizeChange={pageSizeChange}
-            // onCellValueChanged={onCellValueChanged}
+          // onCellValueChanged={onCellValueChanged}
           />
         </Grid>
       </Grid>

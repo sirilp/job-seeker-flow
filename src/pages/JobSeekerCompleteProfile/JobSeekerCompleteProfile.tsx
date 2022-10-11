@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Graph from "../../components/AnalyticsGraph/Graph";
 import JobSeekerProfileCard from "../../components/JobSeekerProfile/JobSeekerProfileCard";
 import TabWrapper, { TabPanel } from "../../components/TabWrapper/TabWrapper";
 
-import { Divider, Grid, Box, Typography } from "@mui/material";
-import { shadows } from "@mui/system";
-import { getContestAggregateStatistics } from "../../services/JobSeekerService";
+import { Box, Typography } from "@mui/material";
 import { JOB_SEEKER_COMLETE_PROFILE_TEXT } from "../../constants";
 
 const JobSeekerCompleteProfile = (props) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [dataMessage, setDataMessage] = useState("");
-  const [open, setOpen] = useState(false);
-  const [type, setType] = useState("");
 
   const jobSeekerTabs = [
     {
@@ -38,8 +33,8 @@ const JobSeekerCompleteProfile = (props) => {
   ];
   return (
     <>
-      <Grid container display="flex" justifyContent={"center"}>
-        <Grid item xs={9.5} sx={{ boxShadow: 2 }}>
+      <Box>
+        <Box>
           <Typography
             variant="h5"
             color={"#22C55E"}
@@ -67,10 +62,10 @@ const JobSeekerCompleteProfile = (props) => {
           >
             {JOB_SEEKER_COMLETE_PROFILE_TEXT.notification2}
           </Typography>
-          <div style={{ padding: "3vw" }}>
+          <div style={{ padding: "3vw 0 3vw 0" }}>
             <JobSeekerProfileCard contestId={props.contestId} />
           </div>
-          <div style={{ padding: "0 3vw 0 3vw" }}>
+          <div>
             <TabWrapper
               tabIndex={activeTab}
               setTabIndex={setActiveTab}
@@ -95,15 +90,15 @@ const JobSeekerCompleteProfile = (props) => {
               {JOB_SEEKER_COMLETE_PROFILE_TEXT.notification4}
             </Typography>
           </div>
-        </Grid>
+        </Box>
 
-        <Grid item xs={9.5} sx={{ padding: "0vw" }}>
+        <Box sx={{ padding: "0vw" }}>
           <Typography variant="h4" textAlign={"center"} padding={"3vw"}>
             {JOB_SEEKER_COMLETE_PROFILE_TEXT.alyticsTitle}
           </Typography>
           <Graph />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </>
   );
 };

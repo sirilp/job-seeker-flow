@@ -133,6 +133,13 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
       props.workStatus === WorkStatusType.JOBLESS
         ? experiencedSeekerForm.setFieldValue("relievingDate", dateValue)
         : experiencedSeekerForm.setFieldValue("joiningDate", dateValue);
+      const tempObject = {
+        ...experiencedSeekerForm.values
+      }
+      props.workStatus === WorkStatusType.JOBLESS ? 
+      tempObject["relievingDate"] = dateValue : 
+      tempObject["joiningDate"] = dateValue
+      props.setParentData(tempObject);
     };
 
     useImperativeHandle(ref, () => ({
@@ -146,6 +153,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
         if(props.experiencedPrefillData?.city) experiencedSeekerForm.setFieldValue("city", props.experiencedPrefillData?.city);
         if(props.experiencedPrefillData?.country) experiencedSeekerForm.setFieldValue("country", props.experiencedPrefillData?.country);
         if(props.experiencedPrefillData?.endClient) experiencedSeekerForm.setFieldValue("endClient", props.experiencedPrefillData?.endClient);
+        if(props.experiencedPrefillData?.joiningDate) experiencedSeekerForm.setFieldValue("joiningDate", props.experiencedPrefillData?.joiningDate);
         if(props.experiencedPrefillData?.lastEmployer) experiencedSeekerForm.setFieldValue("lastEmployer", props.experiencedPrefillData?.lastEmployer);
         if(props.experiencedPrefillData?.relievingDate) experiencedSeekerForm.setFieldValue("relievingDate", props.experiencedPrefillData?.relievingDate);
         if(props.experiencedPrefillData?.currentEmployer) experiencedSeekerForm.setFieldValue("currentEmployer", props.experiencedPrefillData?.currentEmployer);

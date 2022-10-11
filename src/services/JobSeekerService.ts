@@ -78,13 +78,14 @@ export const getAggregateData = async (contestId: string) => {
 export const getDuplicationFailedProfiles = async (
   filterValue: string,
   page: number,
-  size: number
+  size: number,
+  contestId: string
 ) => {
   return await axios
     .get(
       `${
         process.env.REACT_APP_MAIN_SERVER_URL
-      }hiringhood/v1/profile-log?filterColumn=status&filterValue=${filterValue}${
+      }hiringhood/v1/profile-logs?contestId=${contestId}&filterColumn=status&filterValue=${filterValue}${
         page ? "&page=" + page : "&page=" + 0
       }${size ? "&size=" + size : ""}`,
       {
@@ -100,7 +101,7 @@ export const getDuplicationFailedProfiles = async (
 export const getDuplicationFailedProfilesAggregate = async () => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile-log/aggregate`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile-logs/aggregate`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,

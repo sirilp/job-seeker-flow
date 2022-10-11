@@ -9,7 +9,7 @@ import React, {
 } from "react";
 
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import { Button, Grid, Typography, Box, Tooltip } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
 import { relations, LISTING_GENERIC_HEADERS } from "./ColumnHeaders";
 import { ColDef } from "ag-grid-community";
@@ -30,9 +30,10 @@ import {
 } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 
 const useStyles = makeStyles(() => ({
-  deleteIcon: { color: "#4D6CD9", margin: "10px" },
+  mailIcon: { color: "#4D6CD9", margin: "10px" },
   actions1: { fontSize: "15px !important" },
   bookmarkIcon: { color: "#4D6CD9" },
 }));
@@ -55,8 +56,13 @@ const Vetting = (props) => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const [agCount, setAgCount] = useState<any>({
     submitted: 0,
-    consent: 0,
+    consentPass: 0,
+    consentPending: 0,
+    consentFail: 0,
   });
+
+  const [selectedEmails, setSelectedEmails] = useState<any>([]);
+  const [isMailCheckEnable, setIsMailCheckEnable] = useState(false);
 
   const setSelectedButton = (id: number, filterValue: string) => {
     setSelectedButtonId(id);
@@ -276,6 +282,15 @@ const Vetting = (props) => {
     setPageSize(pageSizeChanged);
   };
 
+  const filterEmailIds = () => {
+    const emails = selectedRows.map((item) => item.emailId);
+    setSelectedEmails(emails);
+  };
+
+  useEffect(() => {
+    filterEmailIds();
+  }, [selectedRows]);
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} p={2}>
@@ -339,9 +354,24 @@ const Vetting = (props) => {
           </div>
           <div>
             <Box display={"inline-block"} className={classes.actions1}>
-              <Checkbox /> {selectedRows.length} Selected
-              <DeleteOutlineIcon className={classes.deleteIcon} />
-              <BookmarkBorderIcon className={classes.bookmarkIcon} />
+              <Checkbox
+                disabled={selectedRows.length > 0 ? false : true}
+                checked={isMailCheckEnable}
+                onChange={() => setIsMailCheckEnable(!isMailCheckEnable)}
+              /> {selectedRows.length} Selected
+              <Tooltip title="Mail All Jobseekers" placement="top" arrow>
+                <MailOutlineIcon
+                  className={classes.mailIcon}
+                  onClick={() =>
+                    isMailCheckEnable && window.open(
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
+                    )
+                  }
+                />
+              </Tooltip>
+              <Tooltip title="Bookmark" placement="top" arrow>
+                <BookmarkBorderIcon className={classes.bookmarkIcon} />
+              </Tooltip>
             </Box>
           </div>
         </div>
@@ -374,7 +404,7 @@ const Vetting = (props) => {
           totalPages={totalPages}
           pageChange={pageChange}
           pageSizeChange={pageSizeChange}
-          // onCellValueChanged={onCellValueChanged}
+        // onCellValueChanged={onCellValueChanged}
         />
       </Grid>
     </Grid>
