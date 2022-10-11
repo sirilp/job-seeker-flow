@@ -199,7 +199,7 @@ const DuplicationFailed: FC<any> = (props) => {
           countsList={[
             {
               _id: 1,
-              count: agCount.PDC_FAIL + agCount.PDC_PASS + agCount.FDC_FAIL,
+              count: (agCount?.PDC_PASS ? agCount?.PDC_PASS : 0) + (agCount?.FDC_FAIL ? agCount?.FDC_FAIL :  0) + (agCount?.PDC_FAIL ? agCount?.PDC_FAIL : 0),
             },
             { _id: 2, count: agCount.PDC_FAIL },
             { _id: 3, count: agCount.PDC_PASS },
