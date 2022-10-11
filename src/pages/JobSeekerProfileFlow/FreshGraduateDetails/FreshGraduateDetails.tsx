@@ -191,7 +191,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               className="add-team-grid"
             >
               <p className="institute-field">{COLLEGE_START_TEXT}</p>
-              <Calendar setDate={handleStartDate} />
+              <Calendar setDate={handleStartDate} value={props?.fresherPrefillData?.collegeStartDate} />
             </Grid>
             <Grid
               item
@@ -202,7 +202,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               className="add-team-grid"
             >
               <p className="institute-field">{COLLEGE_END_TEXT}</p>
-              <Calendar setDate={handleEndDate} status={false} />
+              <Calendar setDate={handleEndDate} status={false}  value={props?.fresherPrefillData?.collegeEndDate}/>
             </Grid>
           </Grid>
         </div>

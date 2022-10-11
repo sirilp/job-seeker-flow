@@ -161,7 +161,7 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Currently Working",
-    field: "profileNoticePeriodMap.currentlyWorking",
+    field: "profileDetailsMap.currentlyWorking",
     hide: false,
     minWidth: 215,
     filter: "agNumberColumnFilter",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -14,6 +14,13 @@ const Calendar = (props) => {
   const [monthValue, setMonthValue] = useState(value.getMonth() + 1);
   const [yearValue, setYearValue] = useState(value.getFullYear());
   const classes = useStyles();
+
+  useEffect(() => {
+     if(props.value){
+        const date = new Date(props.value);
+        handleDatePicker(date);
+     }
+  }, [])
 
   const handleDatePicker = (val) => {
     setDayValue(val.getDate());
@@ -46,7 +53,7 @@ const Calendar = (props) => {
   return (
     <div className="row datePicker">
       {props.status ? (
-        <>
+        <div style={{ position: "relative", display: "flex" }}>
           <TextField
             className={classes.date}
             id="outlined-date"
@@ -81,6 +88,13 @@ const Calendar = (props) => {
               value={value}
               onChange={handleDatePicker}
               disabled={props.disabled}
+              PopperProps={{
+                disablePortal: true,
+                sx: {
+                  transform: "unset !important",
+                  inset: "50px auto auto 0px !important",
+                },
+              }}
               renderInput={({ inputRef, inputProps, InputProps }) => (
                 <Box
                   sx={{
@@ -94,9 +108,9 @@ const Calendar = (props) => {
               )}
             />
           </LocalizationProvider>
-        </>
+        </div>
       ) : (
-        <>
+        <div style={{ position: "relative", display: "flex" }}>
           <TextField
             className={classes.date}
             id="outlined-month-one"
@@ -119,6 +133,13 @@ const Calendar = (props) => {
               label="Custom input"
               value={value}
               onChange={handleDatePicker}
+              PopperProps={{
+                disablePortal: true,
+                sx: {
+                  transform: "unset !important",
+                  inset: "50px auto auto 0px !important",
+                },
+              }}
               renderInput={({ inputRef, inputProps, InputProps }) => (
                 <Box
                   sx={{
@@ -132,7 +153,7 @@ const Calendar = (props) => {
               )}
             />
           </LocalizationProvider>
-        </>
+        </div>
       )}
     </div>
   );

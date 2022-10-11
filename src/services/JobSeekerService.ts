@@ -22,6 +22,7 @@ export const preDuplicationCheck = async (bodyPayload: {
     )
     .catch((error) => {
       console.log(error);
+      return error;
     });
 };
 
@@ -42,6 +43,7 @@ export const fullDuplicationCheck = async (
     )
     .catch((error) => {
       console.log(error);
+      return error;
     });
 };
 
@@ -153,7 +155,11 @@ export const statusFilterContestLinkedJobsekeers = async (
 ) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${id}&filters=${status ? 'status:' + status : ''}&page=${page}&size=${size}`,
+      `${
+        process.env.REACT_APP_MAIN_SERVER_URL
+      }hiringhood/v1/job-seekers-profiles?contestId=${id}&filters=${
+        status ? "status:" + status : ""
+      }&page=${page}&size=${size}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,

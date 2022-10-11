@@ -240,6 +240,8 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
     setReasonOfResignation(patchData.reasonOfResignation);
     setNoticePeriod(patchData.noticePeriod);
     setOfferData(() => [...patchData.offerData]);
+    setJoiningDate(patchData.joiningDate);
+    setLastWorkingDate(patchData.lastWorkingDate);
   };
 
   return (
@@ -287,7 +289,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     {JOINING_DATE_TEXT}
                     <span className="asterisk-span"> *</span>
                   </p>
-                  <Calendar setDate={setJoiningDate} status={true} />
+                  <Calendar setDate={setJoiningDate} status={true} value={joiningDate} />
                 </div>
                 <div className="job-change-field">
                   <p>
@@ -318,7 +320,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     {LWD_TEXT}
                     <span className="asterisk-span"> *</span>
                   </p>
-                  <Calendar setDate={setLastWorkingDate} status={true} />
+                  <Calendar setDate={setLastWorkingDate} status={true} value={lastWorkingDate} />
                 </div>
               ) : noticeStatus === NoticeOptions[1] ? (
                 <div>

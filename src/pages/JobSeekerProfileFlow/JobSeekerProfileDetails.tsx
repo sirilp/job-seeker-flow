@@ -333,8 +333,8 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
                        setFreshGraduate(false);
                       }
                       else{
-                        setFreshGraduate(true);
                         emptyExperienceCTCDetatils();
+                        setFreshGraduate(true);
                       }
                       setWorkStatus(e.target.value)
                     }}

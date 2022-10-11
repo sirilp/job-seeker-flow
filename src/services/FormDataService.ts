@@ -88,7 +88,7 @@ export const createJobSeekerProfile = async (bodyPayload: {
   profileData: any;
 }) => {
   return axios.post(
-    `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?profileLogId=${bodyPayload.profileLogId}`,
+    `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seeker-profile?profileLogId=${bodyPayload.profileLogId}`,
     bodyPayload.profileData,
     {
       headers: {

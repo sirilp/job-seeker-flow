@@ -341,7 +341,7 @@ export const PDCStatusCheckButton = (params: any) => {
   const ref = useRef(null);
 
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const handleClick = (event: any) => {
+  const handleClick = async (event: any) => {
     if (
       params.data.firstName.trim() == "" ||
       params.data.lastName.trim() == "" ||
@@ -388,7 +388,9 @@ export const PDCStatusCheckButton = (params: any) => {
         lastName: params.data.lastName,
         interviewAttended: params.data.interviewed,
       };
-      preDuplicationCheck(bodyPayload).then((response) => {
+      const response: any = await preDuplicationCheck(bodyPayload);
+
+      if (response?.status === 200) {
         if (response?.data.data.status == "PDC_SUCCESS") {
           setResult({
             ...DUPLICATION_PASS,
@@ -416,7 +418,29 @@ export const PDCStatusCheckButton = (params: any) => {
             setOpen(false);
           }, 4000);
         }
-      });
+      } else if (response?.response?.status === 500) {
+        setResult({
+          ...DUPLICATION_FAIL,
+          title: "Duplicate Found!",
+          body: `500 ${response?.response?.data?.error} ${response?.response?.data?.message}`,
+        });
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 4000);
+        params.setValue(false);
+      } else {
+        setResult({
+          ...DUPLICATION_FAIL,
+          title: "Duplicate Found!",
+          body: response?.response?.data.message,
+        });
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 4000);
+        params.setValue(false);
+      }
     }
   };
 
@@ -534,12 +558,14 @@ export const CustomDOBInputBox = (params: any) => {
   );
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const handleChange = (newValue: any) => {
-    const dd = ("0" + newValue.$D).slice(-2);
-    const mm = ("0" + (newValue.$M + 1)).slice(-2);
-    const yy = newValue.$y;
-    // Date picker is handling the date in MM/DD/YYYY format
-    setDate(`${mm}/${dd}/${yy}`);
-    params.setValue(`${dd}/${mm}/${yy}`);
+    if (newValue != null) {
+      const dd = ("0" + newValue.$D).slice(-2);
+      const mm = ("0" + (newValue.$M + 1)).slice(-2);
+      const yy = newValue.$y;
+      // Date picker is handling the date in MM/DD/YYYY format
+      setDate(`${mm}/${dd}/${yy}`);
+      params.setValue(`${dd}/${mm}/${yy}`);
+    }
   };
 
   return (
@@ -658,7 +684,7 @@ export const FDCStatusCheckButton = (params: any) => {
 
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-  const handleClick = (event: any) => {
+  const handleClick = async (event: any) => {
     if (
       params.data.firstName.trim() == "" ||
       params.data.lastName.trim() == "" ||
@@ -719,12 +745,12 @@ export const FDCStatusCheckButton = (params: any) => {
       });
       params.setValue(false);
     } else {
-      fullDuplicationCheck(
+      const response = await fullDuplicationCheck(
         params.data.profileLogId,
         params.data.lastFiveDigitOfPan,
         params.data.dob
-      ).then((response) => {
-        console.log(response);
+      );
+      if (response?.status === 200) {
         if (response?.data.data.status == "FDC_SUCCESS") {
           setResult({
             ...DUPLICATION_PASS,
@@ -741,7 +767,6 @@ export const FDCStatusCheckButton = (params: any) => {
             JSON.stringify(params.data)
           );
         } else {
-          console.log(response?.data.status);
           setResult({
             ...DUPLICATION_FAIL,
             title: "Final Duplication Check failed, ",
@@ -753,7 +778,29 @@ export const FDCStatusCheckButton = (params: any) => {
           }, 4000);
           params.setValue(false);
         }
-      });
+      } else if (response?.response?.status === 500) {
+        setResult({
+          ...DUPLICATION_FAIL,
+          title: "Final Duplication Check failed, ",
+          body: `500 ${response?.response?.data?.error} ${response?.response?.data?.message}`,
+        });
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 4000);
+        params.setValue(false);
+      } else {
+        setResult({
+          ...DUPLICATION_FAIL,
+          title: "Final Duplication Check failed, ",
+          body: response?.response?.data.message,
+        });
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 4000);
+        params.setValue(false);
+      }
     }
   };
 

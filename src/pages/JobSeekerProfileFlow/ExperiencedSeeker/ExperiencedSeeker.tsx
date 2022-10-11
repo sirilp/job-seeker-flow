@@ -367,7 +367,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                   : CURRENT_EMPLOYER_JOINING_TEXT}
                 <span className="asterisk-span"> *</span>
               </p>
-              <Calendar setDate={handleDate} status={true} />
+              <Calendar setDate={handleDate} status={true} value={props?.experiencedPrefillData?.joiningDate}/>
             </Grid>
           </Grid>
         </div>

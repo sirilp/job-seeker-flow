@@ -285,6 +285,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         );
                       }}
                       status={true}
+                      value={offerAddForm.values.members[index].joiningDate}
                     />
                   </Grid>
                   <Grid
