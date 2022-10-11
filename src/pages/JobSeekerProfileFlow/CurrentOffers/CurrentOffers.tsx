@@ -193,6 +193,15 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
     setServiceList((prevState: any) => [...prevState, { ...initialValuesForForm, ...prefillValue }]);
   };
 
+  const AddMultipleService = (prefillArray?: any[]) => {
+    if(prefillArray) {
+      offerAddForm.setValues((prevValues) => ({
+        members: [...prefillArray],
+      }));
+      setServiceList((prevState: any) => [...prefillArray] );
+    }
+  };
+
   const getError = (name: string) => {
     const error = getIn(offerAddForm.errors, name);
     const touch = getIn(offerAddForm.touched, name);
@@ -201,8 +210,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
 
   useEffect(() => {
     if (props.prefilData) {
-      console.log(props.prefilData)
-      props.prefilData.forEach((offer) => handleServiceAdd(offer));
+      AddMultipleService(props.prefilData);
     } else if (serviceList.length === 0) handleServiceAdd();
   }, []);
 

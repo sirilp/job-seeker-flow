@@ -168,21 +168,21 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
     getRootProps: rootPropsTemplate,
     getInputProps: inputPropsTemplate,
     isDragActive: openTemplate,
-  } = useDropzone({ onDrop: () => {} });
+  } = useDropzone({ onDrop: () => { } });
 
   const {
     acceptedFiles: acceptedFilesTemplateResume,
     getRootProps: rootPropsTemplateResume,
     getInputProps: inputPropsTemplateResume,
     isDragActive: openTemplateResume,
-  } = useDropzone({ onDrop: () => {} });
+  } = useDropzone({ onDrop: () => { } });
 
   const {
     acceptedFiles: acceptedFilesResume,
     getRootProps: rootPropsResume,
     getInputProps: inputPropsResume,
     isDragActive: openResume,
-  } = useDropzone({ onDrop: () => {} });
+  } = useDropzone({ onDrop: () => { } });
 
   const handleManualUpload = () => {
     setManualState(true);
@@ -251,21 +251,13 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
         props.setOpen(true);
       }
     }
+    else if (imageName && acceptedFilesResume.length < 1) {
+      if (props.handleNext) {
+        props.handleComplete(1);
+        props.handleNext();
+      }
+    }
     setLoader(false);
-  };
-
-  const dispatchProfileId = (profileId, jobSeekerId) => {
-    dispatch({
-      type: "USER_ADD",
-      data: {
-        userData: {
-          ...userDataState.userData,
-          profileId,
-          jobSeekerId,
-        },
-        userId: userDataState.userId,
-      },
-    });
   };
 
   useEffect(() => {

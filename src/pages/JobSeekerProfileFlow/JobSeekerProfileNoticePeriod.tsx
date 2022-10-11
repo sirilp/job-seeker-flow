@@ -71,7 +71,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
       files,
     };
   };
-
+  
   const buildDetailsPayload = () => {
     return {
       currentlyWorking,
@@ -101,22 +101,38 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
     }
     if (profileNoticePeriodMap.offerData.length > 0) {
       try {
-        const fileIds: { index: number; id: string }[] = [];
+        const fileIds: { employerName: string; id: string }[] = [];
+
+        const uploadFiles: Array<any> = profileNoticePeriodMap.offerData.filter((elt) => {
+          if(elt.letterFiles[0]?.name){
+            return true;
+          } else {
+            fileIds.push({
+              employerName: elt.employerName,
+              id: elt.offerDocumentId,
+            });
+          }
+        });
+
         await Promise.all(
-          profileNoticePeriodMap.offerData.map(async (offer, index) => {
+          uploadFiles.map(async (offer, index) => {
             const uploadResponse = await UploadFiles(
               uploadPayloadBuild(offer?.letterFiles)
             );
             fileIds.push({
-              index,
+              employerName: offer.employerName,
               id: uploadResponse?.data?.data?.id,
             });
           })
         );
+
         profileNoticePeriodMap.offerData.forEach((offer, index) => {
-          const idData = fileIds.find((files) => files.index === index);
+          const idData = fileIds.find((files) => files.employerName === offer.employerName);
           profileNoticePeriodMap.offerData[index].offerDocumentId = idData?.id;
+          profileNoticePeriodMap.offerData[index].saveStatus = false;
+          profileNoticePeriodMap.offerData[index].fieldDisabled = false;
         });
+
       } catch (error) {
         props.setOpen(true);
         props.setType(ERROR_KEY);
@@ -131,7 +147,6 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
         profileId: props.profileDataId || userDataState.userData.profileId,
         profileData: { profileNoticePeriodMap, profileLastCompletedStep: "5" },
       });
-      console.log(profileDetailsResponse?.data);
       if (profileDetailsResponse?.data?.success) {
         props.setType(SUCCESS_KEY);
         props.setDataMessage(FORM_SUBMISSION_SUCCESS);
@@ -229,8 +244,6 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
   };
 
   const patchNoticePeriodDetails = (patchData: any) => {
-    console.log(patchData);
-
     setBuyoutStatus(patchData.buyoutStatus);
     setNegotiableStatus(patchData.negotiableStatus);
     setNegotiablePeriod(patchData.negotiablePeriod);
@@ -515,7 +528,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                         setDataMessage={props.setDataMessage}
                         prefilData={
                           props.profileDataId ||
-                          userDataState.userData.profileId
+                            userDataState.userData.profileId
                             ? offerData
                             : null
                         }
