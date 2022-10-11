@@ -36,29 +36,28 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
           setOpen={setOpen}
           setDataMessage={setDataMessage}
           contestId={id}
-          id={contestId}
         />
       ),
     },
     {
       title: "Duplication Failed",
       index: 1,
-      component: <DuplicationFailed contestId={contestId} id={id} />,
+      component: <DuplicationFailed contestId={id} />,
     },
     {
       title: "Incomplete Uploads ",
       index: 2,
-      component: <IncompleteUploads contestId={contestId} id={id} />,
+      component: <IncompleteUploads id={id} />,
     },
     {
       title: "All JS",
       index: 3,
-      component: <AllJs contestId={contestId} id={id} />,
+      component: <AllJs contestId={id} />,
     },
     {
       title: "Vetting",
       index: 4,
-      component: <Vetting contestId={contestId} id={id} />,
+      component: <Vetting id={id} />,
     },
     {
       title: "Interview",
@@ -68,7 +67,7 @@ const JobSeekerBase: FC<any> = (props): ReactElement => {
     {
       title: "Manage Profiles",
       index: 6,
-      component: <Manage contestId={contestId} id={id} />,
+      component: <Manage id={id} />,
     },
     {
       title: "Broadcast",

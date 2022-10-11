@@ -100,10 +100,10 @@ export const getDuplicationFailedProfiles = async (
       console.log(error);
     });
 };
-export const getDuplicationFailedProfilesAggregate = async () => {
+export const getDuplicationFailedProfilesAggregate = async (contestId: string) => {
   return await axios
     .get(
-      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile-logs/aggregate`,
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile-logs/aggregate/status?filterColumn=contestId&filterValue=${contestId}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,

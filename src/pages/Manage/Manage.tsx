@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 
 const Manage = (props) => {
   const classes = useStyles();
-  const { contestId } = props;
+  const { contestId, id } = props;
   const gridRef = useRef<AgGridReact<any>>();
   const [columnDefs, setColumnDefs] = useState(LISTING_GENERIC_HEADERS);
   const [pageSize, setPageSize] = useState(10);
@@ -62,12 +62,12 @@ const Manage = (props) => {
   const [isMailCheckEnable, setIsMailCheckEnable] = useState(false);
 
   useEffect(() => {
-    getTableRowData(pageNo, pageSize, contestId);
-    handleAggregateData(contestId);
-  }, [pageNo, pageSize, contestId]);
+    getTableRowData(pageNo, pageSize, id);
+    handleAggregateData(id);
+  }, [pageNo, pageSize, id]);
 
-  const handleAggregateData = async (contestId) => {
-    const response: any = await getAggregateData(contestId);
+  const handleAggregateData = async (id) => {
+    const response: any = await getAggregateData(id);
 
     if (response.data.success) {
       setAgCount({
@@ -90,9 +90,9 @@ const Manage = (props) => {
     }
   };
 
-  const getTableRowData = async (pageNo, pageSize, contestId) => {
+  const getTableRowData = async (pageNo, pageSize, id) => {
     const response: any = await statusFilterContestLinkedJobsekeers(
-      contestId,
+      id,
       "",
       pageNo,
       pageSize
@@ -151,7 +151,7 @@ const Manage = (props) => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "border-right-color": "#DFE5FF" },
+      cellStyle: { "borderRightColor": "#DFE5FF" },
     };
   }, []);
 
@@ -277,12 +277,14 @@ const Manage = (props) => {
                 disabled={selectedRows.length > 0 ? false : true}
                 checked={isMailCheckEnable}
                 onChange={() => setIsMailCheckEnable(!isMailCheckEnable)}
-              /> {selectedRows.length} Selected
+              />{" "}
+              {selectedRows.length} Selected
               <Tooltip title="Mail All Jobseekers" placement="top" arrow>
                 <MailOutlineIcon
                   className={classes.mailIcon}
                   onClick={() =>
-                    isMailCheckEnable && window.open(
+                    isMailCheckEnable &&
+                    window.open(
                       `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
                     )
                   }
@@ -323,7 +325,7 @@ const Manage = (props) => {
           totalPages={totalPages}
           pageChange={pageChange}
           pageSizeChange={pageSizeChange}
-        // onCellValueChanged={onCellValueChanged}
+          // onCellValueChanged={onCellValueChanged}
         />
       </Grid>
     </Grid>

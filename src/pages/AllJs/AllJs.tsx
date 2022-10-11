@@ -76,7 +76,7 @@ const AllJs = (props) => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "border-right-color": "#DFE5FF" },
+      cellStyle: { "borderRightColor": "#DFE5FF" },
     };
   }, []);
 

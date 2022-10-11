@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const IncompleteUploads = (props) => {
-  const { contestId } = props;
+  const { contestId, id } = props;
   const classes = useStyles();
   const gridRef = useRef<AgGridReact<any>>();
   const [columnDefs, setColumnDefs] = useState(LISTING_GENERIC_HEADERS);
@@ -70,10 +70,10 @@ const IncompleteUploads = (props) => {
     setPageSize(10);
   };
 
-  const getTableRowData = async (filterValue, contestId, pageNo, pageSize) => {
+  const getTableRowData = async (filterValue, id, pageNo, pageSize) => {
     const response: any = await getJobseekersOnStepCount(
       filterValue,
-      contestId,
+      id,
       pageNo,
       pageSize
     );
@@ -113,7 +113,7 @@ const IncompleteUploads = (props) => {
   };
 
   const handleAggregateData = async () => {
-    const response: any = await getIncompleteUplodsStepCount(contestId);
+    const response: any = await getIncompleteUplodsStepCount(id);
     console.log(response);
 
     if (response.data.success) {
@@ -166,8 +166,8 @@ const IncompleteUploads = (props) => {
 
   useEffect(() => {
     handleAggregateData();
-    getTableRowData(selectedButtonValue, contestId, pageNo, pageSize);
-  }, [selectedButtonValue, contestId, pageNo, pageSize]);
+    getTableRowData(selectedButtonValue, id, pageNo, pageSize);
+  }, [selectedButtonValue, id, pageNo, pageSize]);
 
   const autoGroupColumnDef = useMemo<ColDef>(() => {
     return {
@@ -199,7 +199,7 @@ const IncompleteUploads = (props) => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "border-right-color": "#DFE5FF" },
+      cellStyle: { "borderRightColor": "#DFE5FF" },
     };
   }, []);
 
@@ -340,7 +340,8 @@ const IncompleteUploads = (props) => {
                   disabled={selectedRows.length > 0 ? false : true}
                   checked={isMailCheckEnable}
                   onChange={() => setIsMailCheckEnable(!isMailCheckEnable)}
-                /> {selectedRows.length} Selected
+                />{" "}
+                {selectedRows.length} Selected
                 <Tooltip title="Bookmark" placement="top" arrow>
                   <BookmarkBorderIcon className={classes.iconStyle} />
                 </Tooltip>
@@ -348,7 +349,8 @@ const IncompleteUploads = (props) => {
                   <MailOutlineIcon
                     className={classes.iconStyle}
                     onClick={() =>
-                      isMailCheckEnable && window.open(
+                      isMailCheckEnable &&
+                      window.open(
                         `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
                       )
                     }
@@ -358,7 +360,8 @@ const IncompleteUploads = (props) => {
                   <MailOutlineIcon
                     className={classes.iconStyle}
                     onClick={() =>
-                      isMailCheckEnable && window.open(
+                      isMailCheckEnable &&
+                      window.open(
                         "https://mail.google.com/mail/?view=cm&fs=1&to=email@domain.example,test@gamil.com"
                       )
                     }
@@ -396,7 +399,7 @@ const IncompleteUploads = (props) => {
             totalPages={totalPages}
             pageChange={pageChange}
             pageSizeChange={pageSizeChange}
-          // onCellValueChanged={onCellValueChanged}
+            // onCellValueChanged={onCellValueChanged}
           />
         </Grid>
       </Grid>

@@ -50,7 +50,7 @@ const DuplicationFailed: FC<any> = (props) => {
     apiCallDuplicationFailedData(filterValue, 0, 10);
   };
   const apiCallAggregateData = async () => {
-    const response: any = await getDuplicationFailedProfilesAggregate();
+    const response: any = await getDuplicationFailedProfilesAggregate(props.contestId);
 
     if (response.data.success) {
       const result = response.data.data;
@@ -100,7 +100,7 @@ const DuplicationFailed: FC<any> = (props) => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "border-right-color": "#DFE5FF" },
+      cellStyle: { "borderRightColor": "#DFE5FF" },
     };
   }, []);
   const autoGroupColumnDef = useMemo<ColDef>(() => {

@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
 
 const Vetting = (props) => {
   const classes = useStyles();
-  const { contestId } = props;
+  const { contestId, id } = props;
   const gridRef = useRef<AgGridReact<any>>();
   const [columnDefs, setColumnDefs] = useState(LISTING_GENERIC_HEADERS);
   const [pageSize, setPageSize] = useState(10);
@@ -69,17 +69,17 @@ const Vetting = (props) => {
     setSelectedButtonValue(filterValue);
     setPageNo(0);
     setPageSize(10);
-    // getTableRowData(0, 10, contestId, filterValue);
+    // getTableRowData(0, 10, id, filterValue);
   };
 
   useEffect(() => {
-    handleAggregateData(contestId);
-    getTableRowData(pageNo, pageSize, contestId, selectedButtonValue);
-  }, [pageNo, pageSize, contestId, selectedButtonValue]);
+    handleAggregateData(id);
+    getTableRowData(pageNo, pageSize, id, selectedButtonValue);
+  }, [pageNo, pageSize, id, selectedButtonValue]);
 
-  const handleAggregateData = async (contestId) => {
+  const handleAggregateData = async (id) => {
     let result1: any;
-    const statusCount: any = await getAggregateData(contestId);
+    const statusCount: any = await getAggregateData(id);
     if (statusCount.data.success) {
       result1 = statusCount.data.data.filter(
         (data) => data.status === "JOB_SEEKER_APPLIED"
@@ -88,7 +88,7 @@ const Vetting = (props) => {
       result1 = [];
     }
 
-    const response: any = await getConsentAggregateData(contestId);
+    const response: any = await getConsentAggregateData(id);
 
     if (response.data.success) {
       const result2 = response.data.data.filter(
@@ -119,11 +119,11 @@ const Vetting = (props) => {
   const handlestatusFilterContestLinkedJobsekeers = async (
     pageNo,
     pageSize,
-    contestId,
+    id,
     selectedButtonValue
   ) => {
     const response: any = await statusFilterContestLinkedJobsekeers(
-      contestId,
+      id,
       selectedButtonValue,
       pageNo,
       pageSize
@@ -155,11 +155,11 @@ const Vetting = (props) => {
   const handleconsentStatusFilterContestLinkedJobsekeers = async (
     pageNo,
     pageSize,
-    contestId,
+    id,
     selectedButtonValue
   ) => {
     const response: any = await consentStatusFilterContestLinkedJobsekeers(
-      contestId,
+      id,
       selectedButtonValue,
       pageNo,
       pageSize
@@ -187,24 +187,19 @@ const Vetting = (props) => {
     }
   };
 
-  const getTableRowData = async (
-    pageNo,
-    pageSize,
-    contestId,
-    selectedButtonValue
-  ) => {
+  const getTableRowData = async (pageNo, pageSize, id, selectedButtonValue) => {
     if (selectedButtonValue === "JOB_SEEKER_APPLIED") {
       handlestatusFilterContestLinkedJobsekeers(
         pageNo,
         pageSize,
-        contestId,
+        id,
         selectedButtonValue
       );
     } else {
       handleconsentStatusFilterContestLinkedJobsekeers(
         pageNo,
         pageSize,
-        contestId,
+        id,
         selectedButtonValue
       );
     }
@@ -240,7 +235,7 @@ const Vetting = (props) => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "border-right-color": "#DFE5FF" },
+      cellStyle: { "borderRightColor": "#DFE5FF" },
     };
   }, []);
 
@@ -358,12 +353,14 @@ const Vetting = (props) => {
                 disabled={selectedRows.length > 0 ? false : true}
                 checked={isMailCheckEnable}
                 onChange={() => setIsMailCheckEnable(!isMailCheckEnable)}
-              /> {selectedRows.length} Selected
+              />{" "}
+              {selectedRows.length} Selected
               <Tooltip title="Mail All Jobseekers" placement="top" arrow>
                 <MailOutlineIcon
                   className={classes.mailIcon}
                   onClick={() =>
-                    isMailCheckEnable && window.open(
+                    isMailCheckEnable &&
+                    window.open(
                       `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedEmails.toString()}`
                     )
                   }
@@ -404,7 +401,7 @@ const Vetting = (props) => {
           totalPages={totalPages}
           pageChange={pageChange}
           pageSizeChange={pageSizeChange}
-        // onCellValueChanged={onCellValueChanged}
+          // onCellValueChanged={onCellValueChanged}
         />
       </Grid>
     </Grid>
