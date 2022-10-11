@@ -211,7 +211,7 @@ var JobSeekerProfileUpload = function (props) {
             switch (_d.label) {
                 case 0:
                     setLoader(true);
-                    if (!(acceptedFilesResume.length > 0)) return [3 /*break*/, 6];
+                    if (!(acceptedFilesResume.length > 0)) return [3 /*break*/, 7];
                     _d.label = 1;
                 case 1:
                     _d.trys.push([1, 5, , 6]);
@@ -261,21 +261,21 @@ var JobSeekerProfileUpload = function (props) {
                     props.setDataMessage(error_1 === null || error_1 === void 0 ? void 0 : error_1.message);
                     props.setOpen(true);
                     return [3 /*break*/, 6];
-                case 6:
+                case 6: return [3 /*break*/, 8];
+                case 7:
+                    if (imageName && acceptedFilesResume.length < 1) {
+                        if (props.handleNext) {
+                            props.handleComplete(1);
+                            props.handleNext();
+                        }
+                    }
+                    _d.label = 8;
+                case 8:
                     setLoader(false);
                     return [2 /*return*/];
             }
         });
     }); };
-    var dispatchProfileId = function (profileId, jobSeekerId) {
-        dispatch({
-            type: "USER_ADD",
-            data: {
-                userData: __assign(__assign({}, userDataState.userData), { profileId: profileId, jobSeekerId: jobSeekerId }),
-                userId: userDataState.userId,
-            },
-        });
-    };
     useEffect(function () {
         if (props.profileDataId || userDataState.userData.profileId)
             callPrefillData();

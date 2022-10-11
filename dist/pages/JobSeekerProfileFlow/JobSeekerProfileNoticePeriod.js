@@ -108,7 +108,7 @@ var JobSeekerProfileNoticePeriod = function (props) {
         };
     };
     var submitNoticePeriodInfo = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var profileNoticePeriodMap, fileIds_1, error_1, profileDetailsResponse, error_2;
+        var profileNoticePeriodMap, fileIds_1, uploadFiles, error_1, profileDetailsResponse, error_2;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
@@ -127,7 +127,19 @@ var JobSeekerProfileNoticePeriod = function (props) {
                 case 1:
                     _b.trys.push([1, 3, , 4]);
                     fileIds_1 = [];
-                    return [4 /*yield*/, Promise.all(profileNoticePeriodMap.offerData.map(function (offer, index) { return __awaiter(void 0, void 0, void 0, function () {
+                    uploadFiles = profileNoticePeriodMap.offerData.filter(function (elt) {
+                        var _a;
+                        if ((_a = elt.letterFiles[0]) === null || _a === void 0 ? void 0 : _a.name) {
+                            return true;
+                        }
+                        else {
+                            fileIds_1.push({
+                                employerName: elt.employerName,
+                                id: elt.offerDocumentId,
+                            });
+                        }
+                    });
+                    return [4 /*yield*/, Promise.all(uploadFiles.map(function (offer, index) { return __awaiter(void 0, void 0, void 0, function () {
                             var uploadResponse;
                             var _a, _b;
                             return __generator(this, function (_c) {
@@ -136,7 +148,7 @@ var JobSeekerProfileNoticePeriod = function (props) {
                                     case 1:
                                         uploadResponse = _c.sent();
                                         fileIds_1.push({
-                                            index: index,
+                                            employerName: offer.employerName,
                                             id: (_b = (_a = uploadResponse === null || uploadResponse === void 0 ? void 0 : uploadResponse.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.id,
                                         });
                                         return [2 /*return*/];
@@ -146,8 +158,10 @@ var JobSeekerProfileNoticePeriod = function (props) {
                 case 2:
                     _b.sent();
                     profileNoticePeriodMap.offerData.forEach(function (offer, index) {
-                        var idData = fileIds_1.find(function (files) { return files.index === index; });
+                        var idData = fileIds_1.find(function (files) { return files.employerName === offer.employerName; });
                         profileNoticePeriodMap.offerData[index].offerDocumentId = idData === null || idData === void 0 ? void 0 : idData.id;
+                        profileNoticePeriodMap.offerData[index].saveStatus = false;
+                        profileNoticePeriodMap.offerData[index].fieldDisabled = false;
                     });
                     return [3 /*break*/, 4];
                 case 3:
@@ -164,7 +178,6 @@ var JobSeekerProfileNoticePeriod = function (props) {
                         })];
                 case 5:
                     profileDetailsResponse = _b.sent();
-                    console.log(profileDetailsResponse === null || profileDetailsResponse === void 0 ? void 0 : profileDetailsResponse.data);
                     if ((_a = profileDetailsResponse === null || profileDetailsResponse === void 0 ? void 0 : profileDetailsResponse.data) === null || _a === void 0 ? void 0 : _a.success) {
                         props.setType(SUCCESS_KEY);
                         props.setDataMessage(FORM_SUBMISSION_SUCCESS);
@@ -272,7 +285,6 @@ var JobSeekerProfileNoticePeriod = function (props) {
         });
     }); };
     var patchNoticePeriodDetails = function (patchData) {
-        console.log(patchData);
         setBuyoutStatus(patchData.buyoutStatus);
         setNegotiableStatus(patchData.negotiableStatus);
         setNegotiablePeriod(patchData.negotiablePeriod);

@@ -172,6 +172,14 @@ var CurrentOffers = function (props) {
         }); });
         setServiceList(function (prevState) { return __spreadArray(__spreadArray([], prevState, true), [__assign(__assign({}, initialValuesForForm), prefillValue)], false); });
     };
+    var AddMultipleService = function (prefillArray) {
+        if (prefillArray) {
+            offerAddForm.setValues(function (prevValues) { return ({
+                members: __spreadArray([], prefillArray, true),
+            }); });
+            setServiceList(function (prevState) { return __spreadArray([], prefillArray, true); });
+        }
+    };
     var getError = function (name) {
         var error = getIn(offerAddForm.errors, name);
         var touch = getIn(offerAddForm.touched, name);
@@ -179,8 +187,7 @@ var CurrentOffers = function (props) {
     };
     useEffect(function () {
         if (props.prefilData) {
-            console.log(props.prefilData);
-            props.prefilData.forEach(function (offer) { return handleServiceAdd(offer); });
+            AddMultipleService(props.prefilData);
         }
         else if (serviceList.length === 0)
             handleServiceAdd();
