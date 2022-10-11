@@ -105,6 +105,11 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
         props.workStatus === WorkStatusType.JOBLESS
             ? experiencedSeekerForm.setFieldValue("relievingDate", dateValue)
             : experiencedSeekerForm.setFieldValue("joiningDate", dateValue);
+        var tempObject = __assign({}, experiencedSeekerForm.values);
+        props.workStatus === WorkStatusType.JOBLESS ?
+            tempObject["relievingDate"] = dateValue :
+            tempObject["joiningDate"] = dateValue;
+        props.setParentData(tempObject);
     };
     useImperativeHandle(ref, function () { return ({
         childMethod: function () {
@@ -112,7 +117,7 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
         },
     }); });
     useEffect(function () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
         if (props.experiencedPrefillData) {
             if ((_a = props.experiencedPrefillData) === null || _a === void 0 ? void 0 : _a.city)
                 experiencedSeekerForm.setFieldValue("city", (_b = props.experiencedPrefillData) === null || _b === void 0 ? void 0 : _b.city);
@@ -120,16 +125,18 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
                 experiencedSeekerForm.setFieldValue("country", (_d = props.experiencedPrefillData) === null || _d === void 0 ? void 0 : _d.country);
             if ((_e = props.experiencedPrefillData) === null || _e === void 0 ? void 0 : _e.endClient)
                 experiencedSeekerForm.setFieldValue("endClient", (_f = props.experiencedPrefillData) === null || _f === void 0 ? void 0 : _f.endClient);
-            if ((_g = props.experiencedPrefillData) === null || _g === void 0 ? void 0 : _g.lastEmployer)
-                experiencedSeekerForm.setFieldValue("lastEmployer", (_h = props.experiencedPrefillData) === null || _h === void 0 ? void 0 : _h.lastEmployer);
-            if ((_j = props.experiencedPrefillData) === null || _j === void 0 ? void 0 : _j.relievingDate)
-                experiencedSeekerForm.setFieldValue("relievingDate", (_k = props.experiencedPrefillData) === null || _k === void 0 ? void 0 : _k.relievingDate);
-            if ((_l = props.experiencedPrefillData) === null || _l === void 0 ? void 0 : _l.currentEmployer)
-                experiencedSeekerForm.setFieldValue("currentEmployer", (_m = props.experiencedPrefillData) === null || _m === void 0 ? void 0 : _m.currentEmployer);
-            if ((_o = props.experiencedPrefillData) === null || _o === void 0 ? void 0 : _o.payrollEmployer)
-                experiencedSeekerForm.setFieldValue("payrollEmployer", (_p = props.experiencedPrefillData) === null || _p === void 0 ? void 0 : _p.payrollEmployer);
-            if ((_q = props.experiencedPrefillData) === null || _q === void 0 ? void 0 : _q.notWorkingReason)
-                experiencedSeekerForm.setFieldValue("notWorkingReason", (_r = props.experiencedPrefillData) === null || _r === void 0 ? void 0 : _r.notWorkingReason);
+            if ((_g = props.experiencedPrefillData) === null || _g === void 0 ? void 0 : _g.joiningDate)
+                experiencedSeekerForm.setFieldValue("joiningDate", (_h = props.experiencedPrefillData) === null || _h === void 0 ? void 0 : _h.joiningDate);
+            if ((_j = props.experiencedPrefillData) === null || _j === void 0 ? void 0 : _j.lastEmployer)
+                experiencedSeekerForm.setFieldValue("lastEmployer", (_k = props.experiencedPrefillData) === null || _k === void 0 ? void 0 : _k.lastEmployer);
+            if ((_l = props.experiencedPrefillData) === null || _l === void 0 ? void 0 : _l.relievingDate)
+                experiencedSeekerForm.setFieldValue("relievingDate", (_m = props.experiencedPrefillData) === null || _m === void 0 ? void 0 : _m.relievingDate);
+            if ((_o = props.experiencedPrefillData) === null || _o === void 0 ? void 0 : _o.currentEmployer)
+                experiencedSeekerForm.setFieldValue("currentEmployer", (_p = props.experiencedPrefillData) === null || _p === void 0 ? void 0 : _p.currentEmployer);
+            if ((_q = props.experiencedPrefillData) === null || _q === void 0 ? void 0 : _q.payrollEmployer)
+                experiencedSeekerForm.setFieldValue("payrollEmployer", (_r = props.experiencedPrefillData) === null || _r === void 0 ? void 0 : _r.payrollEmployer);
+            if ((_s = props.experiencedPrefillData) === null || _s === void 0 ? void 0 : _s.notWorkingReason)
+                experiencedSeekerForm.setFieldValue("notWorkingReason", (_t = props.experiencedPrefillData) === null || _t === void 0 ? void 0 : _t.notWorkingReason);
         }
     }, []);
     return (_jsx(React.Fragment, { children: _jsx("div", __assign({ className: "experienced-div" }, { children: _jsxs(Grid, __assign({ container: true, className: classes.muiContainer }, { children: [_jsx(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: FULL_SIZE_GRID, lg: FULL_SIZE_GRID }, { children: _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [JOB_TYPE_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ id: "jobDurationType", value: experiencedSeekerForm.values.jobDurationType, onChange: function (e) {

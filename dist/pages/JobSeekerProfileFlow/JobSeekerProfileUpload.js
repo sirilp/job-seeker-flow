@@ -199,8 +199,8 @@ var JobSeekerProfileUpload = function (props) {
     var uploadPayloadBuild = function () {
         return {
             documentTypeId: JOB_SEEKER_RESUME,
-            documentPath: "resume/".concat(userDataState.userData.profileLogId),
-            documentName: userDataState.userData.profileLogId,
+            documentPath: "resume/".concat(userDataState.userData.profileId),
+            documentName: userDataState.userData.profileId,
             files: acceptedFilesResume,
         };
     };

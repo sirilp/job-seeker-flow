@@ -200,21 +200,24 @@ var JobSeekerProfileWorkStatus = function (props) {
     }); };
     var callPrefillData = function () { return __awaiter(void 0, void 0, void 0, function () {
         var profileDataFetched, error_2;
-        var _a, _b, _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        return __generator(this, function (_k) {
+            switch (_k.label) {
                 case 0:
-                    _e.trys.push([0, 2, , 3]);
-                    setLoader(false);
+                    _k.trys.push([0, 2, , 3]);
+                    setLoader(true);
                     return [4 /*yield*/, getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId)];
                 case 1:
-                    profileDataFetched = _e.sent();
-                    if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.profileWorkStatusMap) {
-                        patchWorkStatusDetails((_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.profileWorkStatusMap);
+                    profileDataFetched = _k.sent();
+                    if ((_c = (_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.profileDetailsMap) === null || _c === void 0 ? void 0 : _c.workStatus) {
+                        setJobStatus((_e = (_d = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.profileDetailsMap.workStatus);
+                    }
+                    if ((_g = (_f = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _f === void 0 ? void 0 : _f.data) === null || _g === void 0 ? void 0 : _g.profileWorkStatusMap) {
+                        patchWorkStatusDetails((_j = (_h = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _h === void 0 ? void 0 : _h.data) === null || _j === void 0 ? void 0 : _j.profileWorkStatusMap);
                     }
                     return [3 /*break*/, 3];
                 case 2:
-                    error_2 = _e.sent();
+                    error_2 = _k.sent();
                     console.log(error_2);
                     props.setType(ERROR_KEY);
                     props.setDataMessage("Something went wrong");
@@ -227,8 +230,6 @@ var JobSeekerProfileWorkStatus = function (props) {
         });
     }); };
     var patchWorkStatusDetails = function (patchData) {
-        console.log(patchData);
-        setJobStatus(patchData.jobStatus);
         setCurrentLocation(patchData.currentLocation);
         setPreferredLocation(patchData.preferredLocation);
         setProfileFetchLocation(patchData.profileFetchLocation);
@@ -252,6 +253,7 @@ var JobSeekerProfileWorkStatus = function (props) {
                 city: patchObject.city,
                 country: patchObject.country,
                 endClient: patchObject === null || patchObject === void 0 ? void 0 : patchObject.endClient,
+                joiningDate: patchObject === null || patchObject === void 0 ? void 0 : patchObject.joiningDate,
                 lastEmployer: patchObject === null || patchObject === void 0 ? void 0 : patchObject.lastEmployer,
                 relievingDate: patchObject === null || patchObject === void 0 ? void 0 : patchObject.relievingDate,
                 currentEmployer: patchObject === null || patchObject === void 0 ? void 0 : patchObject.currentEmployer,
@@ -265,6 +267,6 @@ var JobSeekerProfileWorkStatus = function (props) {
                                     inputProps: { maxLength: 20 },
                                 }, size: "small" }) }))) : null] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [CURRENT_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: CURRENT_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: currentLocation, label: CURRENT_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setCurrentLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [PREFERRED_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: PREFERRED_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: preferredLocation, label: PREFERRED_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setPreferredLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: ADDITIONAL_CERTIFICATES_TEXT }) })), _jsx("div", { children: _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: additonalCertificationStatus, onChange: handleCertificationStatus }, { children: YesNoOptions.map(function (location) { return (_jsx(FormControlLabel, { disabled: !props.hasButtons, value: location, control: _jsx(Radio, {}), label: location }, location)); }) })) }) })] })), additonalCertificationStatus === YesNoOptions[0] ? (_jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: CERTIFICATION_ADD_TEXT }) })), _jsx(CertificationDetails, { disabled: !props.hasButtons, setCertificationData: handleCertifications, removeCertification: removeCertification, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, prefillDetails: props.profileDataId || userDataState.userData.profileId
                                 ? certificationDetails
-                                : null })] })) : null, _jsx("div", { children: _jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [WORK_STATUS_TEXT, ": ", jobStatus] }) })) }), _jsx("div", { children: jobStatus === WorkStatusType.FRESHER ? (_jsx(FreshGraduateDetails, { disabled: !props.hasButtons, ref: freshGraduateRef, setParentData: setFreshGraduateDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, fresherPrefillData: props.profileDataId ? freshGraduateDetails : null })) : null }), _jsx("div", { children: jobStatus !== WorkStatusType.FRESHER ? (_jsx(_Fragment, { children: gotPatchData ? (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId ? experiencedDetails : null })) : (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId ? experiencedDetails : null })) })) : null }), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitWorkStatus, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
+                                : null })] })) : null, _jsx("div", { children: _jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [WORK_STATUS_TEXT, ": ", jobStatus] }) })) }), _jsx("div", { children: jobStatus === WorkStatusType.FRESHER ? (_jsx(FreshGraduateDetails, { disabled: !props.hasButtons, ref: freshGraduateRef, setParentData: setFreshGraduateDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, fresherPrefillData: props.profileDataId ? freshGraduateDetails : null })) : null }), _jsx("div", { children: jobStatus !== WorkStatusType.FRESHER ? (_jsx(_Fragment, { children: gotPatchData ? (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) : (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) })) : null }), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitWorkStatus, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
 };
 export default JobSeekerProfileWorkStatus;

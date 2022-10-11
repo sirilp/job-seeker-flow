@@ -46,7 +46,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import React, { useState, useRef, useMemo, useEffect, useCallback, } from "react";
+import React, { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { Button, Grid, Typography, Box, Checkbox } from "@mui/material";
 import StepCount from "../../components/StepCount";
 import { LISTING_GENERIC_HEADERS } from "./DuplicationFailedColumnHeaders";
@@ -58,7 +58,7 @@ import BookmarkIcon from "../../../src/assets/bookmark.svg";
 import { PAGE_SIZE_ARRAY } from "../../constants";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { getDuplicationFailedProfiles, getDuplicationFailedProfilesAggregate, } from "../../services/JobSeekerService";
-var DuplicationFailed = function () {
+var DuplicationFailed = function (props) {
     var _a = useState(1), selectedButtonId = _a[0], setSelectedButtonId = _a[1];
     var _b = useState("SUBMITTED"), selectedButtonValue = _b[0], setSelectedButtonValue = _b[1];
     var gridRef = useRef();
@@ -105,7 +105,7 @@ var DuplicationFailed = function () {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         return __generator(this, function (_k) {
             switch (_k.label) {
-                case 0: return [4 /*yield*/, getDuplicationFailedProfiles(filterValue, page, size)];
+                case 0: return [4 /*yield*/, getDuplicationFailedProfiles(filterValue, page, size, props.contestId)];
                 case 1:
                     response = _k.sent();
                     if ((_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.success) {

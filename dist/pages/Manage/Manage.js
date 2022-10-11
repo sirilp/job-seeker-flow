@@ -48,22 +48,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useEffect, useRef, useState, useMemo, useCallback, } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import { Button, Grid, Typography, Box, Tooltip } from "@mui/material";
 import { LISTING_GENERIC_HEADERS } from "./ColumnHeaders";
 import StepCount from "../../components/StepCount";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import { LIGHT_GREY } from "../../color";
 import ColumnSelection from "../../components/ColumnSelection/ColumnSelection";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import { PAGE_SIZE_ARRAY } from "../../constants";
 import { statusFilterContestLinkedJobsekeers, getAggregateData, } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 var useStyles = makeStyles(function () { return ({
-    deleteIcon: { color: "#4D6CD9", margin: "10px" },
+    mailIcon: { color: "#4D6CD9", margin: "10px" },
     actions1: { fontSize: "15px !important" },
     bookmarkIcon: { color: "#4D6CD9" },
 }); });
@@ -89,6 +89,8 @@ var Manage = function (props) {
         offerRolled: 0,
         coolingPeriod: 0,
     }), agCount = _k[0], setAgCount = _k[1];
+    var _l = useState([]), selectedEmails = _l[0], setSelectedEmails = _l[1];
+    var _m = useState(false), isMailCheckEnable = _m[0], setIsMailCheckEnable = _m[1];
     useEffect(function () {
         getTableRowData(pageNo, pageSize, contestId);
         handleAggregateData(contestId);
@@ -219,6 +221,13 @@ var Manage = function (props) {
         setPageNo(0);
         setPageSize(pageSizeChanged);
     };
+    var filterEmailIds = function () {
+        var emails = selectedRows.map(function (item) { return item.emailId; });
+        setSelectedEmails(emails);
+    };
+    useEffect(function () {
+        filterEmailIds();
+    }, [selectedRows]);
     return (_jsxs(Grid, __assign({ container: true, spacing: 3 }, { children: [_jsxs(Grid, __assign({ item: true, xs: 12, p: 2 }, { children: [_jsx(Typography, __assign({ fontSize: 30 }, { children: "Profiles" })), _jsx(StepCount, { StepCountList: [
                             {
                                 label: "Vetted",
@@ -257,7 +266,9 @@ var Manage = function (props) {
                             { _id: 4, count: agCount.phaseHR },
                             { _id: 5, count: agCount.offerRolled },
                             { _id: 6, count: agCount.coolingPeriod },
-                        ], setSelectedButton: setSelectedButton, selectedButton: selectedButton })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block", className: classes.actions1 }, { children: [_jsx(Checkbox, {}), " ", selectedRows.length, " Selected", _jsx(DeleteOutlineIcon, { className: classes.deleteIcon }), _jsx(BookmarkBorderIcon, { className: classes.bookmarkIcon })] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
+                        ], setSelectedButton: setSelectedButton, selectedButton: selectedButton })] })), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsxs("div", { children: [_jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return setColumnsListOpen(true); }, disabled: columnsListOpen }, { children: ["Columns ", _jsx(GridViewOutlinedIcon, { className: "generic-icon" })] })), _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return toogleFloatingFilter(!floatingFilter); }, sx: { background: floatingFilter ? LIGHT_GREY : "inherit" } }, { children: ["Filters ", _jsx(FilterAltOutlinedIcon, { className: "generic-icon" })] }))] }), _jsx("div", { children: _jsxs(Box, __assign({ display: "inline-block", className: classes.actions1 }, { children: [_jsx(Checkbox, { disabled: selectedRows.length > 0 ? false : true, checked: isMailCheckEnable, onChange: function () { return setIsMailCheckEnable(!isMailCheckEnable); } }), " ", selectedRows.length, " Selected", _jsx(Tooltip, __assign({ title: "Mail All Jobseekers", placement: "top", arrow: true }, { children: _jsx(MailOutlineIcon, { className: classes.mailIcon, onClick: function () {
+                                                return isMailCheckEnable && window.open("https://mail.google.com/mail/?view=cm&fs=1&to=".concat(selectedEmails.toString()));
+                                            } }) })), _jsx(Tooltip, __assign({ title: "Bookmark", placement: "top", arrow: true }, { children: _jsx(BookmarkBorderIcon, { className: classes.bookmarkIcon }) }))] })) })] })) })), _jsx(ColumnSelection, { AllColumns: columnDefs.map(function (cl) {
                     return Object.assign({ headerName: cl.headerName, hide: !cl.hide });
                 }), setColumnsDisplay: setColumnsDisplay, onClose: setColumnsListOpen, open: columnsListOpen }), _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx(AgGridWithPagination, { gridRef: gridRef, rowData: rowData, columnDefs: columnDefs, defaultColDef: defaultColDef, autoGroupColumnDef: autoGroupColumnDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, pageSize: pageSize, onSelectionChanged: onSelectionChanged, pageSizeArray: PAGE_SIZE_ARRAY, totalPages: totalPages, pageChange: pageChange, pageSizeChange: pageSizeChange }) }))] })));
 };

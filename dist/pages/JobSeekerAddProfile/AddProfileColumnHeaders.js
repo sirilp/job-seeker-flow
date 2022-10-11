@@ -140,7 +140,7 @@ export var LISTING_GENERIC_HEADERS = [
         },
     },
     {
-        headerName: "Last 5 disgits of PAN",
+        headerName: "Last 5 digits of PAN",
         field: "lastFiveDigitOfPan",
         floatingFilter: false,
         editable: false,

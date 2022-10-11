@@ -43,7 +43,7 @@ var JobSeekerBase = function (props) {
         {
             title: "Duplication Failed",
             index: 1,
-            component: _jsx(DuplicationFailed, {}),
+            component: _jsx(DuplicationFailed, { contestId: contestId, id: id }),
         },
         {
             title: "Incomplete Uploads ",

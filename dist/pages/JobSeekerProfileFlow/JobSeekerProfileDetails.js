@@ -177,6 +177,7 @@ var JobSeekerProfileDetails = function (props) {
             relevantExperience: relevantExperience,
             freshGraduate: freshGraduate.toString(),
             workStatus: workStatus,
+            currentlyWorking: workStatus === WorkStatusArray[0] ? "Yes" : "No"
         };
     };
     var dispatchWorkStatus = function (workStatus) {
@@ -211,7 +212,7 @@ var JobSeekerProfileDetails = function (props) {
                     error_2 = _e.sent();
                     console.log(error_2);
                     props.setType(ERROR_KEY);
-                    props.setDataMessage("Somrthing went wrong");
+                    props.setDataMessage("Something went wrong");
                     props.setOpen(true);
                     return [3 /*break*/, 3];
                 case 3:

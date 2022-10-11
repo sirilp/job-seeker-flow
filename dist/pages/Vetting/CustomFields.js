@@ -158,7 +158,7 @@ export var CustomDropDown = function (params) {
         option: "JOB_SEEKER_CONSENT_FAIL",
         color: "#EF4444",
         title: "",
-        body: "Failed",
+        body: "Job Seeker Rejected Consent!",
     };
     var _b = useState({
         option: "",
@@ -230,7 +230,7 @@ export var CustomDropDown = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "success",
-                            message: "Success",
+                            message: "Job Seeker Consent Changed to Pass",
                             duration: 2000,
                         });
                     }
@@ -239,8 +239,7 @@ export var CustomDropDown = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "error",
-                            message: "Failed",
-                            duration: 2000,
+                            message: "Something Went Wrong Please Try gain",
                         });
                     }
                     return [3 /*break*/, 6];
@@ -258,7 +257,7 @@ export var CustomDropDown = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "success",
-                            message: "Success",
+                            message: "Job Seeker Consent Changed to Fail",
                             duration: 2000,
                         });
                     }
@@ -267,7 +266,7 @@ export var CustomDropDown = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "error",
-                            message: "Failed",
+                            message: "Something Went Wrong Please Try gain",
                             duration: 2000,
                         });
                     }
@@ -340,7 +339,7 @@ export var CustomDropDown = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "success",
-                            message: "Success",
+                            message: "Job Seeker Consent Resent!",
                             duration: 2000,
                         });
                     }
@@ -348,7 +347,7 @@ export var CustomDropDown = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "error",
-                            message: "Failed",
+                            message: "Job Seeker Consent Resent Failed",
                             duration: 2000,
                         });
                     }
