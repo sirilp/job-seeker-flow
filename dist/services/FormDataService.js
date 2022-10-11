@@ -94,7 +94,7 @@ export var UploadFiles = function (body) { return __awaiter(void 0, void 0, void
 }); };
 export var createJobSeekerProfile = function (bodyPayload) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, axios.post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?profileLogId=").concat(bodyPayload.profileLogId), bodyPayload.profileData, {
+        return [2 /*return*/, axios.post("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seeker-profile?profileLogId=").concat(bodyPayload.profileLogId), bodyPayload.profileData, {
                 headers: {
                     Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                 },

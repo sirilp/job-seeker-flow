@@ -20,6 +20,7 @@ import Calendar from "../../../components/Calendar/Calendar";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 var ExperiencedSeeker = React.forwardRef(function (props, ref) {
+    var _a;
     var classes = useStyles();
     var experiencedSeekerForm = useFormik({
         initialValues: {
@@ -150,6 +151,6 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
                                         ? LAST_EMPLOYER_LOCATION_TEXT
                                         : COMPANY_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsxs(Stack, __assign({ direction: "row", spacing: 3 }, { children: [_jsx(TextField, { required: true, id: "city", disabled: props.disabled, label: CITY_LABEL, className: classes.inputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.city }), _jsx(TextField, { required: true, id: "country", disabled: props.disabled, label: COUNTRY_LABEL, className: classes.inputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.country })] }))] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsxs("p", __assign({ className: "institute-field" }, { children: [props.workStatus === WorkStatusType.JOBLESS
                                         ? PREV_EMPLOYER_RELIEVING_TEXT
-                                        : CURRENT_EMPLOYER_JOINING_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsx(Calendar, { setDate: handleDate, status: true })] }))] })) })) }));
+                                        : CURRENT_EMPLOYER_JOINING_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsx(Calendar, { setDate: handleDate, status: true, value: (_a = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _a === void 0 ? void 0 : _a.joiningDate })] }))] })) })) }));
 });
 export default ExperiencedSeeker;

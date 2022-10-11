@@ -47,10 +47,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useRef, useState, useMemo, useCallback, } from "react";
-import { TEMPLATE_BUTTON } from "../../constants";
+import { ERROR_KEY, TEMPLATE_BUTTON } from "../../constants";
 import { Typography, Button, Grid } from "@mui/material";
 import JobSeekerTempleteButton from "../../components/JobSeekerProfile/JobSeekerTempleteButton";
-import { makeStyles } from "@mui/styles";
 import "../JobSeekerBaseStyles.css";
 import { LISTING_GENERIC_HEADERS } from "./AddProfileColumnHeaders";
 import GridItem from "../GridItem/GridItem";
@@ -59,27 +58,15 @@ import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { createJobSeekerProfile } from "../../services/FormDataService";
-var useStyles = makeStyles(function () { return ({
-    buttonCardContainer: {
-        "&.MuiCardContent-root": {
-            paddingBottom: "0vw",
-        },
-    },
-}); });
 var JobSeekerAddProfile = function (props) {
-    var classes = useStyles();
     var dispatch = useAppDispatch();
     var gridRef = useRef();
     var userDataState = useAppSelector(function (state) { return state.currentUser; });
     var notifyDataState = useAppSelector(function (state) { return state.notificationAlert; });
     var _a = useState(LISTING_GENERIC_HEADERS), columnDefs = _a[0], setColumnDefs = _a[1];
-    var _b = useState(10), pageSize = _b[0], setPageSize = _b[1];
-    var _c = useState([]), selectedRows = _c[0], setSelectedRows = _c[1];
-    var _d = useState(1), totalPages = _d[0], setTotalPages = _d[1];
+    var _b = useState([]), selectedRows = _b[0], setSelectedRows = _b[1];
     var fulfillUpload = function (data) {
         callResumeUpload(data === null || data === void 0 ? void 0 : data.profileLogId);
-        props.handleComplete(0);
-        props.handleNext();
     };
     var callResumeUpload = function (profileLogId) { return __awaiter(void 0, void 0, void 0, function () {
         var seekerProfile;
@@ -96,6 +83,14 @@ var JobSeekerAddProfile = function (props) {
                     seekerProfile = _f.sent();
                     if ((_a = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _a === void 0 ? void 0 : _a.success) {
                         dispatchProfileId((_c = (_b = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.profileId, (_e = (_d = seekerProfile === null || seekerProfile === void 0 ? void 0 : seekerProfile.data) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.jobSeekerId);
+                        props.handleComplete(0);
+                        props.handleNext();
+                    }
+                    else {
+                        console.log(seekerProfile);
+                        props.setType(ERROR_KEY);
+                        props.setDataMessage("Something went wrong");
+                        props.setOpen(true);
                     }
                     return [2 /*return*/];
             }
@@ -110,18 +105,6 @@ var JobSeekerAddProfile = function (props) {
             },
         });
     };
-    // const dispatchProfileLogId = (profileLogId) => {
-    //   dispatch({
-    //     type: "USER_ADD",
-    //     data: {
-    //       userData: {
-    //         ...userDataState.userData,
-    //         profileLogId,
-    //       },
-    //       userId: userDataState.userId,
-    //     },
-    //   });
-    // };
     var resetNotificationData = function () {
         dispatch({
             type: "SEND_ALERT",
@@ -145,7 +128,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
-        contestId: props.id,
+        contestId: props.contestId,
     };
     var r2 = {
         firstName: "",
@@ -159,7 +142,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
-        contestId: props.id,
+        contestId: props.contestId,
     };
     var r3 = {
         firstName: "",
@@ -173,7 +156,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
-        contestId: props.id,
+        contestId: props.contestId,
     };
     var r4 = {
         firstName: "",
@@ -187,7 +170,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
-        contestId: props.id,
+        contestId: props.contestId,
     };
     var r5 = {
         firstName: "",
@@ -201,7 +184,7 @@ var JobSeekerAddProfile = function (props) {
         lastFiveDigitOfPan: "",
         fdcStatus: null,
         uploadProfile: "",
-        contestId: props.id,
+        contestId: props.contestId,
     };
     // let row = [r1, r2, r3, r4, r5];
     var row = [__assign({}, r1), __assign({}, r2), __assign({}, r3), __assign({}, r4), __assign({}, r5)];
@@ -216,45 +199,9 @@ var JobSeekerAddProfile = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
-            cellStyle: { "border-right-color": "#DFE5FF" },
+            cellStyle: { "borderRightColor": "#DFE5FF" },
         };
     }, []);
-    // const onGridReady = React.useCallback(
-    //   (params) => {
-    //     apiCallRelatedFormData();
-    //   },
-    //   [gotData]
-    // );
-    // const onUpdateColumns = useCallback((data) => {
-    //   if (gridRef?.current) gridRef.current.api.setColumnDefs(data);
-    // }, []);
-    // const autoGroupColumnDef = useMemo<ColDef>(() => {
-    //   return {
-    //     headerName: "Group",
-    //     minWidth: 170,
-    //     field: "athlete",
-    //     valueGetter: (params) => {
-    //       if (params.node!.group) {
-    //         return params.node!.key;
-    //       } else {
-    //         return params.data[params.colDef.field!];
-    //       }
-    //     },
-    //     headerCheckboxSelection: true,
-    //     cellRenderer: "agGroupCellRenderer",
-    //     cellRendererParams: {
-    //       checkbox: true,
-    //     },
-    //   };
-    // }, []);
-    // const pageChange = (pageNumber) => {
-    //   setPageNo(pageNumber);
-    //   apiCallRelatedFormData(contestStatus, pageNumber - 1);
-    // };
-    // const pageSizeChange = (pageSizeChanged) => {
-    //   setPageSize(pageSizeChanged);
-    //   apiCallRelatedFormData(contestStatus, 0, pageSizeChanged);
-    // };
     var onSelectionChanged = useCallback(function () {
         if (gridRef.current) {
             var rowSelection = gridRef.current.api.getSelectedRows();
@@ -274,13 +221,6 @@ var JobSeekerAddProfile = function (props) {
         (_a = gridRef.current) === null || _a === void 0 ? void 0 : _a.api.setRowData(row);
         // console.log(gridRef.current);
     };
-    return (_jsx("div", __assign({ className: "form-encapsulate" }, { children: _jsxs("div", __assign({ className: "form-card-holder" }, { children: [notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } })), _jsxs("div", { children: [_jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 0vw 2vw" }, { children: "For Bulk Duplication Check" })) }), _jsx("div", __assign({ style: { margin: "1vw 1vw 1vw 1vw" } }, { children: TEMPLATE_BUTTON.map(function (button) { return (_jsx(JobSeekerTempleteButton, { fileName: button.iconFileName, title: button.title })); }) })), _jsx("div", { children: _jsxs(Typography, __assign({ variant: "h6", gutterBottom: true, component: "div", color: "black", display: "flex", justifyContent: "center" }, { children: [_jsx("hr", { className: "line" }), "( OR )", _jsx("hr", { className: "line" })] })) })] }), _jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 2vw 2vw" }, { children: "Enter the Details Manually" })) }), _jsx("div", { children: _jsx(Grid, __assign({ container: true, spacing: 3 }, { children: _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx("div", { children: _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return clearTable(); } }, { children: [_jsx(RefreshIcon, { className: "generic-icon" }), "Clear Table"] })) }), _jsx("div", {})] })) })) })) }), _jsx("div", { children: _jsx(GridItem, { gridRef: gridRef, rowData: row, columnDefs: columnDefs, defaultColDef: defaultColDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, 
-                        // pageSize={pageSize}
-                        onSelectionChanged: onSelectionChanged, 
-                        // pageSizeArray={PAGE_SIZE_ARRAY}
-                        // totalPages={totalPages}
-                        // pageChange={pageChange}
-                        // pageSizeChange={pageSizeChange}
-                        onCellValueChanged: onCellValueChanged, fulfillUpload: fulfillUpload }) })] })) })));
+    return (_jsx("div", __assign({ className: "form-encapsulate" }, { children: _jsxs("div", __assign({ className: "form-card-holder" }, { children: [notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } })), _jsxs("div", { children: [_jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 0vw 2vw" }, { children: "For Bulk Duplication Check" })) }), _jsx("div", __assign({ style: { margin: "1vw 1vw 1vw 1vw" } }, { children: TEMPLATE_BUTTON.map(function (button) { return (_jsx(JobSeekerTempleteButton, { fileName: button.iconFileName, title: button.title }, button.title)); }) })), _jsx("div", { children: _jsxs(Typography, __assign({ variant: "h6", gutterBottom: true, component: "div", color: "black", display: "flex", justifyContent: "center" }, { children: [_jsx("hr", { className: "line" }), "( OR )", _jsx("hr", { className: "line" })] })) })] }), _jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 2vw 2vw" }, { children: "Enter the Details Manually" })) }), _jsx("div", { children: _jsx(Grid, __assign({ container: true, spacing: 3 }, { children: _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx("div", { children: _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return clearTable(); } }, { children: [_jsx(RefreshIcon, { className: "generic-icon" }), "Clear Table"] })) }), _jsx("div", {})] })) })) })) }), _jsx("div", { children: _jsx(GridItem, { gridRef: gridRef, rowData: row, columnDefs: columnDefs, defaultColDef: defaultColDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, onSelectionChanged: onSelectionChanged, onCellValueChanged: onCellValueChanged, fulfillUpload: fulfillUpload }) })] })) })));
 };
 export default JobSeekerAddProfile;

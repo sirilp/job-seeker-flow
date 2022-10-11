@@ -46,6 +46,7 @@ export var preDuplicationCheck = function (bodyPayload) { return __awaiter(void 
                 })
                     .catch(function (error) {
                     console.log(error);
+                    return error;
                 })];
             case 1: return [2 /*return*/, _a.sent()];
         }
@@ -62,6 +63,7 @@ export var fullDuplicationCheck = function (profileLogId, panNumber, dob) { retu
                 })
                     .catch(function (error) {
                     console.log(error);
+                    return error;
                 })];
             case 1: return [2 /*return*/, _a.sent()];
         }
@@ -167,7 +169,7 @@ export var statusFilterContestLinkedJobsekeers = function (id, status, page, siz
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, axios
-                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(id, "&filters=").concat(status ? 'status:' + status : '', "&page=").concat(page, "&size=").concat(size), {
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(id, "&filters=").concat(status ? "status:" + status : "", "&page=").concat(page, "&size=").concat(size), {
                     headers: {
                         Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
                     },
