@@ -117,6 +117,15 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
     setServiceList((prevState: any) => [...prevState, { ...initialValuesForForm, ...prefillValue }]);
   };
 
+  const AddMultipleService = (prefillArray?: any[]) => {
+    if(prefillArray) {
+      certificationDetailsForm.setValues((prevValues) => ({
+        members: [...prefillArray],
+      }));
+      setServiceList((prevState: any) => [...prefillArray] );
+    }
+  };
+
   const getError = (name: string) => {
     const error = getIn(certificationDetailsForm.errors, name);
     const touch = getIn(certificationDetailsForm.touched, name);
@@ -125,7 +134,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
 
   useEffect(() => {
     if (props.prefillDetails) {
-      props.prefillDetails.forEach((certification) => handleServiceAdd(certification));
+      AddMultipleService(props.prefillDetails);
     } else if (serviceList.length === 0) handleServiceAdd();
   }, []);
 
