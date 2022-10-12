@@ -95,6 +95,14 @@ var CertificationDetails = function (props) {
         }); });
         setServiceList(function (prevState) { return __spreadArray(__spreadArray([], prevState, true), [__assign(__assign({}, initialValuesForForm), prefillValue)], false); });
     };
+    var AddMultipleService = function (prefillArray) {
+        if (prefillArray) {
+            certificationDetailsForm.setValues(function (prevValues) { return ({
+                members: __spreadArray([], prefillArray, true),
+            }); });
+            setServiceList(function (prevState) { return __spreadArray([], prefillArray, true); });
+        }
+    };
     var getError = function (name) {
         var error = getIn(certificationDetailsForm.errors, name);
         var touch = getIn(certificationDetailsForm.touched, name);
@@ -102,7 +110,7 @@ var CertificationDetails = function (props) {
     };
     useEffect(function () {
         if (props.prefillDetails) {
-            props.prefillDetails.forEach(function (certification) { return handleServiceAdd(certification); });
+            AddMultipleService(props.prefillDetails);
         }
         else if (serviceList.length === 0)
             handleServiceAdd();
