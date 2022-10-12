@@ -67,7 +67,7 @@ import ExperiencedSeeker from "./ExperiencedSeeker/ExperiencedSeeker";
 import { useStyles } from "./JobSeekerProfileFlowStyles";
 import { getCityList, getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import { useAppSelector } from "../../services/StoreHooks";
-import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, } from "../../constants";
+import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, JOB_TYPE_OPTIONS, } from "../../constants";
 var JobSeekerProfileWorkStatus = function (props) {
     var classes = useStyles();
     var experiencedRef = React.useRef();
@@ -100,6 +100,7 @@ var JobSeekerProfileWorkStatus = function (props) {
     var handleCertificationStatus = function (event) {
         setAdditionalCertificationStatus(event.target.value);
     };
+    var validExp = {};
     var submitWorkStatus = function () { return __awaiter(void 0, void 0, void 0, function () {
         var profileWorkStatusMap, profileDetailsResponse, error_1;
         var _a;
@@ -108,18 +109,17 @@ var JobSeekerProfileWorkStatus = function (props) {
                 case 0:
                     setLoader(true);
                     if (experiencedRef === null || experiencedRef === void 0 ? void 0 : experiencedRef.current)
-                        experiencedRef === null || experiencedRef === void 0 ? void 0 : experiencedRef.current.childMethod();
+                        validExp = experiencedRef === null || experiencedRef === void 0 ? void 0 : experiencedRef.current.childMethod();
                     if (freshGraduateRef === null || freshGraduateRef === void 0 ? void 0 : freshGraduateRef.current)
-                        freshGraduateRef === null || freshGraduateRef === void 0 ? void 0 : freshGraduateRef.current.childMethod();
-                    profileWorkStatusMap = buildDetailsPayload();
-                    if (!validateWorkStatusMap(profileWorkStatusMap)) {
-                        props.setOpen(true);
-                        props.setType(WARNING_KEY);
-                        props.setDataMessage("Please enter all work status details");
-                        setLoader(false);
-                        return [2 /*return*/];
-                    }
-                    _b.label = 1;
+                        validExp = freshGraduateRef === null || freshGraduateRef === void 0 ? void 0 : freshGraduateRef.current.childMethod();
+                    console.log(validExp);
+                    profileWorkStatusMap = buildDetailsPayload(validExp);
+                    if (!!validateWorkStatusMap(profileWorkStatusMap)) return [3 /*break*/, 1];
+                    props.setOpen(true);
+                    props.setType(WARNING_KEY);
+                    props.setDataMessage("Please enter all work status details");
+                    setLoader(false);
+                    return [2 /*return*/];
                 case 1:
                     _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, updateJobSeekerProfile({
@@ -145,29 +145,124 @@ var JobSeekerProfileWorkStatus = function (props) {
                     return [3 /*break*/, 4];
                 case 4:
                     setLoader(false);
-                    return [2 /*return*/];
+                    _b.label = 5;
+                case 5: return [2 /*return*/];
             }
         });
     }); };
-    var buildDetailsPayload = function () {
-        return __assign(__assign(__assign({ jobStatus: jobStatus, currentLocation: currentLocation, preferredLocation: preferredLocation, profileFetchLocation: profileFetchLocation, additonalCertificationStatus: additonalCertificationStatus }, experiencedDetails), { certificationDetails: certificationDetails }), freshGraduateDetails);
+    var buildDetailsPayload = function (validExp) {
+        return __assign({ jobStatus: jobStatus, currentLocation: currentLocation, preferredLocation: preferredLocation, profileFetchLocation: profileFetchLocation, additonalCertificationStatus: additonalCertificationStatus, certificationDetails: certificationDetails }, validExp);
+    };
+    var validateExperienceDetails = function (experiencedData) {
+        if (!experiencedData.city ||
+            !experiencedData.country)
+            return false;
+        switch (props.workStatus) {
+            case WorkStatusType.JOBLESS:
+                if (experiencedData.jobDurationType === JOB_TYPE_OPTIONS[0]) {
+                    if (!experiencedData.lastEmployer ||
+                        !experiencedData.relievingDate ||
+                        !experiencedData.notWorkingReason)
+                        return false;
+                }
+                else {
+                    if (!experiencedData.lastEmployer ||
+                        !experiencedData.relievingDate ||
+                        !experiencedData.notWorkingReason ||
+                        !experiencedData.payrollEmployer ||
+                        !experiencedData.endClient)
+                        return false;
+                }
+                break;
+            case WorkStatusType.FULL_TIME:
+                if (experiencedData.jobDurationType === JOB_TYPE_OPTIONS[0]) {
+                    if (!experiencedData.currentEmployer ||
+                        !experiencedData.joiningDate)
+                        return false;
+                }
+                else {
+                    if (!experiencedData.currentEmployer ||
+                        !experiencedData.joiningDate ||
+                        !experiencedData.payrollEmployer ||
+                        !experiencedData.endClient)
+                        return false;
+                }
+                break;
+        }
+        return true;
+    };
+    var validateFresherDetails = function (freshrData) {
+        if (!freshrData.instituteName ||
+            !freshrData.instituteCity ||
+            !freshrData.instituteCountry ||
+            !freshrData.collegeEndDate ||
+            !freshrData.collegeStartDate)
+            return false;
+        return true;
+    };
+    var checkExpData = function (experiencedData) {
+        if (!validateExperienceDetails(experiencedData)) {
+            setExperiencedDetails({});
+            props.setType(WARNING_KEY);
+            props.setDataMessage("Please enter all experience details");
+            props.setOpen(true);
+            setLoader(false);
+            return false;
+        }
+        else {
+            setExperiencedDetails(experiencedData);
+            console.log(experiencedDetails);
+            return true;
+        }
+    };
+    var checkFrshrData = function (fresherData) {
+        if (!validateFresherDetails(fresherData)) {
+            setFreshGraduateDetails({});
+            props.setType(WARNING_KEY);
+            props.setDataMessage("Please enter the college details");
+            props.setOpen(true);
+            setLoader(false);
+            return false;
+        }
+        else {
+            setFreshGraduateDetails(fresherData);
+            console.log(freshGraduateDetails);
+            return true;
+        }
     };
     var validateWorkStatusMap = function (data) {
         var _a;
         if (!data.currentLocation ||
             !data.preferredLocation)
             return false;
-        else if (data.additonalCertificationStatus === YesNoOptions[0]) {
-            if (((_a = data.certificationDetails) === null || _a === void 0 ? void 0 : _a.length) < 1)
+        if (data.additonalCertificationStatus === "Yes") {
+            if (((_a = data.certificationDetails) === null || _a === void 0 ? void 0 : _a.length) === 0)
                 return false;
+            else {
+                certificationDetails.forEach(function (row) {
+                    if (!row.name ||
+                        !row.issuingOrganization ||
+                        !row.credentialId ||
+                        !row.credentialURL ||
+                        !row.issueDate ||
+                        !row.expirationDate ||
+                        !row.credentialStatus)
+                        return false;
+                });
+            }
         }
-        else if (jobStatus === WorkStatusType.FRESHER) {
-            if (!data.instituteName ||
-                !data.instituteCity ||
-                !data.instituteCountry ||
-                !data.collegeEndDate ||
-                !data.collegeStartDate)
+        else {
+            setCertificationDetails([]);
+        }
+        if (jobStatus === WorkStatusType.FRESHER) {
+            if (!checkFrshrData(validExp)) {
                 return false;
+            }
+        }
+        else {
+            if (!checkExpData(validExp)) {
+                return false;
+            }
         }
         return true;
     };
@@ -267,6 +362,6 @@ var JobSeekerProfileWorkStatus = function (props) {
                                     inputProps: { maxLength: 20 },
                                 }, size: "small" }) }))) : null] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [CURRENT_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: CURRENT_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: currentLocation, label: CURRENT_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setCurrentLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [PREFERRED_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: PREFERRED_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: preferredLocation, label: PREFERRED_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setPreferredLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: ADDITIONAL_CERTIFICATES_TEXT }) })), _jsx("div", { children: _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: additonalCertificationStatus, onChange: handleCertificationStatus }, { children: YesNoOptions.map(function (location) { return (_jsx(FormControlLabel, { disabled: !props.hasButtons, value: location, control: _jsx(Radio, {}), label: location }, location)); }) })) }) })] })), additonalCertificationStatus === YesNoOptions[0] ? (_jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: CERTIFICATION_ADD_TEXT }) })), _jsx(CertificationDetails, { disabled: !props.hasButtons, setCertificationData: handleCertifications, removeCertification: removeCertification, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, prefillDetails: props.profileDataId || userDataState.userData.profileId
                                 ? certificationDetails
-                                : null })] })) : null, _jsx("div", { children: _jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [WORK_STATUS_TEXT, ": ", jobStatus] }) })) }), _jsx("div", { children: jobStatus === WorkStatusType.FRESHER ? (_jsx(FreshGraduateDetails, { disabled: !props.hasButtons, ref: freshGraduateRef, setParentData: setFreshGraduateDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, fresherPrefillData: props.profileDataId ? freshGraduateDetails : null })) : null }), _jsx("div", { children: jobStatus !== WorkStatusType.FRESHER ? (_jsx(_Fragment, { children: gotPatchData ? (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) : (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) })) : null }), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitWorkStatus, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
+                                : null })] })) : null, _jsx("div", { children: _jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [WORK_STATUS_TEXT, ": ", jobStatus] }) })) }), _jsx("div", { children: jobStatus === WorkStatusType.FRESHER ? (_jsx(FreshGraduateDetails, { disabled: !props.hasButtons, ref: freshGraduateRef, setParentData: setFreshGraduateDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, fresherPrefillData: props.profileDataId || userDataState.userData.profileId ? freshGraduateDetails : null })) : null }), _jsx("div", { children: jobStatus !== WorkStatusType.FRESHER ? (_jsx(_Fragment, { children: gotPatchData ? (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) : (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) })) : null }), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitWorkStatus, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
 };
 export default JobSeekerProfileWorkStatus;

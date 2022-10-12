@@ -13,14 +13,14 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import React, { useImperativeHandle, useEffect } from "react";
 import { Stack, Grid, Radio, TextField, RadioGroup, FormControl, FormControlLabel, } from "@mui/material";
 import { useStyles } from "../JobSeekerProfileFlowStyles";
-import { HALF_SIZE_GRID, FULL_SIZE_GRID, CITY_LABEL, COUNTRY_LABEL, WorkStatusType, WARNING_KEY, } from "../../../constants";
+import { HALF_SIZE_GRID, FULL_SIZE_GRID, CITY_LABEL, COUNTRY_LABEL, WorkStatusType, } from "../../../constants";
 import { JOB_TYPE_TEXT, JOBLESS_REASON, END_CLIENT_TEXT, JOB_TYPE_OPTIONS, PAYROLL_NAME_TEXT, COMPANY_NAME_LABEL, LAST_EMPLOYER_TEXT, JOBLESS_HELPER_TEXT, LAST_EMPLOYER_LOCATION_TEXT, PREV_EMPLOYER_RELIEVING_TEXT, CURRENT_EMPLOYER_TEXT, COMPANY_LOCATION_TEXT, CURRENT_EMPLOYER_JOINING_TEXT, } from "./ExperiencedSeekerConstants";
 import "../JobSeekerProfileFlow.css";
 import Calendar from "../../../components/Calendar/Calendar";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 var ExperiencedSeeker = React.forwardRef(function (props, ref) {
-    var _a;
+    var _a, _b;
     var classes = useStyles();
     var experiencedSeekerForm = useFormik({
         initialValues: {
@@ -54,67 +54,19 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
         },
         enableReinitialize: true,
     });
-    var handleSubmit = function () {
-        if (!validateExperienceDetails()) {
-            props.setParentData(experiencedSeekerForm.initialValues);
-            props.setType(WARNING_KEY);
-            props.setDataMessage("Please enter all experience details");
-            props.setOpen(true);
-        }
-        else
-            props.setParentData(experiencedSeekerForm.values);
-    };
-    var validateExperienceDetails = function () {
-        if (!experiencedSeekerForm.values.city ||
-            !experiencedSeekerForm.values.country)
-            return false;
-        switch (props.workStatus) {
-            case WorkStatusType.JOBLESS:
-                if (experiencedSeekerForm.values.jobDurationType === JOB_TYPE_OPTIONS[0]) {
-                    if (!experiencedSeekerForm.values.lastEmployer ||
-                        !experiencedSeekerForm.values.relievingDate ||
-                        !experiencedSeekerForm.values.notWorkingReason)
-                        return false;
-                }
-                else {
-                    if (!experiencedSeekerForm.values.lastEmployer ||
-                        !experiencedSeekerForm.values.relievingDate ||
-                        !experiencedSeekerForm.values.notWorkingReason ||
-                        !experiencedSeekerForm.values.payrollEmployer ||
-                        !experiencedSeekerForm.values.endClient)
-                        return false;
-                }
-                break;
-            case WorkStatusType.FULL_TIME:
-                if (experiencedSeekerForm.values.jobDurationType === JOB_TYPE_OPTIONS[0]) {
-                    if (!experiencedSeekerForm.values.currentEmployer ||
-                        !experiencedSeekerForm.values.joiningDate)
-                        return false;
-                }
-                else {
-                    if (!experiencedSeekerForm.values.currentEmployer ||
-                        !experiencedSeekerForm.values.joiningDate ||
-                        !experiencedSeekerForm.values.payrollEmployer ||
-                        !experiencedSeekerForm.values.endClient)
-                        return false;
-                }
-                break;
-        }
-        return true;
-    };
     var handleDate = function (dateValue) {
         props.workStatus === WorkStatusType.JOBLESS
             ? experiencedSeekerForm.setFieldValue("relievingDate", dateValue)
             : experiencedSeekerForm.setFieldValue("joiningDate", dateValue);
         var tempObject = __assign({}, experiencedSeekerForm.values);
-        props.workStatus === WorkStatusType.JOBLESS ?
-            tempObject["relievingDate"] = dateValue :
-            tempObject["joiningDate"] = dateValue;
+        props.workStatus === WorkStatusType.JOBLESS
+            ? (tempObject["relievingDate"] = dateValue)
+            : (tempObject["joiningDate"] = dateValue);
         props.setParentData(tempObject);
     };
     useImperativeHandle(ref, function () { return ({
         childMethod: function () {
-            handleSubmit();
+            return experiencedSeekerForm.values;
         },
     }); });
     useEffect(function () {
@@ -144,13 +96,15 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
                                                 experiencedSeekerForm.setFieldValue("jobDurationType", e.target.value);
                                             } }, { children: JOB_TYPE_OPTIONS.map(function (type) { return (_jsx(FormControlLabel, { disabled: props.disabled, value: type, control: _jsx(Radio, {}), label: type }, type)); }) })) }) }), props.workStatus === WorkStatusType.JOBLESS ? (_jsx("div", __assign({ className: "reason-field" }, { children: _jsx(TextField, { required: true, id: "notWorkingReason", disabled: props.disabled, type: "text", multiline: true, fullWidth: true, placeholder: JOBLESS_REASON, rows: 4, helperText: JOBLESS_HELPER_TEXT, onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.notWorkingReason, InputProps: {
                                             inputProps: { maxLength: 750 },
-                                        }, size: "small" }) }))) : null] }) })), experiencedSeekerForm.values.jobDurationType === JOB_TYPE_OPTIONS[1] ? (_jsxs(_Fragment, { children: [_jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: PAYROLL_NAME_TEXT })), _jsx(TextField, { required: true, id: "payrollEmployer", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.payrollEmployer })] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: END_CLIENT_TEXT })), _jsx(TextField, { required: true, id: "endClient", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.endClient })] }))] })) : null, _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsxs("p", __assign({ className: "institute-field" }, { children: [props.workStatus === WorkStatusType.JOBLESS
+                                        }, size: "small" }) }))) : null] }) })), experiencedSeekerForm.values.jobDurationType ===
+                        JOB_TYPE_OPTIONS[1] ? (_jsxs(_Fragment, { children: [_jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: PAYROLL_NAME_TEXT })), _jsx(TextField, { required: true, id: "payrollEmployer", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.payrollEmployer })] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: END_CLIENT_TEXT })), _jsx(TextField, { required: true, id: "endClient", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.endClient })] }))] })) : null, _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsxs("p", __assign({ className: "institute-field" }, { children: [props.workStatus === WorkStatusType.JOBLESS
                                         ? LAST_EMPLOYER_TEXT
-                                        : CURRENT_EMPLOYER_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), props.workStatus === WorkStatusType.JOBLESS ? (_jsx("div", { children: _jsx(TextField, { required: true, id: "lastEmployer", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.lastEmployer }) })) :
-                                (_jsx("div", { children: _jsx(TextField, { required: true, id: "currentEmployer", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.currentEmployer }) }))] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsxs("p", __assign({ className: "institute-field" }, { children: [props.workStatus === WorkStatusType.JOBLESS
+                                        : CURRENT_EMPLOYER_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), props.workStatus === WorkStatusType.JOBLESS ? (_jsx("div", { children: _jsx(TextField, { required: true, id: "lastEmployer", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.lastEmployer }) })) : (_jsx("div", { children: _jsx(TextField, { required: true, id: "currentEmployer", disabled: props.disabled, label: COMPANY_NAME_LABEL, className: classes.boxInputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.currentEmployer }) }))] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsxs("p", __assign({ className: "institute-field" }, { children: [props.workStatus === WorkStatusType.JOBLESS
                                         ? LAST_EMPLOYER_LOCATION_TEXT
                                         : COMPANY_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsxs(Stack, __assign({ direction: "row", spacing: 3 }, { children: [_jsx(TextField, { required: true, id: "city", disabled: props.disabled, label: CITY_LABEL, className: classes.inputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.city }), _jsx(TextField, { required: true, id: "country", disabled: props.disabled, label: COUNTRY_LABEL, className: classes.inputField, size: "small", onBlur: experiencedSeekerForm.handleBlur, onChange: experiencedSeekerForm.handleChange, value: experiencedSeekerForm.values.country })] }))] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID }, { children: [_jsxs("p", __assign({ className: "institute-field" }, { children: [props.workStatus === WorkStatusType.JOBLESS
                                         ? PREV_EMPLOYER_RELIEVING_TEXT
-                                        : CURRENT_EMPLOYER_JOINING_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsx(Calendar, { setDate: handleDate, status: true, value: (_a = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _a === void 0 ? void 0 : _a.joiningDate })] }))] })) })) }));
+                                        : CURRENT_EMPLOYER_JOINING_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsx(Calendar, { setDate: handleDate, status: true, value: props.workStatus === WorkStatusType.JOBLESS
+                                    ? (_a = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _a === void 0 ? void 0 : _a.relievingDate
+                                    : (_b = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _b === void 0 ? void 0 : _b.joiningDate })] }))] })) })) }));
 });
 export default ExperiencedSeeker;
