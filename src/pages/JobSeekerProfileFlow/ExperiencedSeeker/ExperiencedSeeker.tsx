@@ -73,92 +73,72 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
       enableReinitialize: true,
     });
 
-    const handleSubmit = () => {
-      if (!validateExperienceDetails()) {
-        props.setParentData(experiencedSeekerForm.initialValues);
-        props.setType(WARNING_KEY);
-        props.setDataMessage("Please enter all experience details");
-        props.setOpen(true);
-      } else props.setParentData(experiencedSeekerForm.values);
-    };
-
-    const validateExperienceDetails = () => {
-      if (
-        !experiencedSeekerForm.values.city ||
-        !experiencedSeekerForm.values.country
-      )
-        return false;
-      switch (props.workStatus) {
-        case WorkStatusType.JOBLESS:
-          if (experiencedSeekerForm.values.jobDurationType === JOB_TYPE_OPTIONS[0]) {
-            if (
-              !experiencedSeekerForm.values.lastEmployer ||
-              !experiencedSeekerForm.values.relievingDate ||
-              !experiencedSeekerForm.values.notWorkingReason
-            )
-              return false;
-          } else {
-            if (
-              !experiencedSeekerForm.values.lastEmployer ||
-              !experiencedSeekerForm.values.relievingDate ||
-              !experiencedSeekerForm.values.notWorkingReason ||
-              !experiencedSeekerForm.values.payrollEmployer ||
-              !experiencedSeekerForm.values.endClient
-            )
-              return false;
-          }
-          break;
-        case WorkStatusType.FULL_TIME:
-          if (experiencedSeekerForm.values.jobDurationType === JOB_TYPE_OPTIONS[0]) {
-            if (
-              !experiencedSeekerForm.values.currentEmployer ||
-              !experiencedSeekerForm.values.joiningDate
-            )
-              return false;
-          } else {
-            if (
-              !experiencedSeekerForm.values.currentEmployer ||
-              !experiencedSeekerForm.values.joiningDate ||
-              !experiencedSeekerForm.values.payrollEmployer ||
-              !experiencedSeekerForm.values.endClient
-            )
-              return false;
-          }
-          break;
-      }
-      return true;
-    };
-
     const handleDate = (dateValue) => {
       props.workStatus === WorkStatusType.JOBLESS
         ? experiencedSeekerForm.setFieldValue("relievingDate", dateValue)
         : experiencedSeekerForm.setFieldValue("joiningDate", dateValue);
       const tempObject = {
-        ...experiencedSeekerForm.values
-      }
-      props.workStatus === WorkStatusType.JOBLESS ? 
-      tempObject["relievingDate"] = dateValue : 
-      tempObject["joiningDate"] = dateValue
+        ...experiencedSeekerForm.values,
+      };
+      props.workStatus === WorkStatusType.JOBLESS
+        ? (tempObject["relievingDate"] = dateValue)
+        : (tempObject["joiningDate"] = dateValue);
       props.setParentData(tempObject);
     };
 
     useImperativeHandle(ref, () => ({
       childMethod() {
-        handleSubmit();
+        return experiencedSeekerForm.values;
       },
     }));
 
     useEffect(() => {
-      if(props.experiencedPrefillData) {
-        if(props.experiencedPrefillData?.city) experiencedSeekerForm.setFieldValue("city", props.experiencedPrefillData?.city);
-        if(props.experiencedPrefillData?.country) experiencedSeekerForm.setFieldValue("country", props.experiencedPrefillData?.country);
-        if(props.experiencedPrefillData?.endClient) experiencedSeekerForm.setFieldValue("endClient", props.experiencedPrefillData?.endClient);
-        if(props.experiencedPrefillData?.joiningDate) experiencedSeekerForm.setFieldValue("joiningDate", props.experiencedPrefillData?.joiningDate);
-        if(props.experiencedPrefillData?.lastEmployer) experiencedSeekerForm.setFieldValue("lastEmployer", props.experiencedPrefillData?.lastEmployer);
-        if(props.experiencedPrefillData?.relievingDate) experiencedSeekerForm.setFieldValue("relievingDate", props.experiencedPrefillData?.relievingDate);
-        if(props.experiencedPrefillData?.currentEmployer) experiencedSeekerForm.setFieldValue("currentEmployer", props.experiencedPrefillData?.currentEmployer);
-        if(props.experiencedPrefillData?.payrollEmployer) experiencedSeekerForm.setFieldValue("payrollEmployer", props.experiencedPrefillData?.payrollEmployer);
-        if(props.experiencedPrefillData?.notWorkingReason) experiencedSeekerForm.setFieldValue("notWorkingReason", props.experiencedPrefillData?.notWorkingReason);     
+      if (props.experiencedPrefillData) {
+        if (props.experiencedPrefillData?.city)
+          experiencedSeekerForm.setFieldValue(
+            "city",
+            props.experiencedPrefillData?.city
+          );
+        if (props.experiencedPrefillData?.country)
+          experiencedSeekerForm.setFieldValue(
+            "country",
+            props.experiencedPrefillData?.country
+          );
+        if (props.experiencedPrefillData?.endClient)
+          experiencedSeekerForm.setFieldValue(
+            "endClient",
+            props.experiencedPrefillData?.endClient
+          );
+        if (props.experiencedPrefillData?.joiningDate)
+          experiencedSeekerForm.setFieldValue(
+            "joiningDate",
+            props.experiencedPrefillData?.joiningDate
+          );
+        if (props.experiencedPrefillData?.lastEmployer)
+          experiencedSeekerForm.setFieldValue(
+            "lastEmployer",
+            props.experiencedPrefillData?.lastEmployer
+          );
+        if (props.experiencedPrefillData?.relievingDate)
+          experiencedSeekerForm.setFieldValue(
+            "relievingDate",
+            props.experiencedPrefillData?.relievingDate
+          );
+        if (props.experiencedPrefillData?.currentEmployer)
+          experiencedSeekerForm.setFieldValue(
+            "currentEmployer",
+            props.experiencedPrefillData?.currentEmployer
+          );
+        if (props.experiencedPrefillData?.payrollEmployer)
+          experiencedSeekerForm.setFieldValue(
+            "payrollEmployer",
+            props.experiencedPrefillData?.payrollEmployer
+          );
+        if (props.experiencedPrefillData?.notWorkingReason)
+          experiencedSeekerForm.setFieldValue(
+            "notWorkingReason",
+            props.experiencedPrefillData?.notWorkingReason
+          );
       }
     }, []);
 
@@ -228,7 +208,8 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                 ) : null}
               </div>
             </Grid>
-            {experiencedSeekerForm.values.jobDurationType === JOB_TYPE_OPTIONS[1] ? (
+            {experiencedSeekerForm.values.jobDurationType ===
+            JOB_TYPE_OPTIONS[1] ? (
               <>
                 <Grid
                   item
@@ -279,7 +260,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               md={HALF_SIZE_GRID}
               lg={HALF_SIZE_GRID}
             >
-              <p  className="institute-field">
+              <p className="institute-field">
                 {props.workStatus === WorkStatusType.JOBLESS
                   ? LAST_EMPLOYER_TEXT
                   : CURRENT_EMPLOYER_TEXT}
@@ -288,31 +269,30 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               {props.workStatus === WorkStatusType.JOBLESS ? (
                 <div>
                   <TextField
-                  required
-                  id="lastEmployer"
-                  disabled={props.disabled}
-                  label={COMPANY_NAME_LABEL}
-                  className={classes.boxInputField}
-                  size="small"
-                  onBlur={experiencedSeekerForm.handleBlur}
-                  onChange={experiencedSeekerForm.handleChange}
-                  value={experiencedSeekerForm.values.lastEmployer}
-                />
+                    required
+                    id="lastEmployer"
+                    disabled={props.disabled}
+                    label={COMPANY_NAME_LABEL}
+                    className={classes.boxInputField}
+                    size="small"
+                    onBlur={experiencedSeekerForm.handleBlur}
+                    onChange={experiencedSeekerForm.handleChange}
+                    value={experiencedSeekerForm.values.lastEmployer}
+                  />
                 </div>
-              ) : 
-              (
+              ) : (
                 <div>
-                <TextField
-                  required
-                  id="currentEmployer"
-                  disabled={props.disabled}
-                  label={COMPANY_NAME_LABEL}
-                  className={classes.boxInputField}
-                  size="small"
-                  onBlur={experiencedSeekerForm.handleBlur}
-                  onChange={experiencedSeekerForm.handleChange}
-                  value={experiencedSeekerForm.values.currentEmployer}
-                />
+                  <TextField
+                    required
+                    id="currentEmployer"
+                    disabled={props.disabled}
+                    label={COMPANY_NAME_LABEL}
+                    className={classes.boxInputField}
+                    size="small"
+                    onBlur={experiencedSeekerForm.handleBlur}
+                    onChange={experiencedSeekerForm.handleChange}
+                    value={experiencedSeekerForm.values.currentEmployer}
+                  />
                 </div>
               )}
             </Grid>
@@ -323,7 +303,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               md={HALF_SIZE_GRID}
               lg={HALF_SIZE_GRID}
             >
-              <p  className="institute-field">
+              <p className="institute-field">
                 {props.workStatus === WorkStatusType.JOBLESS
                   ? LAST_EMPLOYER_LOCATION_TEXT
                   : COMPANY_LOCATION_TEXT}
@@ -361,13 +341,21 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
               md={HALF_SIZE_GRID}
               lg={HALF_SIZE_GRID}
             >
-              <p  className="institute-field">
+              <p className="institute-field">
                 {props.workStatus === WorkStatusType.JOBLESS
                   ? PREV_EMPLOYER_RELIEVING_TEXT
                   : CURRENT_EMPLOYER_JOINING_TEXT}
                 <span className="asterisk-span"> *</span>
               </p>
-              <Calendar setDate={handleDate} status={true} value={props?.experiencedPrefillData?.joiningDate}/>
+              <Calendar
+                setDate={handleDate}
+                status={true}
+                value={
+                  props.workStatus === WorkStatusType.JOBLESS
+                    ? props?.experiencedPrefillData?.relievingDate
+                    : props?.experiencedPrefillData?.joiningDate
+                }
+              />
             </Grid>
           </Grid>
         </div>

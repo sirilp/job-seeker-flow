@@ -190,3 +190,8 @@ export const JOB_SEEKER_COMLETE_PROFILE_TEXT = {
     "Hope this job seeker converts into placement and we wish you all the best!!",
   alyticsTitle: "Your Profile Submission Statistics For this Contest",
 };
+
+export const JOB_TYPE_OPTIONS = [
+  'Full-Time',
+  'Contract'
+];

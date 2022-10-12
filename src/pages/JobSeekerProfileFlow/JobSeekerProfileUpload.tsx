@@ -289,17 +289,21 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
 
   return (
     <>
+    {!loader ? (
       <div className="job-seeker-profile-content">
-        <Grid container spacing={3}>
+        {props.hasButtons ? (
+          <Grid container spacing={3}>
           <Grid item xs={12} className={classes.Grid1}>
             <ButtonGroup variant="outlined" aria-label="outlined button group">
               <Button
                 className={templateState ? classes.bGroup : ""}
+                //disabled={!props.hasButtons}
                 onClick={handleTemplateUpload}
               >
                 Template Upload
               </Button>
               <Button
+                //disabled={!props.hasButtons}
                 className={manualState ? classes.bGroup : ""}
                 onClick={handleManualUpload}
               >
@@ -527,17 +531,55 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
               </Grid>
             </Grid>
           ) : null}
-        </Grid>
-        <PreviousNextButtons
-          handleNext={callResumeUpload}
-          handleBack={props.handleBack}
-        />
+         </Grid> 
+         ) :
+         (
+          <>
+            <Box
+                marginTop={3}
+                justifyContent={"space-between"}
+                sx={{
+                  display: {
+                    sm: "block",
+                    md: "flex",
+                    lg: "flex",
+                    xl: "flex",
+                  },
+                }}
+              >
+                <Box textAlign="left" className={classes.subText1}>
+                  {imageName && acceptedFilesResume.length < 1 ? (
+                    <span>{imageName}</span>
+                  ) : (
+                    <Box>
+                      {acceptedFilesResume.map((file: any) => (
+                        <Box key={file.path || file.name}>{file.path}</Box>
+                      ))}
+                    </Box>
+                  )}
+                </Box>
+                <Box textAlign="left" className={classes.subText2}>
+                  <Checkbox {...label} defaultChecked color="success" />
+                  Duplication Check with Hiringhood Completed
+                </Box>
+            </Box>
+          </>
+
+        )}
+        {props.hasButtons ? (
+            <PreviousNextButtons
+              handleNext={callResumeUpload}
+              handleBack={props.handleBack}
+            />
+          ) : null}
       </div>
-      {loader && (
+    )
+      : (
         <Stack alignItems="center">
           <CircularProgress />
         </Stack>
-      )}
+      )
+    }
     </>
   );
 };

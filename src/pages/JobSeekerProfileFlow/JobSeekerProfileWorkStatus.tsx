@@ -46,7 +46,9 @@ import {
   ERROR_KEY,
   SUCCESS_KEY,
   FORM_SUBMISSION_SUCCESS,
+  JOB_TYPE_OPTIONS,
 } from "../../constants";
+
 
 const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
   const classes: any = useStyles();
@@ -80,13 +82,13 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
     country: "",
     city: "",
   });
-  const [freshGraduateDetails, setFreshGraduateDetails] = React.useState<{
+  const [freshGraduateDetails, setFreshGraduateDetails] = React.useState<|{
     instituteName: string;
     instituteCity: string;
     instituteCountry: string;
     collegeEndDate: string;
     collegeStartDate: string;
-  }>({
+  } | any >({
     instituteName: "",
     instituteCity: "",
     instituteCountry: "",
@@ -103,19 +105,23 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
   ) => {
     setAdditionalCertificationStatus((event.target as HTMLInputElement).value);
   };
+  let validExp = {};
 
   const submitWorkStatus = async () => {
     setLoader(true);
-    if (experiencedRef?.current) experiencedRef?.current.childMethod();
-    if (freshGraduateRef?.current) freshGraduateRef?.current.childMethod();
-    const profileWorkStatusMap = buildDetailsPayload();
+    
+    if (experiencedRef?.current) validExp =  experiencedRef?.current.childMethod();
+
+    if (freshGraduateRef?.current) validExp = freshGraduateRef?.current.childMethod();
+   console.log(validExp)
+    const profileWorkStatusMap = buildDetailsPayload(validExp);
     if (!validateWorkStatusMap(profileWorkStatusMap)) {
       props.setOpen(true);
       props.setType(WARNING_KEY);
       props.setDataMessage("Please enter all work status details");
       setLoader(false);
       return;
-    }
+    } else{
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
         profileId: userDataState.userData.profileId,
@@ -135,38 +141,142 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
       props.setOpen(true);
     }
     setLoader(false);
+  }
   };
 
-  const buildDetailsPayload = () => {
+  const buildDetailsPayload = (validExp) => {
     return {
       jobStatus,
       currentLocation,
       preferredLocation,
       profileFetchLocation,
       additonalCertificationStatus,
-      ...experiencedDetails,
       certificationDetails,
-      ...freshGraduateDetails,
+      ...validExp
     };
   };
 
+  const validateExperienceDetails = (experiencedData) => {
+    if (
+      !experiencedData.city ||
+      !experiencedData.country
+    )
+      return false;
+    switch (props.workStatus) {
+      case WorkStatusType.JOBLESS:
+        if (experiencedData.jobDurationType === JOB_TYPE_OPTIONS[0]) {
+          if (
+            !experiencedData.lastEmployer ||
+            !experiencedData.relievingDate ||
+            !experiencedData.notWorkingReason
+          )
+            return false;
+        } else {
+          if (
+            !experiencedData.lastEmployer ||
+            !experiencedData.relievingDate ||
+            !experiencedData.notWorkingReason ||
+            !experiencedData.payrollEmployer ||
+            !experiencedData.endClient
+          )
+            return false;
+        }
+        break;
+      case WorkStatusType.FULL_TIME:
+        if (experiencedData.jobDurationType === JOB_TYPE_OPTIONS[0]) {
+          if (
+            !experiencedData.currentEmployer ||
+            !experiencedData.joiningDate
+          )
+            return false;
+        } else {
+          if (
+            !experiencedData.currentEmployer ||
+            !experiencedData.joiningDate ||
+            !experiencedData.payrollEmployer ||
+            !experiencedData.endClient
+          )
+            return false;
+        }
+        break;
+    }
+    return true;
+  };
+
+  const validateFresherDetails = (freshrData) => {
+    if (
+      !freshrData.instituteName ||
+      !freshrData.instituteCity ||
+      !freshrData.instituteCountry ||
+      !freshrData.collegeEndDate ||
+      !freshrData.collegeStartDate
+    )
+    return false;
+    return true;
+  }
+  const checkExpData = (experiencedData: any ) =>{
+    if (!validateExperienceDetails(experiencedData)) {
+      setExperiencedDetails({});
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please enter all experience details");
+      props.setOpen(true);
+      setLoader(false)
+      return false;
+    } else {
+      setExperiencedDetails(experiencedData);
+      console.log(experiencedDetails)
+      return true;
+    }
+  }
+
+  const checkFrshrData = (fresherData) => {
+     if(!validateFresherDetails(fresherData)){
+      setFreshGraduateDetails({});
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please enter the college details");
+      props.setOpen(true);
+      setLoader(false)
+      return false;
+    } else {
+      setFreshGraduateDetails(fresherData);
+      console.log(freshGraduateDetails)
+      return true;
+     }
+  }
   const validateWorkStatusMap = (data) => {
     if (
       !data.currentLocation ||
       !data.preferredLocation
     )
       return false;
-    else if (data.additonalCertificationStatus === YesNoOptions[0]) {
-      if (data.certificationDetails?.length < 1) return false;
-    } else if (jobStatus === WorkStatusType.FRESHER) {
-      if (
-        !data.instituteName ||
-        !data.instituteCity ||
-        !data.instituteCountry ||
-        !data.collegeEndDate ||
-        !data.collegeStartDate
-      )
+    if (data.additonalCertificationStatus === "Yes") {
+      if (data.certificationDetails?.length === 0) 
+      return false;
+      else {
+        certificationDetails.forEach((row) => {
+          if (
+            !row.name ||
+            !row.issuingOrganization ||
+            !row.credentialId ||
+            !row.credentialURL ||
+            !row.issueDate ||
+            !row.expirationDate ||
+            !row.credentialStatus 
+          )
+            return false;
+        });
+      }
+    } else {
+      setCertificationDetails([]);
+    }
+    if(jobStatus === WorkStatusType.FRESHER){
+     if(!checkFrshrData(validExp)){
+            return false;
+       } 
+    } else  {
+      if (!checkExpData(validExp)){
         return false;
+      }
     }
     return true;
   };
@@ -417,7 +527,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
                 setOpen={props.setOpen}
                 setDataMessage={props.setDataMessage}
                 fresherPrefillData={
-                  props.profileDataId ? freshGraduateDetails : null
+                  props.profileDataId || userDataState.userData.profileId ? freshGraduateDetails : null
                 }
               />
             ) : null}

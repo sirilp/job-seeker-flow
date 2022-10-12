@@ -141,10 +141,12 @@ console.log(gotData)
           JD Specific Questions has not been configured for this contest
         </div>
       )}
-      <PreviousNextButtons
-        handleNext={submitFormData}
-        handleBack={props.handleBack}
-      />
+       {props.hasButtons ? (
+            <PreviousNextButtons
+              handleNext={submitFormData}
+              handleBack={props.handleBack}
+            />
+          ) : null}
       {loader && (
         <Stack alignItems="center">
           <CircularProgress />

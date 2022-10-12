@@ -69,57 +69,36 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
 
     useImperativeHandle(ref, () => ({
       childMethod() {
-        handleSubmit();
+       return freshGraduateForm.values;
       },
     }));
 
-    const handleSubmit = () => {
-      if (!validateFreshGraduateDetails()) {
-        props.setParentData(freshGraduateForm.initialValues);
-        props.setType(WARNING_KEY);
-        props.setDataMessage("Please enter all experience details");
-        props.setOpen(true);
-      } else props.setParentData(freshGraduateForm.values);
-    };
-
-    const validateFreshGraduateDetails = () => {
-      if (
-        !freshGraduateForm.values.instituteName ||
-        !freshGraduateForm.values.instituteCity ||
-        !freshGraduateForm.values.instituteCountry ||
-        !freshGraduateForm.values.collegeEndDate ||
-        !freshGraduateForm.values.collegeStartDate
-      )
-        return false;
-      else return true;
-    };
-
     useEffect(() => {
-      if (props.freshGraduateDetails) {
-        if (props.freshGraduateDetails?.instituteName)
+      if (props.fresherPrefillData) {
+        if (props.fresherPrefillData?.instituteName)
           freshGraduateForm.setFieldValue(
             "instituteName",
-            props.freshGraduateDetails?.instituteName
+            props.fresherPrefillData?.instituteName
           );
-        if (props.freshGraduateDetails?.instituteCity)
+        if (props.fresherPrefillData?.instituteCity)
           freshGraduateForm.setFieldValue(
             "instituteCity",
-            props.freshGraduateDetails?.instituteCity
+            props.fresherPrefillData?.instituteCity
           );
-        if (props.freshGraduateDetails?.collegeEndDate)
+        if (props.fresherPrefillData?.collegeEndDate)
           freshGraduateForm.setFieldValue(
             "collegeEndDate",
-            props.freshGraduateDetails?.collegeEndDate
+            props.fresherPrefillData?.collegeEndDate
           );
-        if (props.freshGraduateDetails?.collegeStartDate)
+        if (props.fresherPrefillData?.collegeStartDate)
           freshGraduateForm.setFieldValue(
             "collegeStartDate",
-            props.freshGraduateDetails?.collegeStartDate
+            props.fresherPrefillData?.collegeStartDate
           );
-        if (props.freshGraduateDetails?.instituteCountry)
+        if (props.fresherPrefillData?.instituteCountry)
           freshGraduateForm.setFieldValue(
             "instituteCountry",
-            props.freshGraduateDetails?.instituteCountry
+            props.fresherPrefillData?.instituteCountry
           );
       }
     }, []);
