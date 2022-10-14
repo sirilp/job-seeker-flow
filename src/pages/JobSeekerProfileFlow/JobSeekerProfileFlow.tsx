@@ -123,6 +123,7 @@ const JobSeekerProfileFlow: FC<any> = (props): ReactElement => {
           handleBack={handleBack}
           handleComplete={handleComplete}
           setDataMessage={props.setDataMessage}
+          setActiveStep={setActiveStep}
         />
       ) : activeStep + 1 === 5 ? (
         <JobSeekerProfileNoticePeriod
@@ -144,6 +145,7 @@ const JobSeekerProfileFlow: FC<any> = (props): ReactElement => {
           contestId={props.contestId}
           handleComplete={handleComplete}
           setDataMessage={props.setDataMessage}
+          setActiveStep={setActiveStep}
         />
       ) : (
         <JobSeekerProfileReview

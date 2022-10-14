@@ -127,7 +127,14 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
     }
     setLoader(false);
   };
-console.log(gotData)
+
+  const handleBack = () =>{
+     if(userDataState.userData.workStatus === 'Fresh Graduate'){
+      props.setActiveStep(3);
+     } else {
+      props.setActiveStep(4);
+     }
+  }
   return (
     <div className="job-seeker-profile-content">
       <Form
@@ -144,7 +151,7 @@ console.log(gotData)
        {props.hasButtons ? (
             <PreviousNextButtons
               handleNext={submitFormData}
-              handleBack={props.handleBack}
+              handleBack={handleBack}
             />
           ) : null}
       {loader && (

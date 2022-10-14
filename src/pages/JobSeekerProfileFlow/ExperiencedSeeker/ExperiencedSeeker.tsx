@@ -356,7 +356,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                     ? props?.experiencedPrefillData?.relievingDate
                     : props?.experiencedPrefillData?.joiningDate
                 }
-                minDate={moment()}
+                calendarDisabled={props.disabled}
               />
             </Grid>
           </Grid>

@@ -39,6 +39,8 @@ import {
   ERROR_KEY,
   SUCCESS_KEY,
   FORM_SUBMISSION_SUCCESS,
+  EXPEXTED_CTC_DET,
+  WARNING_KEY,
 } from "../../constants";
 
 const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
@@ -97,65 +99,87 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   };
 
   const handleFixedCtc = (value: string, index: number) => {
-    if (index === 0 && value)
+    if (index === 0) {
       setFixedCtc({
         fixedCtcLakh: value,
         fixedCtcThousand: fixedCtc.fixedCtcThousand,
       });
-    else if (index === 1 && value)
+      handleTotalCtc(value ? value : '0', '', '', '')
+    }
+    else if (index === 1) {
       setFixedCtc({
         fixedCtcLakh: fixedCtc.fixedCtcLakh,
         fixedCtcThousand: value,
       });
+      handleTotalCtc('', value ? value : '0', '', '')
+    }
   };
 
   const handleVariableCtc = (value: string, index: number) => {
-    if (index === 0 && value)
+    if (index === 0) {
       setVariableCtc({
         variableCtcLakh: value,
         variableCtcThousand: variableCtc.variableCtcThousand,
       });
-    else if (index === 1 && value)
+      handleTotalCtc('', '', value ? value : '0', '')
+    }
+    else if (index === 1) {
       setVariableCtc({
         variableCtcLakh: variableCtc.variableCtcLakh,
         variableCtcThousand: value,
       });
+      handleTotalCtc('', '', '', value ? value : '0')
+    }
   };
 
+  const handleTotalCtc = (fL: string, fT: string, vL: string, vT: string) => {
+    setTotalCtc((
+      (parseInt(fL ? fL : (fixedCtc.fixedCtcLakh ? fixedCtc.fixedCtcLakh : '0')) +
+        parseInt(vL ? vL : (variableCtc.variableCtcLakh ? variableCtc.variableCtcLakh : '0'))) * 100000 +
+      (parseInt(fT ? fT : (fixedCtc.fixedCtcThousand ? fixedCtc.fixedCtcThousand : '0'))
+        + parseInt(vT ? vT : (variableCtc.variableCtcThousand ? variableCtc.variableCtcThousand : '0'))) * 1000).toString());
+  }
+
   const handleExpectedCtc = (value: string, index: number) => {
-    if (index === 0 && value)
+    if (index === 0)
       setExpectedCtc({
-        expectedCtcLakh: value,
+        expectedCtcLakh: value ? value : '0',
         expectedCtcThousand: expectedCtc.expectedCtcThousand,
       });
-    else if (index === 1 && value)
+    else if (index === 1)
       setExpectedCtc({
         expectedCtcLakh: expectedCtc.expectedCtcLakh,
-        expectedCtcThousand: value,
+        expectedCtcThousand: value ? value : '0',
       });
   };
 
   const submitDetails = async () => {
     setLoader(true);
     const profileDetailsMap = buildDetailsPayload();
-    try {
-      const profileDetailsResponse = await updateJobSeekerProfile({
-        profileId: props.profileDataId || userDataState.userData.profileId,
-        profileData: { profileDetailsMap, profileLastCompletedStep: "3" },
-      });
-      console.log(profileDetailsResponse?.data);
-      if (profileDetailsResponse?.data?.success) {
-        dispatchWorkStatus(workStatus);
-        props.setType(SUCCESS_KEY);
-        props.setDataMessage(FORM_SUBMISSION_SUCCESS);
+
+    if (profileDetailsMap.expectedCtc.expectedCtcLakh && profileDetailsMap.expectedCtc.expectedCtcThousand) {
+      try {
+        const profileDetailsResponse = await updateJobSeekerProfile({
+          profileId: props.profileDataId || userDataState.userData.profileId,
+          profileData: { profileDetailsMap, profileLastCompletedStep: "3" },
+        });
+        if (profileDetailsResponse?.data?.success) {
+          dispatchWorkStatus(workStatus);
+          props.setType(SUCCESS_KEY);
+          props.setDataMessage(FORM_SUBMISSION_SUCCESS);
+          props.setOpen(true);
+          props.handleComplete(2);
+          props.handleNext();
+        }
+      } catch (error: any) {
+        console.log(error);
+        props.setType(ERROR_KEY);
+        props.setDataMessage(error?.message);
         props.setOpen(true);
-        props.handleComplete(2);
-        props.handleNext();
       }
-    } catch (error: any) {
-      console.log(error);
-      props.setType(ERROR_KEY);
-      props.setDataMessage(error?.message);
+    } else {
+      props.setType(WARNING_KEY);
+      props.setDataMessage(EXPEXTED_CTC_DET);
       props.setOpen(true);
     }
     setLoader(false);
@@ -171,7 +195,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
       relevantExperience,
       freshGraduate: freshGraduate.toString(),
       workStatus,
-      currentlyWorking: workStatus === WorkStatusArray[0] ? "Yes" : "No" 
+      currentlyWorking: workStatus === WorkStatusArray[0] ? "Yes" : "No"
     };
   };
 
@@ -252,15 +276,15 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   };
 
   const emptyExperienceCTCDetatils = () => {
-     setRelevantExperience({
+    setRelevantExperience({
       relevantExperienceYears: "",
-      relevantExperienceMonths: "" 
-     })
-     setTotalExperience({
+      relevantExperienceMonths: ""
+    })
+    setTotalExperience({
       totalExperienceMonths: "",
       totalExperienceYears: "",
-     })
-     setFixedCtc({
+    })
+    setFixedCtc({
       fixedCtcLakh: "",
       fixedCtcThousand: "",
     });
@@ -290,8 +314,14 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
                   checked={freshGraduate}
                   onChange={(e) => {
                     setFreshGraduate(e?.target?.checked)
-                    if(e.target.checked === true){emptyExperienceCTCDetatils()}
-                    setWorkStatus("Fresh Graduate");
+
+                    if(e.target.checked === true){
+                      emptyExperienceCTCDetatils();
+                      setWorkStatus("Fresh Graduate");
+                    } else {
+                      setWorkStatus("")
+                    }
+
                   }}
                   inputProps={{ "aria-label": "controlled" }}
                 />
@@ -328,17 +358,17 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
                     disabled={!props.hasButtons || freshGraduate}
                     value={freshGraduate ? 'Fresh Graduate' : workStatus}
                     label={WORK_STATUS_TEXT}
-                    onChange={(e) =>{
-                      if(e.target.value !== 'Fresh Graduate'){
-                       setFreshGraduate(false);
+                    onChange={(e) => {
+                      if (e.target.value !== 'Fresh Graduate') {
+                        setFreshGraduate(false);
                       }
-                      else{
+                      else {
                         emptyExperienceCTCDetatils();
                         setFreshGraduate(true);
                       }
                       setWorkStatus(e.target.value)
                     }}
-                    
+
                   >
                     {WorkStatusArray.map((item: string) => (
                       <MenuItem key={item} value={item}>
@@ -376,10 +406,9 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
               </div>
               <div className="inline-div">
                 <TextField
-                  disabled={!props.hasButtons || freshGraduate}
+                  disabled
                   type="text"
                   value={totalCtc}
-                  onChange={(e) => setTotalCtc(e.target.value)}
                   label={TOTAL_CTC_LABEL}
                   placeholder={TCTC_PLACEHOLDER}
                   InputProps={{
@@ -404,6 +433,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
             </div>
             <div className="experience-details-card">
               <InlineInputs
+                required
                 InlineInputsArray={CTCDetails}
                 disabled={!props.hasButtons}
                 setValues={handleExpectedCtc}

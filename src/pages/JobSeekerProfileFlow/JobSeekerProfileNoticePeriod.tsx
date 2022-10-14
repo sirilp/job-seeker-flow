@@ -303,7 +303,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     {JOINING_DATE_TEXT}
                     <span className="asterisk-span"> *</span>
                   </p>
-                  <Calendar setDate={setJoiningDate} status={true} value={joiningDate} />
+                  <Calendar setDate={setJoiningDate} status={true} value={joiningDate} calendarDisabled={!props.hasButtons} />
                 </div>
                 <div className="job-change-field">
                   <p>
@@ -334,7 +334,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     {LWD_TEXT}
                     <span className="asterisk-span"> *</span>
                   </p>
-                  <Calendar setDate={setLastWorkingDate} status={true} value={lastWorkingDate} />
+                  <Calendar setDate={setLastWorkingDate} status={true} value={lastWorkingDate} calendarDisabled={!props.hasButtons}/>
                 </div>
               ) : noticeStatus === NoticeOptions[1] ? (
                 <div>
@@ -522,6 +522,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                   <div>
                     <div className="outline-div">
                       <CurrentOffers
+                        disabled={!props.hasButtons}
                         setOfferData={setOfferData}
                         removeOfferData={removeOfferData}
                         setType={props.setType}

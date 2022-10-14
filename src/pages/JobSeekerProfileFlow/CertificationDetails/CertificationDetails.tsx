@@ -334,6 +334,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                         setDate={(date) => handleIssueDate(date, index)}
                         status={true}
                         value={certificationDetailsForm.values.members[index].issueDate}
+                        calendarDisabled={props.disabled}
                       />
                     </Grid>
                     <Grid
@@ -352,9 +353,9 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                       <Calendar
                         setDate={(date) => handleExpirationDate(date, index)}
                         status={true}
-                        disabled={
+                        calendarDisabled={
                           certificationDetailsForm.values.members[index]
-                            .credentialStatus
+                            .credentialStatus || props.disabled
                         }
                         value={certificationDetailsForm.values.members[index].expirationDate}
                       />

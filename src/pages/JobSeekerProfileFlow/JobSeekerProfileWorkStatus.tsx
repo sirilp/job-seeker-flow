@@ -132,7 +132,12 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
         props.setDataMessage(FORM_SUBMISSION_SUCCESS);
         props.setOpen(true);
         props.handleComplete(3);
-        props.handleNext();
+        // props.handleNext();
+        if(jobStatus === WorkStatusType.FRESHER){
+          props.setActiveStep(5)
+        } else {
+          props.setActiveStep(4);
+        }
       }
     } catch (error: any) {
       console.log(error);

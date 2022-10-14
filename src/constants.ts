@@ -35,8 +35,10 @@ export const COUNTRY_LABEL = "Country";
 export const SNACKBAR_ERROR_MSG =
   "Something went wrong, kindly retry with valid details";
 export const FORM_SUBMISSION_SUCCESS = "Details are successfully submitted";
+export const EXPEXTED_CTC_DET = "Please enter expected CTC";
 export const IMAGE_UPLOAD_ERROR =
   "Something went wrong in image upload, please try again";
+export const FILE_UPLOAD = "Please upload a file"
 export const FORM_INVALID_STATUS =
   "Form is not validated, kindly fill all the required details";
 export const SPECIAL_CHAR_ERR_MSG = "cannot have special characters or numbers";

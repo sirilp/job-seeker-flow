@@ -189,59 +189,65 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
               <>
                 <div className="stepper-container">
                   {JobSeekerReviewArray.map((reviewData, index) => (
-                    <div
-                      className="review-card"
-                      key={index}
-                      style={
-                        currentIndex === index
-                          ? {
-                              height: "auto",
-                              flexDirection: "column",
+                    <>
+                      {userDataState.userData.workStatus === "Fresh Graduate" &&
+                        index !== 4 && (
+                          <div
+                            className="review-card"
+                            key={index}
+                            style={
+                              currentIndex === index
+                                ? {
+                                    height: "auto",
+                                    flexDirection: "column",
+                                  }
+                                : {
+                                    height: "68px",
+                                    flexDirection: "row",
+                                  }
                             }
-                          : {
-                              height: "68px",
-                              flexDirection: "row",
-                            }
-                      }
-                    >
-                      <span className="review-title-text">
-                        {reviewData.label}
-                      </span>
-                      <div>
-                        {reviewData.navigate ? (
-                          <Button
-                            variant="text"
-                            className="review-buttons-color"
-                            onClick={() => props.setActiveStep(index)}
                           >
-                            <img
-                              src="assets/images/Edit.png"
-                              className="review-icons"
-                            />
-                            Edit
-                          </Button>
-                        ) : null}
-                        <IconButton
-                          aria-label="plus"
-                          className="review-buttons-color"
-                          onClick={() => {
-                            if (currentIndex !== index) setCurrentIndex(index);
-                            else setCurrentIndex(-1);
-                          }}
-                        >
-                          {currentIndex !== index ? (
-                            <AddIcon />
-                          ) : (
-                            <RemoveIcon />
-                          )}
-                        </IconButton>
-                      </div>
-                      {currentIndex === index ? (
-                        <div style={{ width: "100%" }}>
-                          {renderCurrentSelection(index + 1)}
-                        </div>
-                      ) : null}
-                    </div>
+                            <span className="review-title-text">
+                              {reviewData.label}
+                            </span>
+                            <div>
+                              {reviewData.navigate ? (
+                                <Button
+                                  variant="text"
+                                  className="review-buttons-color"
+                                  onClick={() => props.setActiveStep(index)}
+                                >
+                                  <img
+                                    src="assets/images/Edit.png"
+                                    className="review-icons"
+                                  />
+                                  Edit
+                                </Button>
+                              ) : null}
+                              <IconButton
+                                aria-label="plus"
+                                className="review-buttons-color"
+                                onClick={() => {
+                                  if (currentIndex !== index)
+                                    setCurrentIndex(index);
+                                  else setCurrentIndex(-1);
+                                }}
+                              >
+                                {currentIndex !== index ? (
+                                  <AddIcon />
+                                ) : (
+                                  <RemoveIcon />
+                                )}
+                              </IconButton>
+                            </div>
+                            {currentIndex === index ? (
+                              <div style={{ width: "100%" }}>
+                                {renderCurrentSelection(index + 1)}
+                              </div>
+                            ) : null}
+                          </div>
+                        )}
+                    </>
                   ))}
                 </div>
                 <div className="review-divider">

@@ -62,7 +62,7 @@ const Calendar = (props) => {
             variant="outlined"
             value={dayValue}
             onChange={handleDayChange}
-            disabled={props.disabled}
+            disabled={props.calendarDisabled}
           />
           <TextField
             className={classes.date}
@@ -71,7 +71,7 @@ const Calendar = (props) => {
             size="small"
             value={monthValue}
             onChange={handleMonthChange}
-            disabled={props.disabled}
+            disabled={props.calendarDisabled}
           />
           <TextField
             className={classes.year}
@@ -80,14 +80,14 @@ const Calendar = (props) => {
             size="small"
             value={yearValue}
             onChange={handleYearChange}
-            disabled={props.disabled}
+            disabled={props.calendarDisabled}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Custom input"
               value={value}
               onChange={handleDatePicker}
-              disabled={props.disabled}
+              disabled={props.calendarDisabled}
               PopperProps={{
                 disablePortal: true,
                 sx: {
@@ -118,6 +118,7 @@ const Calendar = (props) => {
             label="Month"
             size="small"
             value={monthValue}
+            disabled={props.calendarDisabled}
             onChange={handleMonthChange}
           />
           <TextField
@@ -126,6 +127,7 @@ const Calendar = (props) => {
             label="Year"
             size="small"
             value={yearValue}
+            disabled={props.calendarDisabled}
             onChange={handleYearChange}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -134,6 +136,7 @@ const Calendar = (props) => {
               label="Custom input"
               value={value}
               onChange={handleDatePicker}
+              disabled={props.calendarDisabled}
               PopperProps={{
                 disablePortal: true,
                 sx: {
