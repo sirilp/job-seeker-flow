@@ -7,10 +7,19 @@ import { getContestAggregateStatistics } from "../../services/JobSeekerService";
 
 const useStyles = makeStyles({
   graphImg: {
-    position: "absolute",
-    left: "16vw",
+    // position: "absolute",
+
+    // left: "18vw",
     top: 0,
     width: "850px",
+  },
+  leftDiv: {
+    position: "absolute",
+    right: "55vw",
+  },
+  rightDiv: {
+    position: "absolute",
+    left: "55vw",
   },
   leftItem1: {
     borderColor: "#266E88",
@@ -150,7 +159,11 @@ const Graph: FC<any> = (props): ReactElement => {
   return (
     <Box position="relative">
       <Box display="flex" justifyContent={"center"}>
-        <Box display="flex" flexDirection={"column"}>
+        <Box
+          display="flex"
+          flexDirection={"column"}
+          className={classes.leftDiv}
+        >
           <Item className={classes.leftItem1}>
             {contestStatistics?.PROFILE_DUPLICATE?.percentage || "_ _"}
           </Item>
@@ -186,6 +199,7 @@ const Graph: FC<any> = (props): ReactElement => {
           alignItems={"end"}
           display="flex"
           flexDirection={"column"}
+          className={classes.rightDiv}
         >
           <Item className={classes.rightItem1}>
             {contestStatistics?.PROFILE_DUPLICATE?.count || "_ _"}
@@ -201,7 +215,7 @@ const Graph: FC<any> = (props): ReactElement => {
           </Item>
           <Item className={classes.rightItem5}>0</Item>
           <Item className={classes.rightItem6}>
-            {contestStatistics?.PROFILE_DUPLICATE?.count}
+            {contestStatistics?.PROFILE_DUPLICATE?.count || "_ _"}
           </Item>
           <Item className={classes.rightItem7}>0</Item>
           <Item className={classes.rightItem8}>

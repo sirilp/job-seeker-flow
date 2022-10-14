@@ -115,7 +115,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
         });
 
         await Promise.all(
-          uploadFiles.map(async (offer, index) => {
+          uploadFiles.map(async (offer) => {
             const uploadResponse = await UploadFiles(
               uploadPayloadBuild(offer?.letterFiles)
             );
@@ -147,6 +147,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
         profileId: props.profileDataId || userDataState.userData.profileId,
         profileData: { profileNoticePeriodMap, profileLastCompletedStep: "5" },
       });
+      console.log(profileDetailsResponse?.data);
       if (profileDetailsResponse?.data?.success) {
         props.setType(SUCCESS_KEY);
         props.setDataMessage(FORM_SUBMISSION_SUCCESS);

@@ -55,13 +55,13 @@ export const headerCheckboxSelection = function (
 };
 
 export const LISTING_GENERIC_HEADERS = [
-  {
-    headerName: "All",
-    checkboxSelection: checkboxSelection,
-    headerCheckboxSelection: headerCheckboxSelection,
-    maxWidth: 50,
-    floatingFilter: false,
-  },
+  // {
+  //   // headerName: "All",
+  //   // checkboxSelection: checkboxSelection,
+  //   // headerCheckboxSelection: headerCheckboxSelection,
+  //   maxWidth: 50,
+  //   floatingFilter: false,
+  // },
   {
     headerName: "Actions",
 

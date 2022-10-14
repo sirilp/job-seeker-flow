@@ -240,7 +240,7 @@ export const CustomDropDown = (params: any) => {
     } else if (event.target.value == "JOB_SEEKER_CONSENT_FAIL") {
       const response = await jobseekerConsentStatusChangeWorkflow(payLoad);
       if (response) {
-        setOption(Passed);
+        setOption(Failed);
         dispatchNotificationData({
           enable: true,
           type: "success",

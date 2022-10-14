@@ -100,7 +100,9 @@ export const getDuplicationFailedProfiles = async (
       console.log(error);
     });
 };
-export const getDuplicationFailedProfilesAggregate = async (contestId: string) => {
+export const getDuplicationFailedProfilesAggregate = async (
+  contestId: string
+) => {
   return await axios
     .get(
       `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/profile-logs/aggregate/status?filterColumn=contestId&filterValue=${contestId}`,
@@ -236,6 +238,27 @@ export const getJobseekersOnStepCount = async (
   return await axios
     .get(
       `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${contestId}&filters=matchedProfilesList.profileLastCompletedStep:${step}&page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+export const getJobSeekersDetails = async (
+  contestId?: string,
+  profileId?: string
+) => {
+  return await axios
+    .get(
+      `${
+        process.env.REACT_APP_MAIN_SERVER_URL
+      }hiringhood/v1/job-seekers-profiles?${
+        contestId ? "contestId=" + contestId : ""
+      }&filters=${profileId ? "profileId:" + profileId : ""}`,
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,

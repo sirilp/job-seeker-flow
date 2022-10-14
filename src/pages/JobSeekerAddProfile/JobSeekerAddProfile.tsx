@@ -162,7 +162,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "borderRightColor": "#DFE5FF" },
+      cellStyle: { borderRightColor: "#DFE5FF" },
     };
   }, []);
 
@@ -247,7 +247,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
             Enter the Details Manually
           </Typography>
         </div>
-        <div>
+        <div style={{ marginLeft: "1vw" }}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <div className="forms-button-container">
@@ -258,16 +258,20 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
                     onClick={() => clearTable()}
                     // disabled={columnsListOpen}
                   >
-                    <RefreshIcon className="generic-icon" />
+                    <RefreshIcon
+                      sx={{ transform: "rotate(260deg)" }}
+                      className="generic-icon"
+                    />
+                    {"\u00A0"}
+                    {"\u00A0"}
                     Clear Table
                   </Button>
                 </div>
-                <div></div>
               </div>
             </Grid>
           </Grid>
         </div>
-        <div>
+        <div style={{ marginLeft: "2vw" }}>
           <GridItem
             gridRef={gridRef}
             rowData={row}

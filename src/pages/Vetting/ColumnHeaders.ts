@@ -164,7 +164,7 @@ export const LISTING_GENERIC_HEADERS = [
     field: "profileDetailsMap.currentlyWorking",
     hide: false,
     minWidth: 215,
-    filter: "agNumberColumnFilter",
+    filter: "agTextColumnFilter",
     // floatingFilterComponent: ,
     filterParams: {
       buttons: ["apply", "clear"],

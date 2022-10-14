@@ -346,7 +346,7 @@ export const Icons = (params) => {
   );
 };
 
-export const CustomDropDown = (params: any) => {
+export const MainStageDropDown = (params: any) => {
   // console.log("Vetting custom feild", params);
   const Passed = {
     option: "passed",
@@ -416,33 +416,7 @@ export const CustomDropDown = (params: any) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
-  // const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  //   <Tooltip
-  //     {...props}
-  //     placement="right"
-  //     arrow
-  //     classes={{ popper: className, arrow: classes.arrow }}
-  //     // className={classes.arrowStyle}
-  //   />
-  // ))(({ theme }) => ({
-  //   [`& .${tooltipClasses.tooltip}`]: {
-  //     backgroundColor: "#ffffff",
-  //     border: `1px solid ${option.color}`,
-  //     maxWidth: 220,
-  //     fontSize: theme.typography.pxToRem(12),
-  //     borderRadius: "1vw",
-  //   },
-  // }));
-  const handleTooltipClose = () => {
-    setOpen(false);
-  };
 
-  const handleTooltipOpen = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 4000);
-  };
   return (
     <>
       <div>
@@ -451,51 +425,12 @@ export const CustomDropDown = (params: any) => {
           className={classes.dropdown}
           value={option.option}
           onChange={handleChange}
-          disabled
         >
-          <option value="">Null</option>
+          <option value="">NA</option>
           <option value="passed">Passed</option>
           <option value="pending">Pending</option>
           <option value="failed">Failed</option>
         </select>
-      </div>
-      <div className={classes.dropdownContent}>
-        {(() => {
-          if (option.option == "passed") {
-            return (
-              <Tooltip title={option.body} placement="right-start">
-                <IconButton>
-                  <CheckCircleIcon
-                    id={iconId}
-                    sx={{ color: option.color, fontSize: "25px" }}
-                  />
-                </IconButton>
-              </Tooltip>
-            );
-          } else if (option.option == "pending") {
-            return (
-              <Tooltip title={option.body} placement="right-start">
-                <IconButton>
-                  <PauseCircleFilledIcon
-                    id={iconId}
-                    sx={{ color: option.color, fontSize: "25px" }}
-                  />
-                </IconButton>
-              </Tooltip>
-            );
-          } else if (option.option == "failed") {
-            return (
-              <Tooltip title={option.body} placement="right-start">
-                <IconButton>
-                  <ErrorIcon
-                    id={iconId}
-                    sx={{ color: option.color, fontSize: "25px" }}
-                  />
-                </IconButton>
-              </Tooltip>
-            );
-          }
-        })()}
       </div>
     </>
   );

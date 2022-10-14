@@ -32,6 +32,7 @@ const JobSeekerProfileFlow: FC<any> = (props): ReactElement => {
     "Work Status",
     "Notice Period",
     "JD Specific Questions",
+    "Review and Submit",
   ];
 
   const isLastStep = () => {

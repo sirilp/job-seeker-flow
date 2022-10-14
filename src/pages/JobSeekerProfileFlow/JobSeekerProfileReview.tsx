@@ -27,6 +27,7 @@ import ConfirmationModel from "../../components/ConfirmationModal/ConfirmationMo
 import { startJobSeekerWorkflow } from "../../services/JobSeekerService";
 import JobSeekerCompleteProfile from "../JobSeekerCompleteProfile/JobSeekerCompleteProfile";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
+import { updateJobSeekerProfile } from "../../services/FormDataService";
 
 const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
   const [loader, setLoader] = React.useState(false);
@@ -40,6 +41,19 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
   });
   const [submitted, setSubmitted] = useState(false);
   const userDataState = useAppSelector((state) => state.currentUser);
+  const dispatch = useAppDispatch();
+
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
 
   const renderCurrentSelection = (currentSection) => {
     switch (currentSection) {
@@ -130,12 +144,27 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
     };
     const response = await startJobSeekerWorkflow(bodyPayload);
     if (response?.data?.success) {
-      props.setProgressBar(false);
-      setSubmitted(true);
-      setDialogAction({
-        ...dialogAction,
-        isOpen: false,
-      });
+      const bodyPayload = {
+        profileId: userDataState.userData.profileId,
+        profileData: {
+          profileLastCompletedStep: "7",
+        },
+      };
+      const stepUpdateResponse = await updateJobSeekerProfile(bodyPayload);
+      if (stepUpdateResponse?.data?.success) {
+        props.setProgressBar(false);
+        setSubmitted(true);
+        setDialogAction({
+          ...dialogAction,
+          isOpen: false,
+        });
+      } else {
+        dispatchNotificationData({
+          enable: true,
+          type: "error",
+          message: "Something Went Wrong Please Try gain",
+        });
+      }
     }
   };
 
@@ -143,7 +172,7 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
     <>
       {submitted ? (
         <>
-          <JobSeekerCompleteProfile />
+          <JobSeekerCompleteProfile contestId={props.contestId} />
         </>
       ) : (
         <>

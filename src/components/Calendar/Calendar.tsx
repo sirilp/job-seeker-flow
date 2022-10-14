@@ -16,11 +16,11 @@ const Calendar = (props) => {
   const classes = useStyles();
 
   useEffect(() => {
-     if(props.value){
-        const date = new Date(props.value);
-        handleDatePicker(date);
-     }
-  }, [])
+    if (props.value) {
+      const date = new Date(props.value);
+      handleDatePicker(date);
+    }
+  }, []);
 
   const handleDatePicker = (val) => {
     setDayValue(val.getDate());
@@ -106,6 +106,7 @@ const Calendar = (props) => {
                   {InputProps?.endAdornment}
                 </Box>
               )}
+              {...props}
             />
           </LocalizationProvider>
         </div>
@@ -151,6 +152,7 @@ const Calendar = (props) => {
                   {InputProps?.endAdornment}
                 </Box>
               )}
+              {...props}
             />
           </LocalizationProvider>
         </div>

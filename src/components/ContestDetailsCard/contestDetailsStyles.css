@@ -33,6 +33,14 @@
   /* margin-right: 0.78rem; */
 }
 
+.contest-detail-badge-jobSeekerFlow {
+  display: inline;
+  position: unset !important;
+  /* top: 3.875rem;
+  left:20rem; */
+  /* margin-left: 8px; */
+  /* margin-right: 0.78rem; */
+}
 .contest-detail-cash-rewards-container {
   margin-top: 2rem;
   align-self: center;
@@ -90,8 +98,11 @@
 }
 
 .contest-detail-tag-image {
- 
   margin-right: 0.78rem;
+}
+.contest-detail-tag-image-jobSeekerFlow {
+  margin-right: 0.78rem;
+  position: unset !important;
 }
 
 .editcontest-button {

@@ -3,7 +3,7 @@ import {
   HeaderCheckboxSelectionCallbackParams,
 } from "ag-grid-community";
 import {
-  CustomDropDown,
+  MainStageDropDown,
   Icons,
   Interview,
   ResumeUploaded,
@@ -167,7 +167,7 @@ export const LISTING_GENERIC_HEADERS = [
   },
   {
     headerName: "Currently Working",
-    field: "profileNoticePeriodMap.currentlyWorking",
+    field: "profileDetailsMap.currentlyWorking",
     hide: false,
     minWidth: 215,
     filter: "agTextColumnFilter",
@@ -222,6 +222,7 @@ export const LISTING_GENERIC_HEADERS = [
     field: "jobSeekerMainStage",
     hide: false,
     filter: "agTextColumnFilter",
+    cellRenderer: MainStageDropDown,
     filterParams: {
       buttons: ["apply", "clear"],
     },

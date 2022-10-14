@@ -103,10 +103,10 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
             expirationDate: Yup.string(),
           })
         )
-        .required("offr details required")
+        .required("offer details required")
         .min(1, "add at least one offer"),
     }),
-    onSubmit: (values, { setSubmitting }) => {},
+    onSubmit: (values, { setSubmitting }) => { },
     enableReinitialize: true,
   });
 
@@ -150,18 +150,35 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
   };
 
   const handleSaveData = (index) => {
-      if(!certificationDetailsForm.values.members[index].issueDate) {
-        props.setType(WARNING_KEY);
-        props.setDataMessage("Please select issue date");
-        props.setOpen(true);
-    } else if(
-        !certificationDetailsForm.values.members[index].credentialStatus 
-        && !certificationDetailsForm.values.members[index].expirationDate
+    if (!certificationDetailsForm.values.members[index].issueDate) {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please select issue date");
+      props.setOpen(true);
+    } else if (
+      !certificationDetailsForm.values.members[index].credentialStatus
+      && !certificationDetailsForm.values.members[index].expirationDate
     ) {
-        props.setType(WARNING_KEY);
-        props.setDataMessage("Please select expiration date");
-        props.setOpen(true);
-    } else {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please select expiration date");
+      props.setOpen(true);
+    } else if (!certificationDetailsForm.values.members[index].name) {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please enter the certification name");
+      props.setOpen(true);
+    } else if (!certificationDetailsForm.values.members[index].issuingOrganization) {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please enter the issuing organisation's name");
+      props.setOpen(true);
+    } else if (!certificationDetailsForm.values.members[index].credentialId) {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please enter the credentialId");
+      props.setOpen(true);
+    } else if (!certificationDetailsForm.values.members[index].credentialURL) {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please enter the credentialURL");
+      props.setOpen(true);
+    }
+    else {
       certificationDetailsForm.setFieldValue(
         `members[${index}].saveStatus`,
         true
@@ -182,7 +199,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
           <Button
             className="next-button"
             variant="contained"
-            onClick={ () => handleServiceAdd()}
+            onClick={() => handleServiceAdd()}
           >
             <AddIcon className="add-icon" /> {CERTIFICATION_ADD_TEXT}
           </Button>
@@ -226,6 +243,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                         disabled={props.disabled}
                         id={FormAttributes.name.id}
                         placeholder={FormAttributes.name.placeholder}
+                        label={FormAttributes.name.label}
                         className={classes.boxInputField}
                         size="small"
                         name={`members[${index}].name`}
@@ -254,9 +272,8 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                         required
                         disabled={props.disabled}
                         id={FormAttributes.issuingOrganization.id}
-                        placeholder={
-                          FormAttributes.issuingOrganization.placeholder
-                        }
+                        placeholder={FormAttributes.issuingOrganization.placeholder}
+                        label={FormAttributes.issuingOrganization.label}
                         className={classes.boxInputField}
                         size="small"
                         name={`members[${index}].issuingOrganization`}
@@ -359,6 +376,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                         disabled={props.disabled}
                         id={FormAttributes.credentialId.id}
                         placeholder={FormAttributes.credentialId.placeholder}
+                        label={FormAttributes.credentialId.label}
                         className={classes.boxInputField}
                         size="small"
                         name={`members[${index}].credentialId`}
@@ -387,6 +405,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                       <TextField
                         id={FormAttributes.credentialURL.id}
                         placeholder={FormAttributes.credentialURL.placeholder}
+                        label={FormAttributes.credentialURL.label}
                         required
                         disabled={props.disabled}
                         size="small"

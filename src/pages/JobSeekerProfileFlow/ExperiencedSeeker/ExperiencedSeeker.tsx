@@ -37,6 +37,7 @@ import "../JobSeekerProfileFlow.css";
 import Calendar from "../../../components/Calendar/Calendar";
 import { useFormik, getIn } from "formik";
 import * as Yup from "yup";
+import moment from "moment";
 
 const ExperiencedSeeker: FC<any> = React.forwardRef(
   (props, ref): ReactElement => {
@@ -355,6 +356,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                     ? props?.experiencedPrefillData?.relievingDate
                     : props?.experiencedPrefillData?.joiningDate
                 }
+                minDate={moment()}
               />
             </Grid>
           </Grid>

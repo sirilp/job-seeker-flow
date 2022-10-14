@@ -43,7 +43,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
 
   const [serviceList, setServiceList] = React.useState<any>([]);
   const [serviceListFiles, setServiceListFiles] = React.useState<any>([]);
-  const [prefillOfferLetters, setPrefillOfferLetters] = React.useState<any>(props?.prefilData?.map((files) => files.letterFiles ) || []);
+  const [prefillOfferLetters, setPrefillOfferLetters] = React.useState<any>(props?.prefilData?.map((files) => files.letterFiles) || []);
   const [fixedCtc, setFixedCtc] = React.useState<{
     fixedCtcLakh: string;
     fixedCtcThousand: string;
@@ -52,6 +52,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
     variableCtcLakh: string;
     variableCtcThousand: string;
   }>({ variableCtcLakh: "", variableCtcThousand: "" });
+  const [totalCtc, setTotalCtc] = React.useState<string>("");
 
   const handleServiceRemove = (index: any) => {
     const list = [...serviceList];
@@ -67,6 +68,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
     fixedCtc.fixedCtcThousand = "";
     variableCtc.variableCtcLakh = "";
     variableCtc.variableCtcThousand = "";
+    setTotalCtc("");
   };
 
   const handleDeleteData = (index) => {
@@ -86,11 +88,14 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
     fieldDisabled: false,
     fixedCtc: {},
     variableCtc: {},
+    totalCtc: "",
   };
 
   const currentOfferSubmit = (index: any) => {
     offerAddForm.values.members[index].fixedCtc = fixedCtc;
     offerAddForm.values.members[index].variableCtc = variableCtc;
+    handleTotalCtc(index);
+
     if (
       !offerAddForm.values.members[index].joiningDate ||
       !offerAddForm.values.members[index].joiningLocation ||
@@ -117,6 +122,8 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
       offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
       offerAddForm.setFieldValue(`members[${index}].fieldDisabled`, true);
       props.setOfferData(offerAddForm.values.members);
+
+      console.log(offerAddForm.values);
     }
   };
   const teamArray: any[] = [];
@@ -156,7 +163,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
         .required("offr details required")
         .min(1, "add at least one offer"),
     }),
-    onSubmit: (values, { setSubmitting }) => {},
+    onSubmit: (values, { setSubmitting }) => { },
     enableReinitialize: true,
   });
 
@@ -186,19 +193,32 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
       });
   };
 
+  const handleTotalCtc = (index: any) => {
+    offerAddForm.values.members[index].totalCtc = (
+      (parseInt(offerAddForm.values.members[index].fixedCtc.fixedCtcLakh)
+        + parseInt(offerAddForm.values.members[index].variableCtc.variableCtcLakh))
+      * 100000
+      + (parseInt(offerAddForm.values.members[index].fixedCtc.fixedCtcThousand)
+        + parseInt(offerAddForm.values.members[index].variableCtc.variableCtcThousand))
+      * 1000).toString();
+  }
+
   const handleServiceAdd = (prefillValue?: any) => {
     offerAddForm.setValues((prevValues) => ({
       members: [...prevValues.members, { ...initialValuesForForm, ...prefillValue }],
     }));
     setServiceList((prevState: any) => [...prevState, { ...initialValuesForForm, ...prefillValue }]);
+
+    setTotalCtc(((parseInt(prefillValue.fixedCtc.fixedCtcLakh) + parseInt(prefillValue.variableCtc.variableCtcLakh)) * 100000 + (parseInt(prefillValue.fixedCtc.fixedCtcThousand) + parseInt(prefillValue.variableCtc.variableCtcThousand)) * 1000).toString());
+    console.log(totalCtc);
   };
 
   const AddMultipleService = (prefillArray?: any[]) => {
-    if(prefillArray) {
+    if (prefillArray) {
       offerAddForm.setValues((prevValues) => ({
         members: [...prefillArray],
       }));
-      setServiceList((prevState: any) => [...prefillArray] );
+      setServiceList((prevState: any) => [...prefillArray]);
     }
   };
 
@@ -234,7 +254,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
         <Button
           className="next-button stack-button"
           variant="contained"
-          onClick={ () => handleServiceAdd()}
+          onClick={() => handleServiceAdd()}
         >
           <AddIcon className="add-icon" /> {OFFER_ADD_TEXT}
         </Button>
@@ -316,6 +336,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                       required
                       id={FormAttributes.joiningLocation.id}
                       placeholder={FormAttributes.joiningLocation.placeholder}
+                      label={FormAttributes.joiningLocation.label}
                       className={classes.boxInputField}
                       size="small"
                       name={`members[${index}].joiningLocation`}
@@ -346,6 +367,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                       required
                       id={FormAttributes.employerName.id}
                       placeholder={FormAttributes.employerName.placeholder}
+                      label={FormAttributes.employerName.label}
                       className={classes.boxInputField}
                       size="small"
                       name={`members[${index}].employerName`}
@@ -375,6 +397,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                       }
                       id={FormAttributes.designation.id}
                       placeholder={FormAttributes.designation.placeholder}
+                      label={FormAttributes.employerName.label}
                       required
                       size="small"
                       className={classes.boxInputField}
@@ -418,10 +441,9 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                       </div>
                       <div className="inline-div">
                         <TextField
-                          disabled={props.disabled}
+                          disabled
                           type="text"
                           label={TOTAL_CTC_LABEL}
-                          onChange={(e) => console.log("val ", e.target.value)}
                           placeholder={TCTC_PLACEHOLDER}
                           InputProps={{
                             inputProps: {
@@ -429,6 +451,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                             },
                           }}
                           size="small"
+                          value={offerAddForm.values.members[index].totalCtc}
                         />
                         <div className="tctc-text">
                           <span>{TCTC_SUB_TEXT}</span>
@@ -451,7 +474,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         data={index}
                       />
                     )}
-                    {serviceListFiles[index] && serviceListFiles?.length > 0 && serviceListFiles[index]?.length > 0  ? (
+                    {serviceListFiles[index] && serviceListFiles?.length > 0 && serviceListFiles[index]?.length > 0 ? (
                       <Box>
                         <Button className="next-button" variant="contained">
                           {serviceListFiles[index][0]?.name}
@@ -474,32 +497,32 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                         </Button>
                       </Box>
                     ) : null}
-  
-                      {(!serviceListFiles[index] && prefillOfferLetters?.length > 0 && prefillOfferLetters[index]?.length > 0) ? (
-                           <Box>
-                           <Button className="next-button" variant="contained">
-                             {prefillOfferLetters[index][0].path}
-                           </Button>
-                           <Button
-                             type="button"
-                             onClick={() =>{
-                              const letter = prefillOfferLetters
-                              letter.splice(index,1);
-                              console.log(letter)
-                              setPrefillOfferLetters([...letter])
-                             }}
-                             className="remove-btn"
-                           >
-                             <DeleteIcon
-                               color={
-                                 !offerAddForm.values.members[index].saveStatus
-                                   ? ERROR_KEY
-                                   : DISABLED_KEY
-                               }
-                             />
-                           </Button>
-                         </Box>
-                      ) : null}
+
+                    {(!serviceListFiles[index] && prefillOfferLetters?.length > 0 && prefillOfferLetters[index]?.length > 0) ? (
+                      <Box>
+                        <Button className="next-button" variant="contained">
+                          {prefillOfferLetters[index][0].path}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            const letter = prefillOfferLetters
+                            letter.splice(index, 1);
+                            console.log(letter)
+                            setPrefillOfferLetters([...letter])
+                          }}
+                          className="remove-btn"
+                        >
+                          <DeleteIcon
+                            color={
+                              !offerAddForm.values.members[index].saveStatus
+                                ? ERROR_KEY
+                                : DISABLED_KEY
+                            }
+                          />
+                        </Button>
+                      </Box>
+                    ) : null}
                   </Grid>
                 </Grid>
                 {!props.disabled ? (

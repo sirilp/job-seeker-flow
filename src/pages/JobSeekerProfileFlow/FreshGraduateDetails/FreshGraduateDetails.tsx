@@ -41,13 +41,13 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
       validationSchema: Yup.object().shape({
         instituteName: Yup.string()
           .required("Please add Institute Name")
-          .min(1),
+          .min(3),
         instituteCity: Yup.string()
           .required("Please add Institute City")
-          .min(1),
+          .min(3),
         instituteCountry: Yup.string()
           .required("Please add Institute Country")
-          .min(1),
+          .min(3),
         collegeEndDate: Yup.string()
           .required("Please add Institute End Date")
           .min(1),
@@ -55,7 +55,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
           .required("Please add Institute Start Date")
           .min(1),
       }),
-      onSubmit: (values, { setSubmitting }) => {},
+      onSubmit: (values, { setSubmitting }) => { },
       enableReinitialize: true,
     });
 
@@ -72,6 +72,33 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
        return freshGraduateForm.values;
       },
     }));
+
+    const getError = (name: string) => {
+      const error = getIn(freshGraduateForm.errors, name);
+      const touch = getIn(freshGraduateForm.touched, name);
+      return touch && error ? error : null;
+    };
+
+    const handleSubmit = () => {
+      if (!validateFreshGraduateDetails()) {
+        props.setParentData(freshGraduateForm.initialValues);
+        props.setType(WARNING_KEY);
+        props.setDataMessage("Please enter all experience details");
+        props.setOpen(true);
+      } else props.setParentData(freshGraduateForm.values);
+    };
+
+    const validateFreshGraduateDetails = () => {
+      if (
+        !freshGraduateForm.values.instituteName ||
+        !freshGraduateForm.values.instituteCity ||
+        !freshGraduateForm.values.instituteCountry ||
+        !freshGraduateForm.values.collegeEndDate ||
+        !freshGraduateForm.values.collegeStartDate
+      )
+        return false;
+      else return true;
+    };
 
     useEffect(() => {
       if (props.fresherPrefillData) {
@@ -118,6 +145,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               <div>
                 <p className="institute-field">{INSTITUTE_NAME_TEXT}</p>
                 <TextField
+                  required
                   disabled={props.disabled}
                   label={COLLEGE_NAME_LABEL}
                   className={classes.boxInputField}
@@ -126,6 +154,8 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
                   onBlur={freshGraduateForm.handleBlur}
                   onChange={freshGraduateForm.handleChange}
                   value={freshGraduateForm.values.instituteName}
+                  error={getError(`instituteName`)}
+                  helperText={getError(`instituteName`)}
                 />
               </div>
             </Grid>
@@ -140,6 +170,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               <p className="institute-field">{INSTITUTE_LOCATION_TEXT}</p>
               <Stack direction="row" spacing={3}>
                 <TextField
+                  required
                   disabled={props.disabled}
                   label={CITY_LABEL}
                   className={classes.inputField}
@@ -148,8 +179,11 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
                   onBlur={freshGraduateForm.handleBlur}
                   onChange={freshGraduateForm.handleChange}
                   value={freshGraduateForm.values.instituteCity}
+                  error={getError(`instituteCity`)}
+                  helperText={getError(`instituteCity`)}
                 />
                 <TextField
+                  required
                   disabled={props.disabled}
                   label={COUNTRY_LABEL}
                   className={classes.inputField}
@@ -158,6 +192,8 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
                   onBlur={freshGraduateForm.handleBlur}
                   onChange={freshGraduateForm.handleChange}
                   value={freshGraduateForm.values.instituteCountry}
+                  error={getError(`instituteCountry`)}
+                  helperText={getError(`instituteCountry`)}
                 />
               </Stack>
             </Grid>
@@ -181,7 +217,7 @@ const FreshGraduateDetails: FC<any> = React.forwardRef(
               className="add-team-grid"
             >
               <p className="institute-field">{COLLEGE_END_TEXT}</p>
-              <Calendar setDate={handleEndDate} status={false}  value={props?.fresherPrefillData?.collegeEndDate}/>
+              <Calendar setDate={handleEndDate} status={false} value={props?.fresherPrefillData?.collegeEndDate} />
             </Grid>
           </Grid>
         </div>

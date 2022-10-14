@@ -1,13 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Graph from "../../components/AnalyticsGraph/Graph";
 import JobSeekerProfileCard from "../../components/JobSeekerProfile/JobSeekerProfileCard";
 import TabWrapper, { TabPanel } from "../../components/TabWrapper/TabWrapper";
 
 import { Box, Typography } from "@mui/material";
-import { JOB_SEEKER_COMLETE_PROFILE_TEXT } from "../../constants";
+import { ERROR_KEY, JOB_SEEKER_COMLETE_PROFILE_TEXT } from "../../constants";
+import { getJobSeekerProfile } from "../../services/FormDataService";
+import { getJobSeekersDetails } from "../../services/JobSeekerService";
+import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
+import moment from "moment";
 
 const JobSeekerCompleteProfile = (props) => {
   const [activeTab, setActiveTab] = useState(0);
+  const [loader, setLoader] = React.useState(false);
+  const [fullName, setFullName] = useState("");
+  const [dob, setDob] = useState("");
+
+  const userDataState = useAppSelector((state) => state.currentUser);
+
+  const callPrefillData = async () => {
+    try {
+      setLoader(true);
+      const profileDataFetched = await getJobSeekerProfile(
+        props.profileDataId || userDataState.userData.profileId
+      );
+      console.log(profileDataFetched);
+
+      if (profileDataFetched?.data?.data) {
+        setFullName(
+          `${profileDataFetched?.data?.data.firstName} ${profileDataFetched?.data?.data.lastName}`
+        );
+      }
+    } catch (error: any) {
+      console.log(error);
+      props.setType(ERROR_KEY);
+      props.setDataMessage("Something went wrong");
+      props.setOpen(true);
+    }
+    try {
+      setLoader(true);
+      const profileDataFetched = await getJobSeekersDetails(
+        "",
+        props.profileDataId || userDataState.userData.profileId
+      );
+      console.log(profileDataFetched);
+
+      const date =
+        profileDataFetched?.data.data[0].matchedProfileLogsList[0].dateOfBirth;
+      setDob(moment(date).utc().format("DD-MM-YYYY"));
+      console.log(dob);
+
+      console.log(profileDataFetched?.data?.[0]);
+    } catch (error: any) {
+      console.log(error);
+      props.setType(ERROR_KEY);
+      props.setDataMessage("Something went wrong");
+      props.setOpen(true);
+    }
+    setLoader(false);
+  };
+
+  useEffect(() => {
+    callPrefillData();
+  }, []);
+
+  // const patchProfileDetails = (patchData: any) => {
+  //   // setDob(moment().utc().format('YYYY-MM-DD'))
+  // };
 
   const jobSeekerTabs = [
     {
@@ -16,12 +75,12 @@ const JobSeekerCompleteProfile = (props) => {
       component: <div>{""}</div>,
     },
     {
-      title: "Full Name : Sai Anvesh",
+      title: `Full Name : ${fullName}`,
       index: 1,
       component: <div>{""}</div>,
     },
     {
-      title: "DOB : 19/01/1991 ",
+      title: `DOB : ${dob} `,
       index: 2,
       component: <div>{""}</div>,
     },

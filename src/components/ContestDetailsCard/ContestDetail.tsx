@@ -34,9 +34,9 @@ const ContestDetail: React.FC<Props> = (props) => {
               <img
                 src={getImageForBadge(contestDetails?.badge)}
                 alt="Badge"
-                className="contest-detail-badge"
-                width="85vw"
-                height="85vw"
+                className="contest-detail-badge-jobSeekerFlow"
+                width="90vw"
+                height="90vw"
               />
             )}
           </div>

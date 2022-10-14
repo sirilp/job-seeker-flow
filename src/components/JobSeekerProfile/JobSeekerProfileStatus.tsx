@@ -146,7 +146,7 @@ const JobSeekerProfileStatus: React.FC<Props> = (props) => {
               <img
                 src={getImageForTag(contestDetails?.tag)}
                 alt="tag"
-                className="contest-detail-tag-image"
+                className="contest-detail-tag-image-jobSeekerFlow"
               />
             )}
           </div>

@@ -477,7 +477,7 @@ export const PDCStatusCheckButton = (params: any) => {
     }
   }, []);
   useEffect(() => {
-    if (params.getValue() == "0") {
+    if (params.getValue() === "0") {
       setResult({
         result: "",
         color: "",
@@ -552,9 +552,10 @@ export const PDCStatusCheckButton = (params: any) => {
 
 export const CustomDOBInputBox = (params: any) => {
   const [date, setDate] = React.useState(
-    params.getValue() == ""
-      ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-      : params.getValue()
+    params.getValue()
+    // params.getValue() == ""
+    //   ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+    //   : params.getValue()
   );
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const handleChange = (newValue: any) => {
@@ -572,7 +573,7 @@ export const CustomDOBInputBox = (params: any) => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="Custom input"
-        views={["year", "month", "day"]}
+        // views={["year", "month", "day"]}
         value={date}
         inputFormat="DD/MM/YYYY"
         onChange={(newValue) => {
@@ -758,6 +759,7 @@ export const FDCStatusCheckButton = (params: any) => {
             body: response?.data.message,
           });
           setOpen(true);
+
           setTimeout(() => {
             setOpen(false);
           }, 4000);
@@ -769,7 +771,7 @@ export const FDCStatusCheckButton = (params: any) => {
         } else {
           setResult({
             ...DUPLICATION_FAIL,
-            title: "Final Duplication Check failed, ",
+            title: "Final Duplication Check Failed, ",
             body: response?.data.message,
           });
           setOpen(true);
@@ -781,10 +783,11 @@ export const FDCStatusCheckButton = (params: any) => {
       } else if (response?.response?.status === 500) {
         setResult({
           ...DUPLICATION_FAIL,
-          title: "Final Duplication Check failed, ",
+          title: "Final Duplication Check Failed, ",
           body: `500 ${response?.response?.data?.error} ${response?.response?.data?.message}`,
         });
         setOpen(true);
+
         setTimeout(() => {
           setOpen(false);
         }, 4000);
@@ -792,7 +795,7 @@ export const FDCStatusCheckButton = (params: any) => {
       } else {
         setResult({
           ...DUPLICATION_FAIL,
-          title: "Final Duplication Check failed, ",
+          title: "Final Duplication Check Failed, ",
           body: response?.response?.data.message,
         });
         setOpen(true);
@@ -837,8 +840,9 @@ export const FDCStatusCheckButton = (params: any) => {
       });
     }
   }, []);
+
   useEffect(() => {
-    if (params.getValue() == "0") {
+    if (params.getValue() === "0") {
       setResult({
         result: "",
         color: "",
