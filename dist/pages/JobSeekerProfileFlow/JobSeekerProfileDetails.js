@@ -54,7 +54,7 @@ import "./JobSeekerProfileFlow.css";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
 import { getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
-import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, } from "../../constants";
+import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, EXPEXTED_CTC_DET, WARNING_KEY, } from "../../constants";
 var JobSeekerProfileDetails = function (props) {
     var dispatch = useAppDispatch();
     var userDataState = useAppSelector(function (state) { return state.currentUser; });
@@ -92,39 +92,53 @@ var JobSeekerProfileDetails = function (props) {
             });
     };
     var handleFixedCtc = function (value, index) {
-        if (index === 0 && value)
+        if (index === 0) {
             setFixedCtc({
                 fixedCtcLakh: value,
                 fixedCtcThousand: fixedCtc.fixedCtcThousand,
             });
-        else if (index === 1 && value)
+            handleTotalCtc(value ? value : '0', '', '', '');
+        }
+        else if (index === 1) {
             setFixedCtc({
                 fixedCtcLakh: fixedCtc.fixedCtcLakh,
                 fixedCtcThousand: value,
             });
+            handleTotalCtc('', value ? value : '0', '', '');
+        }
     };
     var handleVariableCtc = function (value, index) {
-        if (index === 0 && value)
+        if (index === 0) {
             setVariableCtc({
                 variableCtcLakh: value,
                 variableCtcThousand: variableCtc.variableCtcThousand,
             });
-        else if (index === 1 && value)
+            handleTotalCtc('', '', value ? value : '0', '');
+        }
+        else if (index === 1) {
             setVariableCtc({
                 variableCtcLakh: variableCtc.variableCtcLakh,
                 variableCtcThousand: value,
             });
+            handleTotalCtc('', '', '', value ? value : '0');
+        }
+    };
+    var handleTotalCtc = function (fL, fT, vL, vT) {
+        setTotalCtc(((parseInt(fL ? fL : (fixedCtc.fixedCtcLakh ? fixedCtc.fixedCtcLakh : '0')) +
+            parseInt(vL ? vL : (variableCtc.variableCtcLakh ? variableCtc.variableCtcLakh : '0'))) * 100000 +
+            (parseInt(fT ? fT : (fixedCtc.fixedCtcThousand ? fixedCtc.fixedCtcThousand : '0'))
+                + parseInt(vT ? vT : (variableCtc.variableCtcThousand ? variableCtc.variableCtcThousand : '0'))) * 1000).toString());
     };
     var handleExpectedCtc = function (value, index) {
-        if (index === 0 && value)
+        if (index === 0)
             setExpectedCtc({
-                expectedCtcLakh: value,
+                expectedCtcLakh: value ? value : '0',
                 expectedCtcThousand: expectedCtc.expectedCtcThousand,
             });
-        else if (index === 1 && value)
+        else if (index === 1)
             setExpectedCtc({
                 expectedCtcLakh: expectedCtc.expectedCtcLakh,
-                expectedCtcThousand: value,
+                expectedCtcThousand: value ? value : '0',
             });
     };
     var submitDetails = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -135,6 +149,7 @@ var JobSeekerProfileDetails = function (props) {
                 case 0:
                     setLoader(true);
                     profileDetailsMap = buildDetailsPayload();
+                    if (!(profileDetailsMap.expectedCtc.expectedCtcLakh && profileDetailsMap.expectedCtc.expectedCtcThousand)) return [3 /*break*/, 5];
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -144,7 +159,6 @@ var JobSeekerProfileDetails = function (props) {
                         })];
                 case 2:
                     profileDetailsResponse = _b.sent();
-                    console.log(profileDetailsResponse === null || profileDetailsResponse === void 0 ? void 0 : profileDetailsResponse.data);
                     if ((_a = profileDetailsResponse === null || profileDetailsResponse === void 0 ? void 0 : profileDetailsResponse.data) === null || _a === void 0 ? void 0 : _a.success) {
                         dispatchWorkStatus(workStatus);
                         props.setType(SUCCESS_KEY);
@@ -161,7 +175,13 @@ var JobSeekerProfileDetails = function (props) {
                     props.setDataMessage(error_1 === null || error_1 === void 0 ? void 0 : error_1.message);
                     props.setOpen(true);
                     return [3 /*break*/, 4];
-                case 4:
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    props.setType(WARNING_KEY);
+                    props.setDataMessage(EXPEXTED_CTC_DET);
+                    props.setOpen(true);
+                    _b.label = 6;
+                case 6:
                     setLoader(false);
                     return [2 /*return*/];
             }
@@ -281,8 +301,11 @@ var JobSeekerProfileDetails = function (props) {
                                                 setFreshGraduate((_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.checked);
                                                 if (e.target.checked === true) {
                                                     emptyExperienceCTCDetatils();
+                                                    setWorkStatus("Fresh Graduate");
                                                 }
-                                                setWorkStatus("Fresh Graduate");
+                                                else {
+                                                    setWorkStatus("");
+                                                }
                                             }, inputProps: { "aria-label": "controlled" } })] })] })), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, disabled: !props.hasButtons || freshGraduate, setValues: handleTotalExperience, value: totalExperience }), _jsx(InlineInputs, { InlineInputsArray: YearMonthDetails, InlineInputTitle: RELEVANT_EXP_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleRelevantExperience, value: relevantExperience })] })), _jsx("div", __assign({ className: "generic-container" }, { children: _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", WORK_STATUS_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) }), _jsx("div", __assign({ className: "work-status-select" }, { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ id: "demo-simple-select-helper-label" }, { children: WORK_STATUS_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons || freshGraduate, value: freshGraduate ? 'Fresh Graduate' : workStatus, label: WORK_STATUS_TEXT, onChange: function (e) {
                                                 if (e.target.value !== 'Fresh Graduate') {
                                                     setFreshGraduate(false);
@@ -292,10 +315,10 @@ var JobSeekerProfileDetails = function (props) {
                                                     setFreshGraduate(true);
                                                 }
                                                 setWorkStatus(e.target.value);
-                                            } }, { children: WorkStatusArray.map(function (item) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item)); }) }))] })) }))] })) })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "ctc-details-text" }, { children: [" ", CTC_DETAIL_TEXT] })) }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: FIXED_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleFixedCtc, value: fixedCtc }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: VARIABLE_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleVariableCtc, value: variableCtc }), _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("div", { children: _jsx("p", { children: TOTAL_CTC_TEXT }) }) })), _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx(TextField, { disabled: !props.hasButtons || freshGraduate, type: "text", value: totalCtc, onChange: function (e) { return setTotalCtc(e.target.value); }, label: TOTAL_CTC_LABEL, placeholder: TCTC_PLACEHOLDER, InputProps: {
+                                            } }, { children: WorkStatusArray.map(function (item) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item)); }) }))] })) }))] })) })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", { children: _jsxs("p", __assign({ className: "ctc-details-text" }, { children: [" ", CTC_DETAIL_TEXT] })) }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: FIXED_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleFixedCtc, value: fixedCtc }), _jsx(InlineInputs, { InlineInputsArray: CTCDetails, InlineInputTitle: VARIABLE_CTC_TEXT, disabled: !props.hasButtons || freshGraduate, setValues: handleVariableCtc, value: variableCtc }), _jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("div", { children: _jsx("p", { children: TOTAL_CTC_TEXT }) }) })), _jsxs("div", __assign({ className: "inline-div" }, { children: [_jsx(TextField, { disabled: true, type: "text", value: totalCtc, label: TOTAL_CTC_LABEL, placeholder: TCTC_PLACEHOLDER, InputProps: {
                                                 inputProps: {
                                                     maxLength: 12,
                                                 },
-                                            }, size: "small" }), _jsx("div", __assign({ className: "tctc-text" }, { children: _jsx("span", { children: TCTC_SUB_TEXT }) }))] }))] })] })), _jsxs("div", __assign({ className: "generic-container" }, { children: [_jsx("div", __assign({ className: "expected-ctc" }, { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", EXPECTED_CTC_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) })), _jsx("div", __assign({ className: "experience-details-card" }, { children: _jsx(InlineInputs, { InlineInputsArray: CTCDetails, disabled: !props.hasButtons, setValues: handleExpectedCtc, value: expectedCtc }) }))] })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitDetails, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
+                                            }, size: "small" }), _jsx("div", __assign({ className: "tctc-text" }, { children: _jsx("span", { children: TCTC_SUB_TEXT }) }))] }))] })] })), _jsxs("div", __assign({ className: "generic-container" }, { children: [_jsx("div", __assign({ className: "expected-ctc" }, { children: _jsxs("p", __assign({ className: "step-content-title-text" }, { children: [" ", EXPECTED_CTC_TEXT, " ", _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })) })), _jsx("div", __assign({ className: "experience-details-card" }, { children: _jsx(InlineInputs, { required: true, InlineInputsArray: CTCDetails, disabled: !props.hasButtons, setValues: handleExpectedCtc, value: expectedCtc }) }))] })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitDetails, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
 };
 export default JobSeekerProfileDetails;

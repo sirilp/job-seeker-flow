@@ -1,4 +1,4 @@
-import { Icons, Interview, ResumeUploaded, ViewAssessments, } from "./CustomFields";
+import { MainStageDropDown, Icons, Interview, ResumeUploaded, ViewAssessments, } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 export var dateFilterParams = {
     comparator: function (filterLocalDateAtMidnight, cellValue) {
@@ -147,7 +147,7 @@ export var LISTING_GENERIC_HEADERS = [
     },
     {
         headerName: "Currently Working",
-        field: "profileNoticePeriodMap.currentlyWorking",
+        field: "profileDetailsMap.currentlyWorking",
         hide: false,
         minWidth: 215,
         filter: "agTextColumnFilter",
@@ -202,6 +202,7 @@ export var LISTING_GENERIC_HEADERS = [
         field: "jobSeekerMainStage",
         hide: false,
         filter: "agTextColumnFilter",
+        cellRenderer: MainStageDropDown,
         filterParams: {
             buttons: ["apply", "clear"],
         },

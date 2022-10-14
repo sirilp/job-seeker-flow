@@ -27,13 +27,13 @@ export var headerCheckboxSelection = function (params) {
     return params.columnApi.getRowGroupColumns().length === 0;
 };
 export var LISTING_GENERIC_HEADERS = [
-    {
-        headerName: "All",
-        checkboxSelection: checkboxSelection,
-        headerCheckboxSelection: headerCheckboxSelection,
-        maxWidth: 50,
-        floatingFilter: false,
-    },
+    // {
+    //   // headerName: "All",
+    //   // checkboxSelection: checkboxSelection,
+    //   // headerCheckboxSelection: headerCheckboxSelection,
+    //   maxWidth: 50,
+    //   floatingFilter: false,
+    // },
     {
         headerName: "Actions",
         floatingFilter: false,

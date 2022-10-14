@@ -410,7 +410,7 @@ export var PDCStatusCheckButton = function (params) {
         }
     }, []);
     useEffect(function () {
-        if (params.getValue() == "0") {
+        if (params.getValue() === "0") {
             setResult({
                 result: "",
                 color: "",
@@ -435,9 +435,11 @@ export var PDCStatusCheckButton = function (params) {
                         })() })) })) }))] }));
 };
 export var CustomDOBInputBox = function (params) {
-    var _a = React.useState(params.getValue() == ""
-        ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-        : params.getValue()), date = _a[0], setDate = _a[1];
+    var _a = React.useState(params.getValue()
+    // params.getValue() == ""
+    //   ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+    //   : params.getValue()
+    ), date = _a[0], setDate = _a[1];
     var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var handleChange = function (newValue) {
         if (newValue != null) {
@@ -449,7 +451,9 @@ export var CustomDOBInputBox = function (params) {
             params.setValue("".concat(dd, "/").concat(mm, "/").concat(yy));
         }
     };
-    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", views: ["year", "month", "day"], value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
+    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", 
+            // views={["year", "month", "day"]}
+            value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
                 handleChange(newValue);
             }, maxDate: moment().subtract(18, "year"), renderInput: function (_a) {
                 var inputRef = _a.inputRef, inputProps = _a.inputProps, InputProps = _a.InputProps;
@@ -610,7 +614,7 @@ export var FDCStatusCheckButton = function (params) {
                             sessionStorage.setItem("row".concat(params.rowIndex), JSON.stringify(params.data));
                         }
                         else {
-                            setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Duplication Check failed, ", body: response === null || response === void 0 ? void 0 : response.data.message }));
+                            setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Duplication Check Failed, ", body: response === null || response === void 0 ? void 0 : response.data.message }));
                             setOpen(true);
                             setTimeout(function () {
                                 setOpen(false);
@@ -619,7 +623,7 @@ export var FDCStatusCheckButton = function (params) {
                         }
                     }
                     else if (((_a = response === null || response === void 0 ? void 0 : response.response) === null || _a === void 0 ? void 0 : _a.status) === 500) {
-                        setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Duplication Check failed, ", body: "500 ".concat((_c = (_b = response === null || response === void 0 ? void 0 : response.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.error, " ").concat((_e = (_d = response === null || response === void 0 ? void 0 : response.response) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.message) }));
+                        setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Duplication Check Failed, ", body: "500 ".concat((_c = (_b = response === null || response === void 0 ? void 0 : response.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.error, " ").concat((_e = (_d = response === null || response === void 0 ? void 0 : response.response) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.message) }));
                         setOpen(true);
                         setTimeout(function () {
                             setOpen(false);
@@ -627,7 +631,7 @@ export var FDCStatusCheckButton = function (params) {
                         params.setValue(false);
                     }
                     else {
-                        setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Duplication Check failed, ", body: (_f = response === null || response === void 0 ? void 0 : response.response) === null || _f === void 0 ? void 0 : _f.data.message }));
+                        setResult(__assign(__assign({}, DUPLICATION_FAIL), { title: "Final Duplication Check Failed, ", body: (_f = response === null || response === void 0 ? void 0 : response.response) === null || _f === void 0 ? void 0 : _f.data.message }));
                         setOpen(true);
                         setTimeout(function () {
                             setOpen(false);
@@ -665,7 +669,7 @@ export var FDCStatusCheckButton = function (params) {
         }
     }, []);
     useEffect(function () {
-        if (params.getValue() == "0") {
+        if (params.getValue() === "0") {
             setResult({
                 result: "",
                 color: "",

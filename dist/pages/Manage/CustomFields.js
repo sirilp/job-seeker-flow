@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Box, Tooltip, IconButton, Drawer, Grid, Card, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, FormGroup, FormControlLabel, } from "@mui/material";
+import { Typography, Button, Box, IconButton, Drawer, Grid, Card, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, FormGroup, FormControlLabel, } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -55,9 +55,6 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import LocalPhoneRoundedIcon from "@mui/icons-material/LocalPhoneRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import DehazeIcon from "@mui/icons-material/Dehaze";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ErrorIcon from "@mui/icons-material/Error";
-import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { openFile } from "../../services/DocumentService";
 import MessageBox from "../Broadcast/MessageBox";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -336,7 +333,7 @@ export var Icons = function (params) {
     };
     return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsxs(Box, __assign({ className: classes.leftDrawerBox }, { children: [_jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }), console.log("Left Drawer called")] })) }))] })));
 };
-export var CustomDropDown = function (params) {
+export var MainStageDropDown = function (params) {
     // console.log("Vetting custom feild", params);
     var Passed = {
         option: "passed",
@@ -408,43 +405,7 @@ export var CustomDropDown = function (params) {
     };
     var classes = useStyles();
     var _c = React.useState(false), open = _c[0], setOpen = _c[1];
-    // const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-    //   <Tooltip
-    //     {...props}
-    //     placement="right"
-    //     arrow
-    //     classes={{ popper: className, arrow: classes.arrow }}
-    //     // className={classes.arrowStyle}
-    //   />
-    // ))(({ theme }) => ({
-    //   [`& .${tooltipClasses.tooltip}`]: {
-    //     backgroundColor: "#ffffff",
-    //     border: `1px solid ${option.color}`,
-    //     maxWidth: 220,
-    //     fontSize: theme.typography.pxToRem(12),
-    //     borderRadius: "1vw",
-    //   },
-    // }));
-    var handleTooltipClose = function () {
-        setOpen(false);
-    };
-    var handleTooltipOpen = function () {
-        setOpen(true);
-        setTimeout(function () {
-            setOpen(false);
-        }, 4000);
-    };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsxs("select", __assign({ id: id, className: classes.dropdown, value: option.option, onChange: handleChange, disabled: true }, { children: [_jsx("option", __assign({ value: "" }, { children: "Null" })), _jsx("option", __assign({ value: "passed" }, { children: "Passed" })), _jsx("option", __assign({ value: "pending" }, { children: "Pending" })), _jsx("option", __assign({ value: "failed" }, { children: "Failed" }))] })) }), _jsx("div", __assign({ className: classes.dropdownContent }, { children: (function () {
-                    if (option.option == "passed") {
-                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, { children: _jsx(CheckCircleIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) }) })));
-                    }
-                    else if (option.option == "pending") {
-                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, { children: _jsx(PauseCircleFilledIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) }) })));
-                    }
-                    else if (option.option == "failed") {
-                        return (_jsx(Tooltip, __assign({ title: option.body, placement: "right-start" }, { children: _jsx(IconButton, { children: _jsx(ErrorIcon, { id: iconId, sx: { color: option.color, fontSize: "25px" } }) }) })));
-                    }
-                })() }))] }));
+    return (_jsx(_Fragment, { children: _jsx("div", { children: _jsxs("select", __assign({ id: id, className: classes.dropdown, value: option.option, onChange: handleChange }, { children: [_jsx("option", __assign({ value: "" }, { children: "NA" })), _jsx("option", __assign({ value: "passed" }, { children: "Passed" })), _jsx("option", __assign({ value: "pending" }, { children: "Pending" })), _jsx("option", __assign({ value: "failed" }, { children: "Failed" }))] })) }) }));
 };
 export var ViewAssessments = function (params) {
     var _a = useState(false), toggleDrawer = _a[0], setToggleDrawer = _a[1];

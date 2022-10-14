@@ -53,7 +53,7 @@ import { useDropzone } from "react-dropzone";
 import DownloadIcon from "@mui/icons-material/Download";
 import PreviousNextButtons from "../../components/PreviousNextButtons/PreviousNextButtons";
 import { UploadFiles, getJobSeekerProfile, updateJobSeekerProfile, } from "../../services/FormDataService";
-import { ERROR_KEY, SUCCESS_KEY, IMAGE_UPLOAD_ERROR, JOB_SEEKER_RESUME, FORM_SUBMISSION_SUCCESS, } from "../../constants";
+import { ERROR_KEY, SUCCESS_KEY, IMAGE_UPLOAD_ERROR, JOB_SEEKER_RESUME, FORM_SUBMISSION_SUCCESS, FILE_UPLOAD, WARNING_KEY, } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import { getFileDetails } from "../../services/DocumentService";
 var useStyles = makeStyles({
@@ -268,6 +268,11 @@ var JobSeekerProfileUpload = function (props) {
                             props.handleComplete(1);
                             props.handleNext();
                         }
+                    }
+                    else {
+                        props.setType(WARNING_KEY);
+                        props.setDataMessage(FILE_UPLOAD);
+                        props.setOpen(true);
                     }
                     _d.label = 8;
                 case 8:

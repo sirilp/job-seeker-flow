@@ -13,10 +13,10 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useImperativeHandle, useEffect } from "react";
 import { Stack, Grid, TextField, } from "@mui/material";
 import { useStyles } from "../JobSeekerProfileFlowStyles";
-import { CITY_LABEL, COUNTRY_LABEL, HALF_SIZE_GRID, FULL_SIZE_GRID, } from "../../../constants";
+import { CITY_LABEL, WARNING_KEY, COUNTRY_LABEL, HALF_SIZE_GRID, FULL_SIZE_GRID, } from "../../../constants";
 import { COLLEGE_END_TEXT, COLLEGE_START_TEXT, COLLEGE_NAME_LABEL, INSTITUTE_NAME_TEXT, INSTITUTE_LOCATION_TEXT, } from "./FreshGraduateDetailsConstants";
 import Calendar from "../../../components/Calendar/Calendar";
-import { useFormik } from "formik";
+import { useFormik, getIn } from "formik";
 import * as Yup from "yup";
 var FreshGraduateDetails = React.forwardRef(function (props, ref) {
     var _a, _b;
@@ -32,13 +32,13 @@ var FreshGraduateDetails = React.forwardRef(function (props, ref) {
         validationSchema: Yup.object().shape({
             instituteName: Yup.string()
                 .required("Please add Institute Name")
-                .min(1),
+                .min(3),
             instituteCity: Yup.string()
                 .required("Please add Institute City")
-                .min(1),
+                .min(3),
             instituteCountry: Yup.string()
                 .required("Please add Institute Country")
-                .min(1),
+                .min(3),
             collegeEndDate: Yup.string()
                 .required("Please add Institute End Date")
                 .min(1),
@@ -62,6 +62,31 @@ var FreshGraduateDetails = React.forwardRef(function (props, ref) {
             return freshGraduateForm.values;
         },
     }); });
+    var getError = function (name) {
+        var error = getIn(freshGraduateForm.errors, name);
+        var touch = getIn(freshGraduateForm.touched, name);
+        return touch && error ? error : null;
+    };
+    var handleSubmit = function () {
+        if (!validateFreshGraduateDetails()) {
+            props.setParentData(freshGraduateForm.initialValues);
+            props.setType(WARNING_KEY);
+            props.setDataMessage("Please enter all experience details");
+            props.setOpen(true);
+        }
+        else
+            props.setParentData(freshGraduateForm.values);
+    };
+    var validateFreshGraduateDetails = function () {
+        if (!freshGraduateForm.values.instituteName ||
+            !freshGraduateForm.values.instituteCity ||
+            !freshGraduateForm.values.instituteCountry ||
+            !freshGraduateForm.values.collegeEndDate ||
+            !freshGraduateForm.values.collegeStartDate)
+            return false;
+        else
+            return true;
+    };
     useEffect(function () {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         if (props.fresherPrefillData) {
@@ -77,6 +102,6 @@ var FreshGraduateDetails = React.forwardRef(function (props, ref) {
                 freshGraduateForm.setFieldValue("instituteCountry", (_k = props.fresherPrefillData) === null || _k === void 0 ? void 0 : _k.instituteCountry);
         }
     }, []);
-    return (_jsx(React.Fragment, { children: _jsx("div", __assign({ className: "experience-details-card" }, { children: _jsxs(Grid, __assign({ container: true, className: classes.muiContainer }, { children: [_jsx(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: _jsxs("div", { children: [_jsx("p", __assign({ className: "institute-field" }, { children: INSTITUTE_NAME_TEXT })), _jsx(TextField, { disabled: props.disabled, label: COLLEGE_NAME_LABEL, className: classes.boxInputField, size: "small", name: "instituteName", onBlur: freshGraduateForm.handleBlur, onChange: freshGraduateForm.handleChange, value: freshGraduateForm.values.instituteName })] }) })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: INSTITUTE_LOCATION_TEXT })), _jsxs(Stack, __assign({ direction: "row", spacing: 3 }, { children: [_jsx(TextField, { disabled: props.disabled, label: CITY_LABEL, className: classes.inputField, size: "small", name: "instituteCity", onBlur: freshGraduateForm.handleBlur, onChange: freshGraduateForm.handleChange, value: freshGraduateForm.values.instituteCity }), _jsx(TextField, { disabled: props.disabled, label: COUNTRY_LABEL, className: classes.inputField, size: "small", name: "instituteCountry", onBlur: freshGraduateForm.handleBlur, onChange: freshGraduateForm.handleChange, value: freshGraduateForm.values.instituteCountry })] }))] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: COLLEGE_START_TEXT })), _jsx(Calendar, { setDate: handleStartDate, value: (_a = props === null || props === void 0 ? void 0 : props.fresherPrefillData) === null || _a === void 0 ? void 0 : _a.collegeStartDate })] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: COLLEGE_END_TEXT })), _jsx(Calendar, { setDate: handleEndDate, status: false, value: (_b = props === null || props === void 0 ? void 0 : props.fresherPrefillData) === null || _b === void 0 ? void 0 : _b.collegeEndDate })] }))] })) })) }));
+    return (_jsx(React.Fragment, { children: _jsx("div", __assign({ className: "experience-details-card" }, { children: _jsxs(Grid, __assign({ container: true, className: classes.muiContainer }, { children: [_jsx(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: _jsxs("div", { children: [_jsx("p", __assign({ className: "institute-field" }, { children: INSTITUTE_NAME_TEXT })), _jsx(TextField, { required: true, disabled: props.disabled, label: COLLEGE_NAME_LABEL, className: classes.boxInputField, size: "small", name: "instituteName", onBlur: freshGraduateForm.handleBlur, onChange: freshGraduateForm.handleChange, value: freshGraduateForm.values.instituteName, error: getError("instituteName"), helperText: getError("instituteName") })] }) })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: INSTITUTE_LOCATION_TEXT })), _jsxs(Stack, __assign({ direction: "row", spacing: 3 }, { children: [_jsx(TextField, { required: true, disabled: props.disabled, label: CITY_LABEL, className: classes.inputField, size: "small", name: "instituteCity", onBlur: freshGraduateForm.handleBlur, onChange: freshGraduateForm.handleChange, value: freshGraduateForm.values.instituteCity, error: getError("instituteCity"), helperText: getError("instituteCity") }), _jsx(TextField, { required: true, disabled: props.disabled, label: COUNTRY_LABEL, className: classes.inputField, size: "small", name: "instituteCountry", onBlur: freshGraduateForm.handleBlur, onChange: freshGraduateForm.handleChange, value: freshGraduateForm.values.instituteCountry, error: getError("instituteCountry"), helperText: getError("instituteCountry") })] }))] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: COLLEGE_START_TEXT })), _jsx(Calendar, { setDate: handleStartDate, value: (_a = props === null || props === void 0 ? void 0 : props.fresherPrefillData) === null || _a === void 0 ? void 0 : _a.collegeStartDate, calendarDisabled: props.disabled })] })), _jsxs(Grid, __assign({ item: true, xs: FULL_SIZE_GRID, sm: FULL_SIZE_GRID, md: HALF_SIZE_GRID, lg: HALF_SIZE_GRID, className: "add-team-grid" }, { children: [_jsx("p", __assign({ className: "institute-field" }, { children: COLLEGE_END_TEXT })), _jsx(Calendar, { setDate: handleEndDate, status: false, value: (_b = props === null || props === void 0 ? void 0 : props.fresherPrefillData) === null || _b === void 0 ? void 0 : _b.collegeEndDate, calendarDisabled: props.disabled })] }))] })) })) }));
 });
 export default FreshGraduateDetails;

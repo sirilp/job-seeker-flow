@@ -253,7 +253,7 @@ export var CustomDropDown = function (params) {
                 case 4:
                     response = _a.sent();
                     if (response) {
-                        setOption(Passed);
+                        setOption(Failed);
                         dispatchNotificationData({
                             enable: true,
                             type: "success",

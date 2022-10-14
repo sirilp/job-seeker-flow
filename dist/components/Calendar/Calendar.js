@@ -55,7 +55,7 @@ var Calendar = function (props) {
         setValue(new Date(event.target.value, monthValue - 1, dayValue));
         props.setDate(new Date(event.target.value, monthValue - 1, dayValue));
     };
-    return (_jsx("div", __assign({ className: "row datePicker" }, { children: props.status ? (_jsxs("div", __assign({ style: { position: "relative", display: "flex" } }, { children: [_jsx(TextField, { className: classes.date, id: "outlined-date", label: "Date", size: "small", variant: "outlined", value: dayValue, onChange: handleDayChange, disabled: props.disabled }), _jsx(TextField, { className: classes.date, id: "outlined-month", label: "Month", size: "small", value: monthValue, onChange: handleMonthChange, disabled: props.disabled }), _jsx(TextField, { className: classes.year, id: "outlined-year", label: "Year", size: "small", value: yearValue, onChange: handleYearChange, disabled: props.disabled }), _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDateFns }, { children: _jsx(DatePicker, { label: "Custom input", value: value, onChange: handleDatePicker, disabled: props.disabled, PopperProps: {
+    return (_jsx("div", __assign({ className: "row datePicker" }, { children: props.status ? (_jsxs("div", __assign({ style: { position: "relative", display: "flex" } }, { children: [_jsx(TextField, { className: classes.date, id: "outlined-date", label: "Date", size: "small", variant: "outlined", value: dayValue, onChange: handleDayChange, disabled: props.calendarDisabled }), _jsx(TextField, { className: classes.date, id: "outlined-month", label: "Month", size: "small", value: monthValue, onChange: handleMonthChange, disabled: props.calendarDisabled }), _jsx(TextField, { className: classes.year, id: "outlined-year", label: "Year", size: "small", value: yearValue, onChange: handleYearChange, disabled: props.calendarDisabled }), _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDateFns }, { children: _jsx(DatePicker, __assign({ label: "Custom input", value: value, onChange: handleDatePicker, disabled: props.calendarDisabled, PopperProps: {
                             disablePortal: true,
                             sx: {
                                 transform: "unset !important",
@@ -67,7 +67,7 @@ var Calendar = function (props) {
                                     display: "flex",
                                     alignItems: "center",
                                 } }, { children: [_jsx("input", __assign({ ref: inputRef }, inputProps)), InputProps === null || InputProps === void 0 ? void 0 : InputProps.endAdornment] })));
-                        } }) }))] }))) : (_jsxs("div", __assign({ style: { position: "relative", display: "flex" } }, { children: [_jsx(TextField, { className: classes.date, id: "outlined-month-one", label: "Month", size: "small", value: monthValue, onChange: handleMonthChange }), _jsx(TextField, { className: classes.year, id: "outlined-year-one", label: "Year", size: "small", value: yearValue, onChange: handleYearChange }), _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDateFns }, { children: _jsx(DatePicker, { views: ["year", "month"], label: "Custom input", value: value, onChange: handleDatePicker, PopperProps: {
+                        } }, props)) }))] }))) : (_jsxs("div", __assign({ style: { position: "relative", display: "flex" } }, { children: [_jsx(TextField, { className: classes.date, id: "outlined-month-one", label: "Month", size: "small", value: monthValue, disabled: props.calendarDisabled, onChange: handleMonthChange }), _jsx(TextField, { className: classes.year, id: "outlined-year-one", label: "Year", size: "small", value: yearValue, disabled: props.calendarDisabled, onChange: handleYearChange }), _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDateFns }, { children: _jsx(DatePicker, __assign({ views: ["year", "month"], label: "Custom input", value: value, onChange: handleDatePicker, disabled: props.calendarDisabled, PopperProps: {
                             disablePortal: true,
                             sx: {
                                 transform: "unset !important",
@@ -79,6 +79,6 @@ var Calendar = function (props) {
                                     display: "flex",
                                     alignItems: "center",
                                 } }, { children: [_jsx("input", __assign({ ref: inputRef }, inputProps)), InputProps === null || InputProps === void 0 ? void 0 : InputProps.endAdornment] })));
-                        } }) }))] }))) })));
+                        } }, props)) }))] }))) })));
 };
 export default Calendar;

@@ -105,6 +105,6 @@ var ExperiencedSeeker = React.forwardRef(function (props, ref) {
                                         ? PREV_EMPLOYER_RELIEVING_TEXT
                                         : CURRENT_EMPLOYER_JOINING_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] })), _jsx(Calendar, { setDate: handleDate, status: true, value: props.workStatus === WorkStatusType.JOBLESS
                                     ? (_a = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _a === void 0 ? void 0 : _a.relievingDate
-                                    : (_b = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _b === void 0 ? void 0 : _b.joiningDate })] }))] })) })) }));
+                                    : (_b = props === null || props === void 0 ? void 0 : props.experiencedPrefillData) === null || _b === void 0 ? void 0 : _b.joiningDate, calendarDisabled: props.disabled })] }))] })) })) }));
 });
 export default ExperiencedSeeker;

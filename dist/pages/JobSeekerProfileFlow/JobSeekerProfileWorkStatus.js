@@ -133,7 +133,13 @@ var JobSeekerProfileWorkStatus = function (props) {
                         props.setDataMessage(FORM_SUBMISSION_SUCCESS);
                         props.setOpen(true);
                         props.handleComplete(3);
-                        props.handleNext();
+                        // props.handleNext();
+                        if (jobStatus === WorkStatusType.FRESHER) {
+                            props.setActiveStep(5);
+                        }
+                        else {
+                            props.setActiveStep(4);
+                        }
                     }
                     return [3 /*break*/, 4];
                 case 3:

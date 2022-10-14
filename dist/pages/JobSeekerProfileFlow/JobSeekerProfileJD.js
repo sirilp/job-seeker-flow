@@ -174,7 +174,14 @@ var JobSeekerProfileJD = function (props) {
             }
         });
     }); };
-    console.log(gotData);
-    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), gotData && (_jsx("div", __assign({ className: "head-title-text" }, { children: "JD Specific Questions has not been configured for this contest" }))), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: props.handleBack })) : null, loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
+    var handleBack = function () {
+        if (userDataState.userData.workStatus === 'Fresh Graduate') {
+            props.setActiveStep(3);
+        }
+        else {
+            props.setActiveStep(4);
+        }
+    };
+    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), gotData && (_jsx("div", __assign({ className: "head-title-text" }, { children: "JD Specific Questions has not been configured for this contest" }))), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: handleBack })) : null, loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
 };
 export default JobSeekerProfileJD;
