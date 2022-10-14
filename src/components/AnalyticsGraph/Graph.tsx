@@ -1,6 +1,6 @@
 import React, { ReactElement, FC, useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import GraphCo from "../../assets/GraphCo.png";
+import GraphCo from "../../../src/assets/GraphCo.png";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { getContestAggregateStatistics } from "../../services/JobSeekerService";
