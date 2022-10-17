@@ -7,6 +7,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
 import { useStyles } from "./CalendarStyles";
 import "./Calendar.css";
+import moment from "moment";
 
 const Calendar = (props) => {
   const [value, setValue] = useState<Date>(new Date());

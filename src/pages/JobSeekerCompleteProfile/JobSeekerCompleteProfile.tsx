@@ -24,7 +24,6 @@ const JobSeekerCompleteProfile = (props) => {
       const profileDataFetched = await getJobSeekerProfile(
         props.profileDataId || userDataState.userData.profileId
       );
-      console.log(profileDataFetched);
 
       if (profileDataFetched?.data?.data) {
         setFullName(
@@ -43,12 +42,10 @@ const JobSeekerCompleteProfile = (props) => {
         "",
         props.profileDataId || userDataState.userData.profileId
       );
-      console.log(profileDataFetched);
 
       const date =
         profileDataFetched?.data.data[0].matchedProfileLogsList[0].dateOfBirth;
       setDob(moment(date).utc().format("DD-MM-YYYY"));
-      console.log(dob);
 
       console.log(profileDataFetched?.data?.[0]);
     } catch (error: any) {
@@ -63,10 +60,6 @@ const JobSeekerCompleteProfile = (props) => {
   useEffect(() => {
     callPrefillData();
   }, []);
-
-  // const patchProfileDetails = (patchData: any) => {
-  //   // setDob(moment().utc().format('YYYY-MM-DD'))
-  // };
 
   const jobSeekerTabs = [
     {

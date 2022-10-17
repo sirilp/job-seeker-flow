@@ -50,26 +50,33 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
 
   useEffect(() => {
     if (props.profileDataId || userDataState.userData.profileId) {
-      setLoader(true);
       getDataFill();
     }
     fetchForm();
   }, []);
 
   const getDataFill = async () => {
+    try
+    {setLoader(true);
     const profileDataFetched = await getJobSeekerProfile(
       props.profileDataId || userDataState.userData.profileId
     );
-    if (profileDataFetched?.data?.data?.jdQuestionsMap) {
+    if (profileDataFetched?.data?.data?.profileJDQuestionsMap) {
       setPrefillDetails({
         data: {
-          ...profileDataFetched?.data?.data?.jdQuestionsMap,
+          ...profileDataFetched?.data?.data?.profileJDQuestionsMap,
         },
       });
+    }}
+    catch (error: any) {
+      console.log(error);
+      props.setType(ERROR_KEY);
+      props.setDataMessage("Something went wrong");
+      props.setOpen(true);
     }
     setLoader(false);
   };
-  console.log(prefillDetails);
+ 
   const fetchForm = async () => {
     const formMarkup = await getFormData(JD_PATCH_FORM, "", props.contestId);
     if (formMarkup?.data?.data[0]?.formData?.jdQuestionForm) {
@@ -80,10 +87,10 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
         setMenuForm(jdMarkup?.data?.data?.components);
         setLoader(false);
       } 
-    }
-    else {
-      setLoader(false);
-      setGotData(true);
+      else {
+        setLoader(false);
+        setGotData(true);
+      }
     }
   };
 
@@ -135,20 +142,21 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
       props.setActiveStep(4);
      }
   }
+
   return (
     <div className="job-seeker-profile-content">
-      <Form
+      { !gotData ?
+      (<Form
         ref={myRefTag}
         form={menuForm}
         submission={prefillDetails}
         onChange={(schema: any) => handleChange(schema)}
-      />
-      {gotData && (
+      />) : (
         <div className="head-title-text">
-          JD Specific Questions has not been configured for this contest
-        </div>
-      )}
-       {props.hasButtons ? (
+        JD Specific Questions has not been configured for this contest
+      </div>
+      ) } 
+      {props.hasButtons ? (
             <PreviousNextButtons
               handleNext={submitFormData}
               handleBack={handleBack}

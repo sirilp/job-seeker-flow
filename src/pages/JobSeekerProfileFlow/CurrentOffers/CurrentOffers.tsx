@@ -104,10 +104,10 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
       props.setDataMessage("Please upload offer letter");
       props.setOpen(true);
     } else if (
-      fixedCtc.fixedCtcLakh === "" ||
-      fixedCtc.fixedCtcThousand === "" ||
-      variableCtc.variableCtcLakh === "" ||
-      variableCtc.variableCtcThousand === ""
+      offerAddForm.values.members[index].fixedCtc.fixedCtcLakh === "" ||
+      offerAddForm.values.members[index].fixedCtc.fixedCtcThousand === "" ||
+      offerAddForm.values.members[index].variableCtc.variableCtcLakh === "" ||
+      offerAddForm.values.members[index].variableCtc.variableCtcThousand === ""
     ) {
       props.setType(WARNING_KEY);
       props.setDataMessage("Please provide CTC details");
@@ -165,7 +165,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
     else if (pos === 1)
       offerAddForm.values.members[index].fixedCtc.fixedCtcThousand = value ? value : '0';
 
-    offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
+   // offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
     handleTotalCtc(index);
   };
 
@@ -175,7 +175,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
     else if (pos === 1)
       offerAddForm.values.members[index].variableCtc.variableCtcThousand = value ? value : '0';
 
-    offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
+   // offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
     handleTotalCtc(index);
   };
 
@@ -188,7 +188,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
         + parseInt(offerAddForm.values.members[index].variableCtc.variableCtcThousand))
       * 1000).toString();
 
-    offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
+   // offerAddForm.setFieldValue(`members[${index}].saveStatus`, true);
   }
 
   const handleServiceAdd = (prefillValue?: any) => {
@@ -240,6 +240,7 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
           className="next-button stack-button"
           variant="contained"
           onClick={() => handleServiceAdd()}
+          disabled={props.disabled}
         >
           <AddIcon className="add-icon" /> {OFFER_ADD_TEXT}
         </Button>
@@ -458,12 +459,13 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                     lg={HALF_SIZE_GRID}
                     className={classes.limitWidth}
                   >
-                    {!offerAddForm.values.members[index].saveStatus || props.disabled && (
+                    {(!offerAddForm.values.members[index].fieldDisabled && !props.disabled) ? (
                       <DropZoneUpload
                         receiveFileContent={receiveFileContent}
                         data={index}
+                        disabled={props.disabled}
                       />
-                    )}
+                    ) : null}
                     {serviceListFiles[index] && serviceListFiles?.length > 0 && serviceListFiles[index]?.length > 0 ? (
                       <Box>
                         <Button className="next-button" variant="contained">
@@ -478,11 +480,11 @@ const CurrentOffers: FC<any> = (props): ReactElement => {
                           onClick={() => removeFile(index)}
                           className="remove-btn"
                         >
-                          <DeleteIcon
+                            <DeleteIcon
                             color={
-                              !offerAddForm.values.members[index].saveStatus || !props.disabled
-                                ? ERROR_KEY
-                                : DISABLED_KEY
+                              (offerAddForm.values.members[index].fieldDisabled || props.disabled) 
+                                ? DISABLED_KEY
+                                : ERROR_KEY
                             }
                           />
                         </Button>

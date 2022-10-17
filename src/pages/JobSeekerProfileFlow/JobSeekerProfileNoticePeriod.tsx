@@ -411,6 +411,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                           value={BUYOUT_OPTION}
                           control={<Radio />}
                           label={BUYOUT_OPTION}
+                          disabled={!props.hasButtons}
                         />
                       ) : null}
                     </RadioGroup>

@@ -16,7 +16,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import { LIGHT_GREY } from "../../color";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import BookmarkIcon from "../../assets/bookmark.svg";
+import BookmarkIcon from "../../../src/assets/bookmark.svg";
 import { PAGE_SIZE_ARRAY } from "../../constants";
 import AgGridWithPagination from "../GridItem/AgGridWithPagination";
 import {

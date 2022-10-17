@@ -22,6 +22,7 @@ import {
 import {
   ERROR_KEY,
   SUCCESS_KEY,
+  DISABLED_KEY,
   IMAGE_UPLOAD_ERROR,
   JOB_SEEKER_RESUME,
   FORM_SUBMISSION_SUCCESS,
@@ -565,7 +566,7 @@ const JobSeekerProfileUpload: FC<any> = (props): ReactElement => {
                     )}
                   </Box>
                   <Box textAlign="left" className={classes.subText2}>
-                    <Checkbox {...label} defaultChecked color="success" />
+                    <Checkbox {...label} defaultChecked color="default" />
                     Duplication Check with Hiringhood Completed
                   </Box>
                 </Box>

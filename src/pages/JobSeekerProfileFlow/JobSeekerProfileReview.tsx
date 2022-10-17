@@ -28,6 +28,7 @@ import { startJobSeekerWorkflow } from "../../services/JobSeekerService";
 import JobSeekerCompleteProfile from "../JobSeekerCompleteProfile/JobSeekerCompleteProfile";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import { updateJobSeekerProfile } from "../../services/FormDataService";
+import JobSeekerAddProfile from "../JobSeekerAddProfile/JobSeekerAddProfile";
 
 const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
   const [loader, setLoader] = React.useState(false);
@@ -58,7 +59,12 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
   const renderCurrentSelection = (currentSection) => {
     switch (currentSection) {
       case 1:
-        return null;
+        return (
+          <JobSeekerAddProfile
+            profileDataId={userDataState.userData.profileId}
+            hasButtons={false}
+          />
+        );
       case 2:
         return (
           <JobSeekerProfileUpload
@@ -191,7 +197,7 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
                   {JobSeekerReviewArray.map((reviewData, index) => (
                     <>
                       {(userDataState.userData.workStatus === "Fresh Graduate" &&
-                        index !== 4) || (userDataState.userData.workStatus !== "Fresh Graduate") && (
+                        index !== 4) || (userDataState.userData.workStatus !== "Fresh Graduate") ? (
                           <div
                             className="review-card"
                             key={index}
@@ -246,7 +252,8 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
                               </div>
                             ) : null}
                           </div>
-                        )}
+                        ) : null
+                        }
                     </>
                   ))}
                 </div>
