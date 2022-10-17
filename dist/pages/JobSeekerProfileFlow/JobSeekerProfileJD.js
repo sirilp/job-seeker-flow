@@ -73,30 +73,40 @@ var JobSeekerProfileJD = function (props) {
     };
     useEffect(function () {
         if (props.profileDataId || userDataState.userData.profileId) {
-            setLoader(true);
             getDataFill();
         }
         fetchForm();
     }, []);
     var getDataFill = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var profileDataFetched;
+        var profileDataFetched, error_1;
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
-                case 0: return [4 /*yield*/, getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId)];
+                case 0:
+                    _e.trys.push([0, 2, , 3]);
+                    setLoader(true);
+                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId)];
                 case 1:
                     profileDataFetched = _e.sent();
-                    if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.jdQuestionsMap) {
+                    if ((_b = (_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.profileJDQuestionsMap) {
                         setPrefillDetails({
-                            data: __assign({}, (_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.jdQuestionsMap),
+                            data: __assign({}, (_d = (_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.profileJDQuestionsMap),
                         });
                     }
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _e.sent();
+                    console.log(error_1);
+                    props.setType(ERROR_KEY);
+                    props.setDataMessage("Something went wrong");
+                    props.setOpen(true);
+                    return [3 /*break*/, 3];
+                case 3:
                     setLoader(false);
                     return [2 /*return*/];
             }
         });
     }); };
-    console.log(prefillDetails);
     var fetchForm = function () { return __awaiter(void 0, void 0, void 0, function () {
         var formMarkup, jdMarkup;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
@@ -113,12 +123,12 @@ var JobSeekerProfileJD = function (props) {
                         setMenuForm((_l = (_k = jdMarkup === null || jdMarkup === void 0 ? void 0 : jdMarkup.data) === null || _k === void 0 ? void 0 : _k.data) === null || _l === void 0 ? void 0 : _l.components);
                         setLoader(false);
                     }
-                    return [3 /*break*/, 4];
-                case 3:
-                    setLoader(false);
-                    setGotData(true);
-                    _m.label = 4;
-                case 4: return [2 /*return*/];
+                    else {
+                        setLoader(false);
+                        setGotData(true);
+                    }
+                    _m.label = 3;
+                case 3: return [2 /*return*/];
             }
         });
     }); };
@@ -127,7 +137,7 @@ var JobSeekerProfileJD = function (props) {
         setFormValidated(data.isValid);
     };
     var submitFormData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var jdQuestionsMap, bodyPayload, profileJDDetailsResponse, error_1;
+        var jdQuestionsMap, bodyPayload, profileJDDetailsResponse, error_2;
         var _a, _b, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
@@ -162,10 +172,10 @@ var JobSeekerProfileJD = function (props) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    error_1 = _d.sent();
-                    console.log(error_1 === null || error_1 === void 0 ? void 0 : error_1.response);
+                    error_2 = _d.sent();
+                    console.log(error_2 === null || error_2 === void 0 ? void 0 : error_2.response);
                     props.setType(ERROR_KEY);
-                    props.setDataMessage((_c = (_b = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.message);
+                    props.setDataMessage((_c = (_b = error_2 === null || error_2 === void 0 ? void 0 : error_2.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.message);
                     props.setOpen(true);
                     return [3 /*break*/, 4];
                 case 4:
@@ -182,6 +192,7 @@ var JobSeekerProfileJD = function (props) {
             props.setActiveStep(4);
         }
     };
-    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } }), gotData && (_jsx("div", __assign({ className: "head-title-text" }, { children: "JD Specific Questions has not been configured for this contest" }))), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: handleBack })) : null, loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
+    return (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [!gotData ?
+                (_jsx(Form, { ref: myRefTag, form: menuForm, submission: prefillDetails, onChange: function (schema) { return handleChange(schema); } })) : (_jsx("div", __assign({ className: "head-title-text" }, { children: "JD Specific Questions has not been configured for this contest" }))), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitFormData, handleBack: handleBack })) : null, loader && (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) })))] })));
 };
 export default JobSeekerProfileJD;

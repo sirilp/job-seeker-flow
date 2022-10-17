@@ -45,10 +45,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useRef, useState, useMemo, useCallback, } from "react";
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import React, { useEffect, useRef, useState, useMemo, useCallback, } from "react";
 import { ERROR_KEY, TEMPLATE_BUTTON } from "../../constants";
-import { Typography, Button, Grid } from "@mui/material";
+import { Typography, Button, Grid, Divider, Checkbox, FormControlLabel, } from "@mui/material";
 import JobSeekerTempleteButton from "../../components/JobSeekerProfile/JobSeekerTempleteButton";
 import "../JobSeekerBaseStyles.css";
 import { LISTING_GENERIC_HEADERS } from "./AddProfileColumnHeaders";
@@ -57,7 +57,9 @@ import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import Notification from "../../components/Notification";
 import { initialAlertState } from "../../modules/notificationState";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { createJobSeekerProfile } from "../../services/FormDataService";
+import { createJobSeekerProfile, getJobSeekerProfile, } from "../../services/FormDataService";
+import { getJobSeekersDetails } from "../../services/JobSeekerService";
+import moment from "moment";
 var JobSeekerAddProfile = function (props) {
     var dispatch = useAppDispatch();
     var gridRef = useRef();
@@ -65,6 +67,13 @@ var JobSeekerAddProfile = function (props) {
     var notifyDataState = useAppSelector(function (state) { return state.notificationAlert; });
     var _a = useState(LISTING_GENERIC_HEADERS), columnDefs = _a[0], setColumnDefs = _a[1];
     var _b = useState([]), selectedRows = _b[0], setSelectedRows = _b[1];
+    var _c = React.useState(false), loader = _c[0], setLoader = _c[1];
+    var _d = useState("No data"), firstName = _d[0], setFirstName = _d[1];
+    var _e = useState("No data"), lastName = _e[0], setLastName = _e[1];
+    var _f = useState("No data"), dateOfBirth = _f[0], setDateOfBirth = _f[1];
+    var _g = useState("No data"), emaiId = _g[0], setEmaiId = _g[1];
+    var _h = useState("No data"), mobileNumber = _h[0], setMobileNumber = _h[1];
+    var _j = useState("No Data"), panNumber = _j[0], setPanNumber = _j[1];
     var fulfillUpload = function (data) {
         callResumeUpload(data === null || data === void 0 ? void 0 : data.profileLogId);
     };
@@ -221,6 +230,76 @@ var JobSeekerAddProfile = function (props) {
         (_a = gridRef.current) === null || _a === void 0 ? void 0 : _a.api.setRowData(row);
         // console.log(gridRef.current);
     };
-    return (_jsx("div", __assign({ className: "form-encapsulate" }, { children: _jsxs("div", __assign({ className: "form-card-holder" }, { children: [notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } })), _jsxs("div", { children: [_jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 0vw 2vw" }, { children: "For Bulk Duplication Check" })) }), _jsx("div", __assign({ style: { margin: "1vw 1vw 1vw 1vw" } }, { children: TEMPLATE_BUTTON.map(function (button) { return (_jsx(JobSeekerTempleteButton, { fileName: button.iconFileName, title: button.title }, button.title)); }) })), _jsx("div", { children: _jsxs(Typography, __assign({ variant: "h6", gutterBottom: true, component: "div", color: "black", display: "flex", justifyContent: "center" }, { children: [_jsx("hr", { className: "line" }), "( OR )", _jsx("hr", { className: "line" })] })) })] }), _jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 2vw 2vw" }, { children: "Enter the Details Manually" })) }), _jsx("div", __assign({ style: { marginLeft: "1vw" } }, { children: _jsx(Grid, __assign({ container: true, spacing: 3 }, { children: _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx("div", __assign({ className: "forms-button-container" }, { children: _jsx("div", { children: _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return clearTable(); } }, { children: [_jsx(RefreshIcon, { sx: { transform: "rotate(260deg)" }, className: "generic-icon" }), "\u00A0", "\u00A0", "Clear Table"] })) }) })) })) })) })), _jsx("div", __assign({ style: { marginLeft: "2vw" } }, { children: _jsx(GridItem, { gridRef: gridRef, rowData: row, columnDefs: columnDefs, defaultColDef: defaultColDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, onSelectionChanged: onSelectionChanged, onCellValueChanged: onCellValueChanged, fulfillUpload: fulfillUpload }) }))] })) })));
+    var labelValuePairForShowData = function (key, value) {
+        return (_jsxs(Grid, __assign({ container: true, spacing: 2, sx: { margin: "1vw" } }, { children: [_jsx(Grid, __assign({ xs: 4 }, { children: _jsx(Typography, __assign({ variant: "h6", gutterBottom: true }, { children: key })) })), _jsx(Grid, __assign({ xs: 4 }, { children: _jsx(Typography, __assign({ variant: "h6", gutterBottom: true, sx: { fontWeight: "700" } }, { children: value })) }))] })));
+    };
+    var callPrefillData = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var profileDataFetched, error_1, profileDataFetched, date, error_2;
+        var _a, _b, _c, _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    _e.trys.push([0, 2, , 3]);
+                    setLoader(true);
+                    return [4 /*yield*/, getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId)];
+                case 1:
+                    profileDataFetched = _e.sent();
+                    console.log(profileDataFetched);
+                    if ((_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) {
+                        setFirstName((_b = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _b === void 0 ? void 0 : _b.data.firstName);
+                        setLastName((_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data.lastName);
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _e.sent();
+                    console.log(error_1);
+                    props.setType(ERROR_KEY);
+                    props.setDataMessage("Something went wrong");
+                    props.setOpen(true);
+                    return [3 /*break*/, 3];
+                case 3:
+                    _e.trys.push([3, 5, , 6]);
+                    setLoader(true);
+                    return [4 /*yield*/, getJobSeekersDetails("", props.profileDataId || userDataState.userData.profileId)];
+                case 4:
+                    profileDataFetched = _e.sent();
+                    console.log(profileDataFetched);
+                    date = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data.data[0].matchedProfileLogsList[0].dateOfBirth;
+                    setDateOfBirth(moment(date).utc().format("DD-MM-YYYY"));
+                    setMobileNumber(profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data.data[0].matchedProfileLogsList[0].mobileNumber);
+                    setEmaiId(profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data.data[0].matchedProfileLogsList[0].emailId);
+                    setPanNumber(profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data.data[0].matchedProfileLogsList[0].panNumber);
+                    console.log((_d = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _d === void 0 ? void 0 : _d[0]);
+                    return [3 /*break*/, 6];
+                case 5:
+                    error_2 = _e.sent();
+                    console.log(error_2);
+                    props.setType(ERROR_KEY);
+                    props.setDataMessage("Something went wrong");
+                    props.setOpen(true);
+                    return [3 /*break*/, 6];
+                case 6:
+                    setLoader(false);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    useEffect(function () {
+        if (!props.hasButtons)
+            callPrefillData();
+    }, []);
+    return (_jsx(_Fragment, { children: !props.hasButtons ? (_jsxs("div", { children: [_jsx(Typography, __assign({ variant: "h5", gutterBottom: true }, { children: "Pre-duplication Check" })), labelValuePairForShowData("First Name", firstName), labelValuePairForShowData("Last Name", lastName), labelValuePairForShowData("EmailId", emaiId), labelValuePairForShowData("Mobile No.", mobileNumber), _jsx(FormControlLabel, { control: _jsx(Checkbox, { checked: true, sx: {
+                            paddingLeft: "1.5vw",
+                            color: "#22C55E",
+                            "&.Mui-checked": {
+                                color: "#22C55E",
+                            },
+                        } }), label: "Pre-Duplication Check sucessfully passed  ", sx: { color: "#22C55E" } }), _jsx("div", __assign({ style: { padding: "1vw" } }, { children: _jsx(Divider, {}) })), _jsx(Typography, __assign({ variant: "h5", gutterBottom: true }, { children: "Duplication Check" })), labelValuePairForShowData("Date Of Birth", dateOfBirth), labelValuePairForShowData("Last 5 digits of PAN ", panNumber), _jsx(FormControlLabel, { control: _jsx(Checkbox, { checked: true, sx: {
+                            paddingLeft: "1.5vw",
+                            color: "#22C55E",
+                            "&.Mui-checked": {
+                                color: "#22C55E",
+                            },
+                        } }), label: "Duplication Check sucessfully passed ", sx: { color: "#22C55E" } })] })) : (_jsx("div", __assign({ className: "form-encapsulate" }, { children: _jsxs("div", __assign({ className: "form-card-holder" }, { children: [notifyDataState && (_jsx(Notification, { open: notifyDataState.enable, type: notifyDataState.type, message: notifyDataState.message, duration: notifyDataState.duration, setOpen: function () { return resetNotificationData(); } })), _jsxs("div", { children: [_jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 0vw 2vw" }, { children: "For Bulk Duplication Check" })) }), _jsx("div", __assign({ style: { margin: "1vw 1vw 1vw 1vw" } }, { children: TEMPLATE_BUTTON.map(function (button) { return (_jsx(JobSeekerTempleteButton, { fileName: button.iconFileName, title: button.title }, button.title)); }) })), _jsx("div", { children: _jsxs(Typography, __assign({ variant: "h6", gutterBottom: true, component: "div", color: "black", display: "flex", justifyContent: "center" }, { children: [_jsx("hr", { className: "line" }), "( OR )", _jsx("hr", { className: "line" })] })) })] }), _jsx("div", { children: _jsx(Typography, __assign({ variant: "h4", gutterBottom: true, component: "div", color: "black", margin: "2vw 1vw 2vw 2vw" }, { children: "Enter the Details Manually" })) }), _jsx("div", __assign({ style: { marginLeft: "1vw" } }, { children: _jsx(Grid, __assign({ container: true, spacing: 3 }, { children: _jsx(Grid, __assign({ item: true, xs: 12 }, { children: _jsx("div", __assign({ className: "forms-button-container" }, { children: _jsx("div", { children: _jsxs(Button, __assign({ variant: "outlined", className: "save-draft-button", onClick: function () { return clearTable(); } }, { children: [_jsx(RefreshIcon, { sx: { transform: "rotate(260deg)" }, className: "generic-icon" }), "\u00A0", "\u00A0", "Clear Table"] })) }) })) })) })) })), _jsx("div", __assign({ style: { marginLeft: "2vw" } }, { children: _jsx(GridItem, { gridRef: gridRef, rowData: row, columnDefs: columnDefs, defaultColDef: defaultColDef, suppressRowClickSelection: true, groupSelectsChildren: true, rowSelection: "multiple", rowGroupPanelShow: "always", pivotPanelShow: "always", enableRangeSelection: true, pagination: false, onSelectionChanged: onSelectionChanged, onCellValueChanged: onCellValueChanged, fulfillUpload: fulfillUpload }) }))] })) }))) }));
 };
 export default JobSeekerAddProfile;

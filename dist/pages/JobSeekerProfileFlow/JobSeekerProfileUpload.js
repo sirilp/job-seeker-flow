@@ -354,7 +354,7 @@ var JobSeekerProfileUpload = function (props) {
                                     lg: "flex",
                                     xl: "flex",
                                 },
-                            } }, { children: [_jsx(Box, __assign({ textAlign: "left", className: classes.subText1 }, { children: imageName && acceptedFilesResume.length < 1 ? (_jsx("span", { children: imageName })) : (_jsx(Box, { children: acceptedFilesResume.map(function (file) { return (_jsx(Box, { children: file.path }, file.path || file.name)); }) })) })), _jsxs(Box, __assign({ textAlign: "left", className: classes.subText2 }, { children: [_jsx(Checkbox, __assign({}, label, { defaultChecked: true, color: "success" })), "Duplication Check with Hiringhood Completed"] }))] })) })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: callResumeUpload, handleBack: props.handleBack })) : null] })))
+                            } }, { children: [_jsx(Box, __assign({ textAlign: "left", className: classes.subText1 }, { children: imageName && acceptedFilesResume.length < 1 ? (_jsx("span", { children: imageName })) : (_jsx(Box, { children: acceptedFilesResume.map(function (file) { return (_jsx(Box, { children: file.path }, file.path || file.name)); }) })) })), _jsxs(Box, __assign({ textAlign: "left", className: classes.subText2 }, { children: [_jsx(Checkbox, __assign({}, label, { defaultChecked: true, color: "default" })), "Duplication Check with Hiringhood Completed"] }))] })) })), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: callResumeUpload, handleBack: props.handleBack })) : null] })))
             : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
 };
 export default JobSeekerProfileUpload;

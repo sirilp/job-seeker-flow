@@ -64,6 +64,7 @@ import { startJobSeekerWorkflow } from "../../services/JobSeekerService";
 import JobSeekerCompleteProfile from "../JobSeekerCompleteProfile/JobSeekerCompleteProfile";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 import { updateJobSeekerProfile } from "../../services/FormDataService";
+import JobSeekerAddProfile from "../JobSeekerAddProfile/JobSeekerAddProfile";
 var JobSeekerProfileReview = function (props) {
     var _a = React.useState(false), loader = _a[0], setLoader = _a[1];
     var _b = React.useState(false), checkout = _b[0], setCheckout = _b[1];
@@ -91,7 +92,7 @@ var JobSeekerProfileReview = function (props) {
     var renderCurrentSelection = function (currentSection) {
         switch (currentSection) {
             case 1:
-                return null;
+                return (_jsx(JobSeekerAddProfile, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
             case 2:
                 return (_jsx(JobSeekerProfileUpload, { profileDataId: userDataState.userData.profileId, hasButtons: false }));
             case 3:
@@ -194,7 +195,7 @@ var JobSeekerProfileReview = function (props) {
                 //     displayMessage={`Your Contest has been Published Successfully`}
                 // />
                 _jsx(_Fragment, {})) : (_jsxs(_Fragment, { children: [_jsx("div", __assign({ className: "stepper-container" }, { children: JobSeekerReviewArray.map(function (reviewData, index) { return (_jsx(_Fragment, { children: (userDataState.userData.workStatus === "Fresh Graduate" &&
-                                    index !== 4) || (userDataState.userData.workStatus !== "Fresh Graduate") && (_jsxs("div", __assign({ className: "review-card", style: currentIndex === index
+                                    index !== 4) || (userDataState.userData.workStatus !== "Fresh Graduate") ? (_jsxs("div", __assign({ className: "review-card", style: currentIndex === index
                                         ? {
                                             height: "auto",
                                             flexDirection: "column",
@@ -207,6 +208,6 @@ var JobSeekerProfileReview = function (props) {
                                                             setCurrentIndex(index);
                                                         else
                                                             setCurrentIndex(-1);
-                                                    } }, { children: currentIndex !== index ? (_jsx(AddIcon, {})) : (_jsx(RemoveIcon, {})) }))] }), currentIndex === index ? (_jsx("div", __assign({ style: { width: "100%" } }, { children: renderCurrentSelection(index + 1) }))) : null] }), index)) })); }) })), _jsx("div", __assign({ className: "review-divider" }, { children: _jsx(Divider, {}) })), loader ? (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) : (_jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx(Typography, { variant: "h6", noWrap: true, component: "div" }), _jsx(Typography, __assign({ variant: "h6", noWrap: true, component: "div" }, { children: _jsxs(Button, __assign({ variant: "contained", className: "next-button", onClick: submitAllDetails }, { children: ["Submit All Details", _jsx(ArrowForwardIosIcon, { className: "next-icon" })] })) }))] }))), _jsx(ConfirmationModel, { dialogAction: dialogAction, setDialogAction: setDialogAction, buttonRightFunction: apiCallStartJobSeekerWorkflow, buttonLeftFunction: cancelFunction })] })) })) })) }));
+                                                    } }, { children: currentIndex !== index ? (_jsx(AddIcon, {})) : (_jsx(RemoveIcon, {})) }))] }), currentIndex === index ? (_jsx("div", __assign({ style: { width: "100%" } }, { children: renderCurrentSelection(index + 1) }))) : null] }), index)) : null })); }) })), _jsx("div", __assign({ className: "review-divider" }, { children: _jsx(Divider, {}) })), loader ? (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) : (_jsxs("div", __assign({ className: "forms-button-container" }, { children: [_jsx(Typography, { variant: "h6", noWrap: true, component: "div" }), _jsx(Typography, __assign({ variant: "h6", noWrap: true, component: "div" }, { children: _jsxs(Button, __assign({ variant: "contained", className: "next-button", onClick: submitAllDetails }, { children: ["Submit All Details", _jsx(ArrowForwardIosIcon, { className: "next-icon" })] })) }))] }))), _jsx(ConfirmationModel, { dialogAction: dialogAction, setDialogAction: setDialogAction, buttonRightFunction: apiCallStartJobSeekerWorkflow, buttonLeftFunction: cancelFunction })] })) })) })) }));
 };
 export default JobSeekerProfileReview;

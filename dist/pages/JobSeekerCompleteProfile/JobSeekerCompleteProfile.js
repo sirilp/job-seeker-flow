@@ -73,7 +73,6 @@ var JobSeekerCompleteProfile = function (props) {
                     return [4 /*yield*/, getJobSeekerProfile(props.profileDataId || userDataState.userData.profileId)];
                 case 1:
                     profileDataFetched = _e.sent();
-                    console.log(profileDataFetched);
                     if ((_a = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _a === void 0 ? void 0 : _a.data) {
                         setFullName("".concat((_b = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _b === void 0 ? void 0 : _b.data.firstName, " ").concat((_c = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _c === void 0 ? void 0 : _c.data.lastName));
                     }
@@ -91,10 +90,8 @@ var JobSeekerCompleteProfile = function (props) {
                     return [4 /*yield*/, getJobSeekersDetails("", props.profileDataId || userDataState.userData.profileId)];
                 case 4:
                     profileDataFetched = _e.sent();
-                    console.log(profileDataFetched);
                     date = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data.data[0].matchedProfileLogsList[0].dateOfBirth;
                     setDob(moment(date).utc().format("DD-MM-YYYY"));
-                    console.log(dob);
                     console.log((_d = profileDataFetched === null || profileDataFetched === void 0 ? void 0 : profileDataFetched.data) === null || _d === void 0 ? void 0 : _d[0]);
                     return [3 /*break*/, 6];
                 case 5:
@@ -113,9 +110,6 @@ var JobSeekerCompleteProfile = function (props) {
     useEffect(function () {
         callPrefillData();
     }, []);
-    // const patchProfileDetails = (patchData: any) => {
-    //   // setDob(moment().utc().format('YYYY-MM-DD'))
-    // };
     var jobSeekerTabs = [
         {
             title: "Profile Uploading",
