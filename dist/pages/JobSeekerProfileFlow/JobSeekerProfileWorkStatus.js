@@ -134,7 +134,7 @@ var JobSeekerProfileWorkStatus = function (props) {
                         props.setOpen(true);
                         props.handleComplete(3);
                         // props.handleNext();
-                        if (jobStatus === WorkStatusType.FRESHER) {
+                        if (jobStatus === WorkStatusType.FRESHER || jobStatus === WorkStatusType.JOBLESS) {
                             props.setActiveStep(5);
                         }
                         else {
@@ -351,6 +351,7 @@ var JobSeekerProfileWorkStatus = function (props) {
         }
         else {
             setExperiencedDetails({
+                jobDurationType: patchObject.jobDurationType,
                 city: patchObject.city,
                 country: patchObject.country,
                 endClient: patchObject === null || patchObject === void 0 ? void 0 : patchObject.endClient,

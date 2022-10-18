@@ -149,7 +149,7 @@ var JobSeekerProfileDetails = function (props) {
                 case 0:
                     setLoader(true);
                     profileDetailsMap = buildDetailsPayload();
-                    if (!(profileDetailsMap.expectedCtc.expectedCtcLakh && profileDetailsMap.expectedCtc.expectedCtcThousand)) return [3 /*break*/, 5];
+                    if (!profileDetailsMap.expectedCtc.expectedCtcLakh) return [3 /*break*/, 5];
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);

@@ -64,7 +64,7 @@ import CurrentOffers from "./CurrentOffers/CurrentOffers";
 import { useStyles } from "./JobSeekerProfileFlowStyles";
 import Calendar from "../../components/Calendar/Calendar";
 import { getJobSeekerProfile, updateJobSeekerProfile, UploadFiles, } from "../../services/FormDataService";
-import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, WARNING_KEY, OFFER_LETTER, } from "../../constants";
+import { ERROR_KEY, SUCCESS_KEY, FORM_SUBMISSION_SUCCESS, WARNING_KEY, OFFER_LETTER, NUMBER_ONLY_REGEX, } from "../../constants";
 import { useAppSelector } from "../../services/StoreHooks";
 var JobSeekerProfileNoticePeriod = function (props) {
     var classes = useStyles();
@@ -303,24 +303,32 @@ var JobSeekerProfileNoticePeriod = function (props) {
                                                     maxLength: 1200,
                                                 },
                                             } })] }))] })), _jsx("div", __assign({ className: "notice-period-conditional" }, { children: noticeStatus === NoticeOptions[0] ? (_jsxs("div", { children: [_jsxs("p", { children: [LWD_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(Calendar, { setDate: setLastWorkingDate, status: true, value: lastWorkingDate, calendarDisabled: !props.hasButtons })] })) : noticeStatus === NoticeOptions[1] ? (_jsxs("div", { children: [_jsxs("p", { children: [OFFICIAL_NOTICE_PERIOD_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(TextField, { disabled: !props.hasButtons, className: classes.inputField, type: "number", label: OFFICIAL_NOTICE_PERIOD_TEXT, value: noticePeriod, onInput: function (e) {
+                                            var regex = NUMBER_ONLY_REGEX;
                                             if (Number(e.target.value) > 180 ||
                                                 Number(e.target.value) < 0) {
                                                 e.target.value = Math.max(0, parseInt(e.target.value))
                                                     .toString()
                                                     .slice(0, 2);
                                             }
+                                            if (!regex.test(e.target.value) && e.target.value !== "")
+                                                return false;
                                             setNoticePeriod(e.target.value);
                                         }, size: "small" })] })) : null })), noticeStatus !== "" ? (_jsxs(React.Fragment, { children: [_jsxs("div", __assign({ className: "job-change-field" }, { children: [_jsxs("p", { children: [CHANGE_REASON_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(TextField, { disabled: !props.hasButtons, type: "text", multiline: true, fullWidth: true, rows: 3, value: reasonOfJobChange, helperText: WORD_LIMIT_TEXT, onChange: function (e) { return setReasonOfJobChange(e.target.value); }, InputProps: {
                                                 inputProps: {
                                                     maxLength: 1200,
                                                 },
-                                            } })] })), _jsxs("div", __assign({ className: "notice-period-conditional" }, { children: [_jsxs("p", { children: [NEGOTIABLE_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(FormControl, { children: _jsxs(RadioGroup, __assign({ value: negotiableStatus, onChange: function (e) { return setNegotiableStatus(e.target.value); } }, { children: [YesNoOptions.map(function (option) { return (_jsx(FormControlLabel, { value: option, control: _jsx(Radio, {}), label: option, disabled: !props.hasButtons }, option)); }), noticeStatus === NoticeOptions[0] ? (_jsx(FormControlLabel, { value: BUYOUT_OPTION, control: _jsx(Radio, {}), label: BUYOUT_OPTION, disabled: !props.hasButtons })) : null] })) })] }))] })) : null, negotiableStatus === YesNoOptions[0] ? (_jsxs("div", __assign({ className: "notice-period-conditional" }, { children: [_jsxs("p", { children: [NEGOTIABLE_YES_TEXT, noticeStatus === NoticeOptions[1] ? (_jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))) : null] }), _jsx(TextField, { disabled: !props.hasButtons, className: classes.inputField, type: "number", label: NEGOTIABLE_LABEL, value: negotiablePeriod, onInput: function (e) {
-                                        if (Number(e.target.value) > 180 ||
+                                            } })] })), _jsxs("div", __assign({ className: "notice-period-conditional" }, { children: [_jsxs("p", { children: [NEGOTIABLE_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(FormControl, { children: _jsxs(RadioGroup, __assign({ value: negotiableStatus, onChange: function (e) { return setNegotiableStatus(e.target.value); } }, { children: [YesNoOptions.map(function (option) { return (_jsx(FormControlLabel, { value: option, control: _jsx(Radio, {}), label: option, disabled: !props.hasButtons }, option)); }), noticeStatus === NoticeOptions[0] ? (_jsx(FormControlLabel, { value: BUYOUT_OPTION, control: _jsx(Radio, {}), label: BUYOUT_OPTION, disabled: !props.hasButtons })) : null] })) })] }))] })) : null, negotiableStatus === YesNoOptions[0] ? (_jsxs("div", __assign({ className: "notice-period-conditional" }, { children: [_jsxs("p", { children: [NEGOTIABLE_YES_TEXT, noticeStatus === NoticeOptions[1] ? (_jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))) : null] }), _jsx(TextField, { disabled: !props.hasButtons, className: classes.inputField, type: "number", label: NEGOTIABLE_LABEL, value: negotiablePeriod, onChange: function (e) {
+                                        if (JSON.stringify(e.target.value).includes("."))
+                                            return false;
+                                        var regex = NUMBER_ONLY_REGEX;
+                                        if (Number(e.target.value) > 99 ||
                                             Number(e.target.value) < 0) {
                                             e.target.value = Math.max(0, parseInt(e.target.value))
                                                 .toString()
                                                 .slice(0, 2);
                                         }
+                                        if (!regex.test(e.target.value) && e.target.value !== "")
+                                            return false;
                                         setNegotiablePeriod(e.target.value);
                                     }, size: "small" })] }))) : null, noticeStatus === NoticeOptions[1] ? (_jsxs("div", __assign({ className: "notice-period-conditional" }, { children: [_jsxs("p", { children: [BUYOUT_QUESTION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: buyoutStatus, onChange: function (e) { return setBuyoutStatus(e.target.value); } }, { children: YesNoOptions.map(function (option) { return (_jsx(FormControlLabel, { value: option, control: _jsx(Radio, {}), label: option, disabled: !props.hasButtons }, option)); }) })) })] }))) : null, noticeStatus === NoticeOptions[0] || !currentlyWorking ? (_jsxs(React.Fragment, { children: [_jsxs("div", __assign({ className: "notice-period-conditional" }, { children: [_jsxs("p", { children: [OFFER_IN_HAND, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: offerStatus, onChange: function (e) { return setOfferStatus(e.target.value); } }, { children: YesNoOptions.map(function (option) { return (_jsx(FormControlLabel, { value: option, control: _jsx(Radio, {}), label: option, disabled: !props.hasButtons }, option)); }) })) })] })), offerStatus === YesNoOptions[1] ? (_jsxs("div", __assign({ className: "job-change-field" }, { children: [_jsxs("p", { children: [NO_OFFER_REASON, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }), _jsx(TextField, { disabled: !props.hasButtons, type: "text", multiline: true, fullWidth: true, rows: 3, value: reasonOfResignation, helperText: WORD_LIMIT_TEXT, onChange: function (e) { return setReasonOfResignation(e.target.value); }, InputProps: {
                                                 inputProps: {

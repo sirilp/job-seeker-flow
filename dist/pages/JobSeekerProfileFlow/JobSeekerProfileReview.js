@@ -194,8 +194,8 @@ var JobSeekerProfileReview = function (props) {
                 //     setCompleted={props.setCompleted}
                 //     displayMessage={`Your Contest has been Published Successfully`}
                 // />
-                _jsx(_Fragment, {})) : (_jsxs(_Fragment, { children: [_jsx("div", __assign({ className: "stepper-container" }, { children: JobSeekerReviewArray.map(function (reviewData, index) { return (_jsx(_Fragment, { children: (userDataState.userData.workStatus === "Fresh Graduate" &&
-                                    index !== 4) || (userDataState.userData.workStatus !== "Fresh Graduate") ? (_jsxs("div", __assign({ className: "review-card", style: currentIndex === index
+                _jsx(_Fragment, {})) : (_jsxs(_Fragment, { children: [_jsx("div", __assign({ className: "stepper-container" }, { children: JobSeekerReviewArray.map(function (reviewData, index) { return (_jsx(_Fragment, { children: ((userDataState.userData.workStatus === 'Fresh Graduate' || userDataState.userData.workStatus === "Not-Working") &&
+                                    index !== 4) || (userDataState.userData.workStatus === "Working") ? (_jsxs("div", __assign({ className: "review-card", style: currentIndex === index
                                         ? {
                                             height: "auto",
                                             flexDirection: "column",

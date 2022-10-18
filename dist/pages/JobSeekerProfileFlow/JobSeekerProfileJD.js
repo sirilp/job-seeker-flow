@@ -123,12 +123,12 @@ var JobSeekerProfileJD = function (props) {
                         setMenuForm((_l = (_k = jdMarkup === null || jdMarkup === void 0 ? void 0 : jdMarkup.data) === null || _k === void 0 ? void 0 : _k.data) === null || _l === void 0 ? void 0 : _l.components);
                         setLoader(false);
                     }
-                    else {
-                        setLoader(false);
-                        setGotData(true);
-                    }
-                    _m.label = 3;
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 3:
+                    setLoader(false);
+                    setGotData(true);
+                    _m.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
     }); };
@@ -185,7 +185,7 @@ var JobSeekerProfileJD = function (props) {
         });
     }); };
     var handleBack = function () {
-        if (userDataState.userData.workStatus === 'Fresh Graduate') {
+        if (userDataState.userData.workStatus === 'Fresh Graduate' || userDataState.userData.workStatus === "Not-Working") {
             props.setActiveStep(3);
         }
         else {
