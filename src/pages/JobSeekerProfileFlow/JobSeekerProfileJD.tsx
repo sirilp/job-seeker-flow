@@ -87,10 +87,10 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
         setMenuForm(jdMarkup?.data?.data?.components);
         setLoader(false);
       } 
-      else {
-        setLoader(false);
-        setGotData(true);
-      }
+    }
+    else {
+      setLoader(false);
+      setGotData(true);
     }
   };
 
@@ -136,7 +136,7 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
   };
 
   const handleBack = () =>{
-     if(userDataState.userData.workStatus === 'Fresh Graduate'){
+     if(userDataState.userData.workStatus === 'Fresh Graduate' || userDataState.userData.workStatus === "Not-Working"){
       props.setActiveStep(3);
      } else {
       props.setActiveStep(4);

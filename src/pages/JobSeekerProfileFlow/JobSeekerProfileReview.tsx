@@ -196,8 +196,8 @@ const JobSeekerProfileReview: FC<any> = (props): ReactElement => {
                 <div className="stepper-container">
                   {JobSeekerReviewArray.map((reviewData, index) => (
                     <>
-                      {(userDataState.userData.workStatus === "Fresh Graduate" &&
-                        index !== 4) || (userDataState.userData.workStatus !== "Fresh Graduate") ? (
+                      {((userDataState.userData.workStatus === 'Fresh Graduate' || userDataState.userData.workStatus === "Not-Working") &&
+                        index !== 4) || (userDataState.userData.workStatus === "Working") ? (
                           <div
                             className="review-card"
                             key={index}

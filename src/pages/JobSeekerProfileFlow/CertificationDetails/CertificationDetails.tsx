@@ -106,23 +106,29 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
         .required("offer details required")
         .min(1, "add at least one offer"),
     }),
-    onSubmit: (values, { setSubmitting }) => { },
+    onSubmit: (values, { setSubmitting }) => {},
     enableReinitialize: true,
   });
 
   const handleServiceAdd = (prefillValue?: any) => {
     certificationDetailsForm.setValues((prevValues) => ({
-      members: [...prevValues.members, { ...initialValuesForForm, ...prefillValue }],
+      members: [
+        ...prevValues.members,
+        { ...initialValuesForForm, ...prefillValue },
+      ],
     }));
-    setServiceList((prevState: any) => [...prevState, { ...initialValuesForForm, ...prefillValue }]);
+    setServiceList((prevState: any) => [
+      ...prevState,
+      { ...initialValuesForForm, ...prefillValue },
+    ]);
   };
 
   const AddMultipleService = (prefillArray?: any[]) => {
-    if(prefillArray) {
+    if (prefillArray) {
       certificationDetailsForm.setValues((prevValues) => ({
         members: [...prefillArray],
       }));
-      setServiceList((prevState: any) => [...prefillArray] );
+      setServiceList((prevState: any) => [...prefillArray]);
     }
   };
 
@@ -155,8 +161,8 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
       props.setDataMessage("Please select issue date");
       props.setOpen(true);
     } else if (
-      !certificationDetailsForm.values.members[index].credentialStatus
-      && !certificationDetailsForm.values.members[index].expirationDate
+      !certificationDetailsForm.values.members[index].credentialStatus &&
+      !certificationDetailsForm.values.members[index].expirationDate
     ) {
       props.setType(WARNING_KEY);
       props.setDataMessage("Please select expiration date");
@@ -165,7 +171,9 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
       props.setType(WARNING_KEY);
       props.setDataMessage("Please enter the certification name");
       props.setOpen(true);
-    } else if (!certificationDetailsForm.values.members[index].issuingOrganization) {
+    } else if (
+      !certificationDetailsForm.values.members[index].issuingOrganization
+    ) {
       props.setType(WARNING_KEY);
       props.setDataMessage("Please enter the issuing organisation's name");
       props.setOpen(true);
@@ -177,13 +185,25 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
       props.setType(WARNING_KEY);
       props.setDataMessage("Please enter the credentialURL");
       props.setOpen(true);
-    }
-    else {
+    } else if (
+      !certificationDetailsForm.values.members[index].credentialStatus
+    ) {
+      if (
+        certificationDetailsForm.values.members[index].issueDate.getTime() >
+        certificationDetailsForm.values.members[index].expirationDate.getTime()
+      ) {
+        props.setType(WARNING_KEY);
+        props.setDataMessage("Please select valid expiration date");
+        props.setOpen(true);
+      }
+    } else {
       certificationDetailsForm.setFieldValue(
         `members[${index}].saveStatus`,
         true
       );
-      props.setCertificationData(certificationDetailsForm.values.members[index]);
+      props.setCertificationData(
+        certificationDetailsForm.values.members[index]
+      );
     }
   };
 
@@ -272,7 +292,9 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                         required
                         disabled={props.disabled}
                         id={FormAttributes.issuingOrganization.id}
-                        placeholder={FormAttributes.issuingOrganization.placeholder}
+                        placeholder={
+                          FormAttributes.issuingOrganization.placeholder
+                        }
                         label={FormAttributes.issuingOrganization.label}
                         className={classes.boxInputField}
                         size="small"
@@ -333,7 +355,10 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                       <Calendar
                         setDate={(date) => handleIssueDate(date, index)}
                         status={true}
-                        value={certificationDetailsForm.values.members[index].issueDate}
+                        value={
+                          certificationDetailsForm.values.members[index]
+                            .issueDate
+                        }
                         calendarDisabled={props.disabled}
                       />
                     </Grid>
@@ -357,7 +382,10 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
                           certificationDetailsForm.values.members[index]
                             .credentialStatus || props.disabled
                         }
-                        value={certificationDetailsForm.values.members[index].expirationDate}
+                        value={
+                          certificationDetailsForm.values.members[index]
+                            .expirationDate
+                        }
                       />
                     </Grid>
                     <Grid

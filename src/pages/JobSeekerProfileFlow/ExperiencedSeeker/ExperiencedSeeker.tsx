@@ -95,6 +95,8 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
 
     useEffect(() => {
       if (props.experiencedPrefillData) {
+        if (props.experiencedPrefillData?.jobDurationType)
+          experiencedSeekerForm.setFieldValue("jobDurationType", props.experiencedPrefillData?.jobDurationType)
         if (props.experiencedPrefillData?.city)
           experiencedSeekerForm.setFieldValue(
             "city",

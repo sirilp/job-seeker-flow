@@ -133,7 +133,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
         props.setOpen(true);
         props.handleComplete(3);
         // props.handleNext();
-        if(jobStatus === WorkStatusType.FRESHER){
+        if(jobStatus === WorkStatusType.FRESHER || jobStatus === WorkStatusType.JOBLESS){
           props.setActiveStep(5)
         } else {
           props.setActiveStep(4);
@@ -353,6 +353,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
       });
     } else {
       setExperiencedDetails({
+        jobDurationType: patchObject.jobDurationType,
         city: patchObject.city,
         country: patchObject.country,
         endClient: patchObject?.endClient,

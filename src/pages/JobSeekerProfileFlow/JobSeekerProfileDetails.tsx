@@ -156,8 +156,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   const submitDetails = async () => {
     setLoader(true);
     const profileDetailsMap = buildDetailsPayload();
-
-    if (profileDetailsMap.expectedCtc.expectedCtcLakh && profileDetailsMap.expectedCtc.expectedCtcThousand) {
+    if (profileDetailsMap.expectedCtc.expectedCtcLakh) {
       try {
         const profileDetailsResponse = await updateJobSeekerProfile({
           profileId: props.profileDataId || userDataState.userData.profileId,

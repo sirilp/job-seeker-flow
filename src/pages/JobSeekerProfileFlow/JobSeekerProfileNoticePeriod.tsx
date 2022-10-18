@@ -43,6 +43,7 @@ import {
   FORM_SUBMISSION_SUCCESS,
   WARNING_KEY,
   OFFER_LETTER,
+  NUMBER_ONLY_REGEX,
 } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../services/StoreHooks";
 
@@ -71,7 +72,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
       files,
     };
   };
-  
+
   const buildDetailsPayload = () => {
     return {
       currentlyWorking,
@@ -103,16 +104,18 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
       try {
         const fileIds: { employerName: string; id: string }[] = [];
 
-        const uploadFiles: Array<any> = profileNoticePeriodMap.offerData.filter((elt) => {
-          if(elt.letterFiles[0]?.name){
-            return true;
-          } else {
-            fileIds.push({
-              employerName: elt.employerName,
-              id: elt.offerDocumentId,
-            });
+        const uploadFiles: Array<any> = profileNoticePeriodMap.offerData.filter(
+          (elt) => {
+            if (elt.letterFiles[0]?.name) {
+              return true;
+            } else {
+              fileIds.push({
+                employerName: elt.employerName,
+                id: elt.offerDocumentId,
+              });
+            }
           }
-        });
+        );
 
         await Promise.all(
           uploadFiles.map(async (offer) => {
@@ -127,12 +130,13 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
         );
 
         profileNoticePeriodMap.offerData.forEach((offer, index) => {
-          const idData = fileIds.find((files) => files.employerName === offer.employerName);
+          const idData = fileIds.find(
+            (files) => files.employerName === offer.employerName
+          );
           profileNoticePeriodMap.offerData[index].offerDocumentId = idData?.id;
           profileNoticePeriodMap.offerData[index].saveStatus = false;
           profileNoticePeriodMap.offerData[index].fieldDisabled = false;
         });
-
       } catch (error) {
         props.setOpen(true);
         props.setType(ERROR_KEY);
@@ -303,7 +307,12 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     {JOINING_DATE_TEXT}
                     <span className="asterisk-span"> *</span>
                   </p>
-                  <Calendar setDate={setJoiningDate} status={true} value={joiningDate} calendarDisabled={!props.hasButtons} />
+                  <Calendar
+                    setDate={setJoiningDate}
+                    status={true}
+                    value={joiningDate}
+                    calendarDisabled={!props.hasButtons}
+                  />
                 </div>
                 <div className="job-change-field">
                   <p>
@@ -334,7 +343,12 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     {LWD_TEXT}
                     <span className="asterisk-span"> *</span>
                   </p>
-                  <Calendar setDate={setLastWorkingDate} status={true} value={lastWorkingDate} calendarDisabled={!props.hasButtons}/>
+                  <Calendar
+                    setDate={setLastWorkingDate}
+                    status={true}
+                    value={lastWorkingDate}
+                    calendarDisabled={!props.hasButtons}
+                  />
                 </div>
               ) : noticeStatus === NoticeOptions[1] ? (
                 <div>
@@ -349,6 +363,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     label={OFFICIAL_NOTICE_PERIOD_TEXT}
                     value={noticePeriod}
                     onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const regex = NUMBER_ONLY_REGEX;
                       if (
                         Number(e.target.value) > 180 ||
                         Number(e.target.value) < 0
@@ -357,6 +372,9 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                           .toString()
                           .slice(0, 2);
                       }
+                      if (!regex.test(e.target.value) && e.target.value !== "")
+                        return false;
+
                       setNoticePeriod(e.target.value);
                     }}
                     size="small"
@@ -433,15 +451,19 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                   type="number"
                   label={NEGOTIABLE_LABEL}
                   value={negotiablePeriod}
-                  onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if(JSON.stringify(e.target.value).includes(".")) return false;
+                    const regex = NUMBER_ONLY_REGEX;
                     if (
-                      Number(e.target.value) > 180 ||
+                      Number(e.target.value) > 99 ||
                       Number(e.target.value) < 0
                     ) {
                       e.target.value = Math.max(0, parseInt(e.target.value))
                         .toString()
                         .slice(0, 2);
                     }
+                    if (!regex.test(e.target.value) && e.target.value !== "")
+                    return false;
                     setNegotiablePeriod(e.target.value);
                   }}
                   size="small"
@@ -531,7 +553,7 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                         setDataMessage={props.setDataMessage}
                         prefilData={
                           props.profileDataId ||
-                            userDataState.userData.profileId
+                          userDataState.userData.profileId
                             ? offerData
                             : null
                         }
