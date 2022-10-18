@@ -61,11 +61,11 @@ var useStyles = makeStyles({
     },
     leftDiv: {
         position: "absolute",
-        right: "55vw",
+        right: "40vw",
     },
     rightDiv: {
         position: "absolute",
-        left: "55vw",
+        left: "49vw",
     },
     leftItem1: {
         borderColor: "#266E88",
