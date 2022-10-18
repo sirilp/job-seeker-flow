@@ -451,9 +451,7 @@ export var CustomDOBInputBox = function (params) {
             params.setValue("".concat(dd, "/").concat(mm, "/").concat(yy));
         }
     };
-    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", 
-            // views={["year", "month", "day"]}
-            value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
+    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", views: ["year", "month", "day"], value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
                 handleChange(newValue);
             }, maxDate: moment().subtract(18, "year"), renderInput: function (_a) {
                 var inputRef = _a.inputRef, inputProps = _a.inputProps, InputProps = _a.InputProps;

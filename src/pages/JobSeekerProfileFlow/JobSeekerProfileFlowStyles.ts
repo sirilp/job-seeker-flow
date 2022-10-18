@@ -103,11 +103,11 @@ export const useStyles = makeStyles(() => ({
       paddingLeft: '0px !important'
     },
     boxInputField: {
-      width: '100%',
+      width: '80%',
       [`& fieldset`]: {
         borderRadius: 12,
         height: 45,
-        width: '100%'
+        width: '95%'
       },
     }
 }));

@@ -573,7 +573,7 @@ export const CustomDOBInputBox = (params: any) => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="Custom input"
-        // views={["year", "month", "day"]}
+        views={["year", "month", "day"]}
         value={date}
         inputFormat="DD/MM/YYYY"
         onChange={(newValue) => {

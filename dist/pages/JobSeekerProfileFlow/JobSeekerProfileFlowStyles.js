@@ -105,12 +105,12 @@ export var useStyles = makeStyles(function () {
             paddingLeft: '0px !important'
         },
         boxInputField: (_b = {
-                width: '100%'
+                width: '80%'
             },
             _b["& fieldset"] = {
                 borderRadius: 12,
                 height: 45,
-                width: '100%'
+                width: '95%'
             },
             _b)
     });
