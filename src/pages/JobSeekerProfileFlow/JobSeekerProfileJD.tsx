@@ -145,17 +145,20 @@ const JobSeekerProfileJD: FC<any> = (props): ReactElement => {
 
   return (
     <div className="job-seeker-profile-content">
-      { !gotData ?
-      (<Form
+
+      <Form
         ref={myRefTag}
         form={menuForm}
         submission={prefillDetails}
         onChange={(schema: any) => handleChange(schema)}
-      />) : (
-        <div className="head-title-text">
-        JD Specific Questions has not been configured for this contest
-      </div>
-      ) } 
+      />
+      {gotData && 
+       <div className="head-title-text">
+       JD Specific Questions has not been configured for this contest
+     </div>
+      }
+        
+     
       {props.hasButtons ? (
             <PreviousNextButtons
               handleNext={submitFormData}
