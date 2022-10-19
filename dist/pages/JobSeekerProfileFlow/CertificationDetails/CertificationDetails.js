@@ -157,13 +157,12 @@ var CertificationDetails = function (props) {
             props.setDataMessage("Please enter the credentialURL");
             props.setOpen(true);
         }
-        else if (!certificationDetailsForm.values.members[index].credentialStatus) {
-            if (certificationDetailsForm.values.members[index].issueDate.getTime() >
+        else if (!certificationDetailsForm.values.members[index].credentialStatus &&
+            certificationDetailsForm.values.members[index].issueDate.getTime() >
                 certificationDetailsForm.values.members[index].expirationDate.getTime()) {
-                props.setType(WARNING_KEY);
-                props.setDataMessage("Please select valid expiration date");
-                props.setOpen(true);
-            }
+            props.setType(WARNING_KEY);
+            props.setDataMessage("Please select valid expiration date");
+            props.setOpen(true);
         }
         else {
             certificationDetailsForm.setFieldValue("members[".concat(index, "].saveStatus"), true);
