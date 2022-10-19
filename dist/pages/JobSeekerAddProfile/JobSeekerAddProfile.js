@@ -208,6 +208,7 @@ var JobSeekerAddProfile = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
+            suppressKeyboardEvent: function (params) { return true; },
             cellStyle: { borderRightColor: "#DFE5FF" },
         };
     }, []);
@@ -218,10 +219,27 @@ var JobSeekerAddProfile = function (props) {
         }
     }, []);
     var onCellValueChanged = useCallback(function (event) {
+        var _a, _b, _c, _d;
         // console.log(event);
-        // if (gridRef.current) {
-        //   const rowSelection = gridRef.current.api.getSelectedRows();
-        // }
+        // console.log(gridRef.current);
+        if (event.column.colDef.field == "pdcStatus") {
+            if (event.oldValue != event.newValue) {
+                (_b = (_a = gridRef === null || gridRef === void 0 ? void 0 : gridRef.current) === null || _a === void 0 ? void 0 : _a.api) === null || _b === void 0 ? void 0 : _b.refreshCells({
+                    force: true,
+                    suppressFlash: true,
+                    columns: ["dob", "lastFiveDigitOfPan", "fdcStatus"],
+                });
+            }
+        }
+        if (event.column.colDef.field == "fdcStatus") {
+            if (event.oldValue != event.newValue) {
+                (_d = (_c = gridRef === null || gridRef === void 0 ? void 0 : gridRef.current) === null || _c === void 0 ? void 0 : _c.api) === null || _d === void 0 ? void 0 : _d.refreshCells({
+                    force: true,
+                    suppressFlash: true,
+                    columns: ["uploadProfile"],
+                });
+            }
+        }
     }, []);
     var clearTable = function () {
         var _a;
