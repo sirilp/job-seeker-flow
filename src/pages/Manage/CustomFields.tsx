@@ -51,6 +51,13 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Calendar from "../../components/Calendar/Calendar";
 import clsx from "clsx";
+import { mainStages, subStages } from "./ManageConstants";
+import { manageJobseekerPatch } from "../../services/JobSeekerService";
+import { useAppDispatch } from "../../services/StoreHooks";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import moment from "moment";
 
 const useStyles = makeStyles(() => ({
   iconColor: {
@@ -347,75 +354,59 @@ export const Icons = (params) => {
 };
 
 export const MainStageDropDown = (params: any) => {
-  // console.log("Vetting custom feild", params);
-  const Passed = {
-    option: "passed",
-    color: "#22C55E",
-    title: "Success",
-    body: "Passed",
-  };
-
-  const Pending = {
-    option: "pending",
-    color: "#ff781f",
-    title: "",
-    body: "Pending",
-  };
-  const Failed = {
-    option: "failed",
-    color: "#EF4444",
-    title: "",
-    body: "Failed",
-  };
-  const [option, setOption] = useState({
-    option: "",
-    color: "",
-    title: "",
-    body: "",
-  });
-  useEffect(() => {
-    console.log(params.getValue());
-    if (params.getValue() === null || "") {
-      setOption({
-        option: "",
-        color: "",
-        title: "",
-        body: "",
-      });
-    } else if (params.getValue() === "passed") {
-      setOption(Passed);
-    } else if (params.getValue() === "pending") {
-      setOption(Pending);
-    } else if (params.getValue() === "failed") {
-      setOption(Failed);
-    }
-  }, []);
-
+  const dispatch = useAppDispatch();
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
-  const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
+  const [mainStageSelected, setMainStageSelected] = useState<any>(
+    params.data.jobSeekerMainStage
+  );
 
-  const [message, setMessage] = useState("");
-  const handleChange = (event: any) => {
-    params.setValue(event.target.value);
-    if (event.target.value == "passed") {
-      console.log("Can call Api to change status to Passed");
-      setOption(Passed);
-    } else if (event.target.value == "pending") {
-      setOption(Pending);
-    } else if (event.target.value == "failed") {
-      setOption(Failed);
-    } else if (event.target.value == "") {
-      setOption({
-        option: "",
-        color: "",
-        title: "",
-        body: "",
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
+  const handleChange = async (event: any) => {
+    let jobSeekerId = params.data._id;
+    let payload = {
+      jobSeekerMainStage: event.target.value,
+      jobSeekerSubStage: "N/A",
+      jobSeekerComment: "N/A",
+    };
+    const response = await manageJobseekerPatch(jobSeekerId, payload);
+    console.log(response);
+    if (response.data.success) {
+      params.setValue(event.target.value);
+      params.refreshCell();
+      setMainStageSelected(event.target.value);
+      dispatchNotificationData({
+        enable: true,
+        type: "success",
+        message: "MainStage Updated Successfully ",
+        duration: 4000,
+      });
+
+      console.log(params);
+    } else {
+      params.setValue(params.data.jobSeekerMainStage);
+      params.refreshCell();
+      setMainStageSelected(mainStageSelected);
+      dispatchNotificationData({
+        enable: true,
+        type: "error",
+        message: "MainStage Not Updated Please Try Again ",
+        duration: 4000,
       });
     }
   };
-  const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
 
   return (
     <>
@@ -423,17 +414,173 @@ export const MainStageDropDown = (params: any) => {
         <select
           id={id}
           className={classes.dropdown}
-          value={option.option}
           onChange={handleChange}
+          defaultValue={mainStageSelected}
         >
-          <option value="">NA</option>
-          <option value="passed">Passed</option>
-          <option value="pending">Pending</option>
-          <option value="failed">Failed</option>
+          {mainStages.map((item) => (
+            <option value={item.value}>{item.title}</option>
+          ))}
         </select>
+        {/* {dummyState ? <SubStageDropDown mainStage={mainStage} /> : null} */}
       </div>
     </>
   );
+};
+
+export const SubStageDropDown = (params: any) => {
+  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
+  const initalValue: string = params.data.jobSeekerSubStage;
+  const [subStageSelected, setSubStageSelected] = useState<any>(initalValue);
+  const dispatch = useAppDispatch();
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
+  const [mainStageVal, setMainStageVal] = useState<any>(
+    params.data.jobSeekerMainStage
+  );
+
+  const handleChange = async (event: any) => {
+    setMainStageVal(params.data.jobSeekerMainStage);
+    let jobSeekerId = params.data._id;
+    let payload = {
+      jobSeekerSubStage: event.target.value,
+      jobSeekerComment: "N/A",
+    };
+    const response = await manageJobseekerPatch(jobSeekerId, payload);
+    if (response.data.success) {
+      params.setValue(event.target.value);
+      params.refreshCell();
+      dispatchNotificationData({
+        enable: true,
+        type: "success",
+        message: "SubStage Updated Successfully ",
+        duration: 4000,
+      });
+    } else {
+      params.setValue(params.data.jobSeekerSubStage);
+      dispatchNotificationData({
+        enable: true,
+        type: "error",
+        message: "SubStage not Updated Please Try Again",
+        duration: 4000,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (params.data.jobSeekerSubStage)
+      setSubStageSelected(params.data.jobSeekerMainStage);
+    if (params.data.jobSeekerMainStage)
+      setMainStageVal(params.data.jobSeekerMainStage);
+  }, [params]);
+  const classes = useStyles();
+  console.log("test me");
+  console.log(params);
+  if (mainStageVal)
+    return (
+      <>
+        <div>
+          <select
+            id={id}
+            className={classes.dropdown}
+            onChange={handleChange}
+            defaultValue={params.data.jobSeekerSubStage}
+          >
+            {mainStageVal
+              ? subStages[mainStageVal]["subStages"].map((item) => (
+                  <option value={item.value}>{item.title}</option>
+                ))
+              : null}
+          </select>
+        </div>
+      </>
+    );
+  else return null;
+};
+
+export const SubStageCommentsDropDown = (params: any) => {
+  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
+  const [mainStageVal, setMainStageVal] = useState<any>("");
+  const [subStageVal, setSubStageVal] = useState<any>("");
+  const dispatch = useAppDispatch();
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
+  const handleChange = async (event: any) => {
+    console.log(params);
+    let jobSeekerId = params.data._id;
+    let payload = {
+      jobSeekerComment: event.target.value,
+    };
+    const response = await manageJobseekerPatch(jobSeekerId, payload);
+    if (response.data.success) {
+      params.setValue(event.target.value);
+      params.refreshCell();
+      dispatchNotificationData({
+        enable: true,
+        type: "success",
+        message: "Comment Updated Successfully ",
+        duration: 4000,
+      });
+    } else {
+      params.setValue(params.data.jobSeekerComment);
+      dispatchNotificationData({
+        enable: true,
+        type: "error",
+        message: "Comment Not Updated Please Try Again ",
+        duration: 4000,
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log(params);
+    if (params.data.jobSeekerMainStage && params.data.jobSeekerSubStage) {
+      setMainStageVal(params.data.jobSeekerMainStage);
+      setSubStageVal(params.data.jobSeekerSubStage);
+    }
+  }, [params]);
+  const classes = useStyles();
+  if (mainStageVal && subStageVal)
+    return (
+      <>
+        <div>
+          <select
+            id={id}
+            className={classes.dropdown}
+            onChange={handleChange}
+            defaultValue={params.data.jobSeekerComment}
+          >
+            {mainStageVal && subStageVal
+              ? subStages[mainStageVal][subStageVal].map((item) => (
+                  <option value={item.value}>{item.title}</option>
+                ))
+              : null}
+          </select>
+        </div>
+      </>
+    );
+  else return null;
 };
 
 export const ViewAssessments = (params) => {
@@ -894,17 +1041,70 @@ export const ViewAssessments = (params) => {
   );
 };
 
-export const Interview = (params) => {
+export const Interview = (params: any) => {
   const classes = useStyles();
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
+  const [nextInterviewDate, setNextInterviewDate] = useState<any>("");
   const times = ["11:00am to 01:00pm", "03:00pm to 06:00pm"];
+  const [dateValue, setDateValue] = React.useState<any>(moment());
+  const dispatch = useAppDispatch();
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
+  const handleDateChange = async (newValue: any) => {
+    const dd = ("0" + newValue.$D).slice(-2);
+    const mm = ("0" + (newValue.$M + 1)).slice(-2);
+    const yy = newValue.$y;
+    // Date picker is handling the date in DD/MM/YYYY format
+    console.log(`${mm}/${dd}/${yy}`);
+    setDateValue(`${dd}/${mm}/${yy}`);
+  };
+
+  const handleSchedule = async () => {
+    let jobSeekerId = params.data._id;
+    let payload = {
+      nextInterviewDate: dateValue,
+    };
+    const response = await manageJobseekerPatch(jobSeekerId, payload);
+    console.log(response);
+    if (response.data.success) {
+      params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
+      params.refreshCell();
+      setToggleDrawer(false);
+      dispatchNotificationData({
+        enable: true,
+        type: "success",
+        message: "Interview Date is Successfully Scheduled",
+        duration: 4000,
+      });
+
+      console.log(params);
+    } else {
+      params.setValue(params.data.nextInterviewDate);
+      params.refreshCell();
+      dispatchNotificationData({
+        enable: true,
+        type: "error",
+        message: "Interview Date is Not Scheduled Please Try Again ",
+        duration: 4000,
+      });
+    }
+  };
 
   const Card = (props) => {
     const handleOnChange = (e) => {
       if (e.target.checked) {
         const time = e.target.value;
-        alert(e.target.value);
       }
     };
     return (
@@ -921,7 +1121,16 @@ export const Interview = (params) => {
         <Box className={classes.section3}>
           <p>Choose Date</p>
           <Box>
-            <Calendar status={true} />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DesktopDatePicker
+                label="Choose Date"
+                inputFormat="DD/MM/YYYY"
+                value={moment(dateValue, "DD-MM-YYYY").format("MM-DD-YYYY")}
+                onChange={handleDateChange}
+                disablePast
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
           </Box>
         </Box>
 
@@ -937,6 +1146,11 @@ export const Interview = (params) => {
               />
             ))}
           </FormGroup>
+        </Box>
+        <Box p={1} className={classes.timeSlotTitleContainer}>
+          <Button variant="contained" onClick={handleSchedule}>
+            Schedule
+          </Button>
         </Box>
       </Grid>
     );
@@ -959,6 +1173,21 @@ export const Interview = (params) => {
       <Drawer anchor="right" open={toggleDrawer} onClose={handleClose}>
         <Card handleCloseIcon={handleClose} />
       </Drawer>
+    </div>
+  );
+};
+
+export const Reward = (params: any) => {
+  const [disable, setDisable] = useState<any>(params.data.sendReward);
+  return (
+    <div>
+      <Button
+        size="small"
+        variant="contained"
+        sx={{ background: "#4D6CD9", borderRadius: "15px", height: "25px" }}
+      >
+        Reward
+      </Button>
     </div>
   );
 };

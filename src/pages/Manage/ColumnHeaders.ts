@@ -8,6 +8,9 @@ import {
   Interview,
   ResumeUploaded,
   ViewAssessments,
+  SubStageDropDown,
+  SubStageCommentsDropDown,
+  Reward,
 } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 
@@ -223,6 +226,15 @@ export const LISTING_GENERIC_HEADERS = [
     hide: false,
     filter: "agTextColumnFilter",
     cellRenderer: MainStageDropDown,
+    valueGetter: (params) => {
+      return params.data.jobSeekerMainStage;
+    },
+    valueSetter: (params: any) => {
+      params.data.jobSeekerComment = "N/A";
+      params.data.jobSeekerSubStage = "N/A";
+      params.data.jobSeekerMainStage = params.newValue;
+      return true;
+    },
     filterParams: {
       buttons: ["apply", "clear"],
     },
@@ -236,6 +248,15 @@ export const LISTING_GENERIC_HEADERS = [
     field: "jobSeekerSubStage",
     hide: false,
     filter: "agTextColumnFilter",
+    cellRenderer: SubStageDropDown,
+    valueGetter: (params) => {
+      return params.data.jobSeekerMainStage;
+    },
+    valueSetter: (params: any) => {
+      params.refresh = true;
+      params.data.jobSeekerSubStage = params.newValue;
+      return true;
+    },
     filterParams: {
       buttons: ["apply", "clear"],
     },
@@ -249,6 +270,14 @@ export const LISTING_GENERIC_HEADERS = [
     field: "jobSeekerComment",
     hide: false,
     filter: "agTextColumnFilter",
+    cellRenderer: SubStageCommentsDropDown,
+    valueGetter: (params) => {
+      return params.data.jobSeekerSubStage;
+    },
+    valueSetter: (params: any) => {
+      params.data.jobSeekerComment = params.newValue;
+      return true;
+    },
     filterParams: {
       buttons: ["apply", "clear"],
     },
@@ -261,6 +290,10 @@ export const LISTING_GENERIC_HEADERS = [
     headerName: "Interview Scheduling",
     field: "interviewScheduling",
     cellRenderer: Interview,
+    valueSetter: (params: any) => {
+      params.data.nextInterviewDate = params.newValue;
+      return true;
+    },
     hide: false,
     minWidth: 230,
   },
@@ -291,7 +324,10 @@ export const LISTING_GENERIC_HEADERS = [
     headerName: "Send Reward",
     field: "sendReward",
     hide: false,
-
+    cellRenderer: Reward,
+    valueGetter: (params) => {
+      return params.data.sendReward;
+    },
     minWidth: 230,
   },
 ];

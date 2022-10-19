@@ -102,7 +102,11 @@ const Manage = (props) => {
       let mapData = response.data.data.content;
       let result = mapData.map((item, index) => {
         item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
-
+        if (item.nextInterviewDate) {
+          item.nextInterviewDate = moment(item.nextInterviewDate).format(
+            "DD-MM-YYYY"
+          );
+        }
         let Data = {
           ...item,
           ...item.matchedProfileLogsList[0],
@@ -151,7 +155,7 @@ const Manage = (props) => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
-      cellStyle: { "borderRightColor": "#DFE5FF" },
+      cellStyle: { borderRightColor: "#DFE5FF" },
     };
   }, []);
 

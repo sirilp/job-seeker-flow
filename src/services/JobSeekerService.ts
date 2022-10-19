@@ -269,3 +269,23 @@ export const getJobSeekersDetails = async (
       console.log(error);
     });
 };
+
+export const manageJobseekerPatch = async (
+  jobSeekrId: string,
+  payLoad: any
+) => {
+  return await axios
+    .patch(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seeker/${jobSeekrId}`,
+      payLoad,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+      return error;
+    });
+};
