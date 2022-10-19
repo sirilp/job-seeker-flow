@@ -58,6 +58,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import moment from "moment";
+import SendIcon from "@mui/icons-material/Send";
 
 const useStyles = makeStyles(() => ({
   iconColor: {
@@ -484,8 +485,6 @@ export const SubStageDropDown = (params: any) => {
       setMainStageVal(params.data.jobSeekerMainStage);
   }, [params]);
   const classes = useStyles();
-  console.log("test me");
-  console.log(params);
   if (mainStageVal)
     return (
       <>
@@ -560,6 +559,7 @@ export const SubStageCommentsDropDown = (params: any) => {
       setSubStageVal(params.data.jobSeekerSubStage);
     }
   }, [params]);
+
   const classes = useStyles();
   if (mainStageVal && subStageVal)
     return (
@@ -1178,10 +1178,21 @@ export const Interview = (params: any) => {
 };
 
 export const Reward = (params: any) => {
+  console.log(params.data.sendReward);
   const [disable, setDisable] = useState<any>(params.data.sendReward);
+
+  useEffect(() => {
+    if (params.data.coolingPeriod === "Complete") {
+      setDisable(true);
+    } else {
+      setDisable(false);
+    }
+  }, [params.data.coolingPeriod]);
+
   return (
     <div>
       <Button
+        disabled={!disable}
         size="small"
         variant="contained"
         sx={{ background: "#4D6CD9", borderRadius: "15px", height: "25px" }}
@@ -1192,6 +1203,212 @@ export const Reward = (params: any) => {
   );
 };
 
+export const JobSeekerJoined = (params: any) => {
+  console.log("JobSeekerJoined", params.data.jobSeekerJoined);
+  const [disable, setDisable] = useState<any>();
+  const [dateValue, setDateValue] = React.useState<any>(
+    moment(params.data.jobSeekerJoined, "DD-MM-YYYY").format("MM-DD-YYYY") || ""
+  );
+  const dispatch = useAppDispatch();
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
+  const handleDateChange = async (newValue: any) => {
+    const dd = ("0" + newValue.$D).slice(-2);
+    const mm = ("0" + (newValue.$M + 1)).slice(-2);
+    const yy = newValue.$y;
+    // Date picker is handling the date in DD/MM/YYYY format
+    console.log(`${mm}/${dd}/${yy}`);
+    setDateValue(`${dd}/${mm}/${yy}`);
+    let jobSeekerId = params.data._id;
+    let payload = {
+      jobSeekerJoined: `${dd}/${mm}/${yy}`,
+    };
+    const response = await manageJobseekerPatch(jobSeekerId, payload);
+    console.log(response);
+    if (response.data.success) {
+      params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
+      params.refreshCell();
+      dispatchNotificationData({
+        enable: true,
+        type: "success",
+        message: "JobSeekerJoined Date is Successfully Scheduled",
+        duration: 4000,
+      });
+
+      console.log(params);
+    } else {
+      params.setValue(params.data.nextInterviewDate);
+      params.refreshCell();
+      dispatchNotificationData({
+        enable: true,
+        type: "error",
+        message: "JobSeekerJoined Date is Not Scheduled Please Try Again ",
+        duration: 4000,
+      });
+    }
+  };
+
+  return (
+    <div>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DesktopDatePicker
+          label="Choose Date"
+          inputFormat="DD/MM/YYYY"
+          value={moment(dateValue, "DD-MM-YYYY").format("MM-DD-YYYY")}
+          onChange={handleDateChange}
+          disablePast
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
+    </div>
+  );
+};
+export const CoolingPeriod = (params: any) => {
+  const [coolingPeriodEntered, setCoolingPeriodEntered] = useState<any>(
+    params.data.coolingPeriod
+  );
+  const dispatch = useAppDispatch();
+  const dispatchNotificationData = (notifyData) => {
+    dispatch({
+      type: "SEND_ALERT",
+      data: {
+        enable: notifyData.enable,
+        type: notifyData.type,
+        message: notifyData.message,
+        duration: notifyData.duration,
+      },
+    });
+  };
+
+  const handleCoolingPeriod = async (event: any) => {
+    setCoolingPeriodEntered(event.target.value);
+  };
+
+  const handleSend = async () => {
+    if (coolingPeriodEntered === "Complete") {
+      let jobSeekerId = params.data._id;
+      let payload = {
+        coolingPeriod: coolingPeriodEntered,
+        sendReward: true,
+      };
+      const response = await manageJobseekerPatch(jobSeekerId, payload);
+      console.log(response);
+      if (response.data.success) {
+        params.setValue(coolingPeriodEntered);
+        params.refreshCell();
+        dispatchNotificationData({
+          enable: true,
+          type: "success",
+          message: "CoolingPeriod is Successfully Scheduled",
+          duration: 4000,
+        });
+
+        console.log(params);
+      } else {
+        params.setValue(params.data.coolingPeriod);
+        params.refreshCell();
+        dispatchNotificationData({
+          enable: true,
+          type: "error",
+          message: "CoolingPeriod is Not Scheduled Please Try Again ",
+          duration: 4000,
+        });
+      }
+    } else if (coolingPeriodEntered === "") {
+      let jobSeekerId = params.data._id;
+      let payload = {
+        coolingPeriod: "N/A",
+        sendReward: false,
+      };
+      const response = await manageJobseekerPatch(jobSeekerId, payload);
+      console.log(response);
+      if (response.data.success) {
+        params.setValue("N/A");
+        params.refreshCell();
+        setCoolingPeriodEntered("N/A");
+        dispatchNotificationData({
+          enable: true,
+          type: "success",
+          message: "CoolingPeriod is Successfully Scheduled",
+          duration: 4000,
+        });
+
+        console.log(params);
+      } else {
+        params.setValue(params.data.coolingPeriod);
+        params.refreshCell();
+        dispatchNotificationData({
+          enable: true,
+          type: "error",
+          message: "CoolingPeriod is Not Scheduled Please Try Again ",
+          duration: 4000,
+        });
+      }
+    } else {
+      let jobSeekerId = params.data._id;
+      let payload = {
+        coolingPeriod: coolingPeriodEntered,
+        sendReward: false,
+      };
+      const response = await manageJobseekerPatch(jobSeekerId, payload);
+      console.log(response);
+      if (response.data.success) {
+        params.setValue(coolingPeriodEntered);
+        params.refreshCell();
+        dispatchNotificationData({
+          enable: true,
+          type: "success",
+          message: "CoolingPeriod is Successfully Scheduled",
+          duration: 4000,
+        });
+
+        console.log(params);
+      } else {
+        params.setValue(params.data.coolingPeriod);
+        params.refreshCell();
+        dispatchNotificationData({
+          enable: true,
+          type: "error",
+          message: "CoolingPeriod is Not Scheduled Please Try Again ",
+          duration: 4000,
+        });
+      }
+    }
+  };
+
+  return (
+    <div>
+      <TextField
+        id="outlined-basic"
+        label="CoolingPeriod"
+        variant="outlined"
+        value={coolingPeriodEntered}
+        onChange={handleCoolingPeriod}
+        InputProps={{
+          endAdornment: (
+            <Tooltip title="Update" placement="top" arrow>
+              <SendIcon
+                fontSize="small"
+                sx={{ color: "#4D6CD9" }}
+                onClick={handleSend}
+              />
+            </Tooltip>
+          ),
+        }}
+      />
+    </div>
+  );
+};
 const CustomFields = () => {
   return <div>CustomFields</div>;
 };

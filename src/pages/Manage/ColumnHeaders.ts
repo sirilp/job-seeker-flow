@@ -11,6 +11,8 @@ import {
   SubStageDropDown,
   SubStageCommentsDropDown,
   Reward,
+  JobSeekerJoined,
+  CoolingPeriod,
 } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 
@@ -311,14 +313,30 @@ export const LISTING_GENERIC_HEADERS = [
   {
     headerName: "Job Seeker Joined",
     field: "jobSeekerJoined",
+    cellRenderer: JobSeekerJoined,
+    valueGetter: (params) => {
+      return params.data.jobSeekerJoined;
+    },
+    valueSetter: (params: any) => {
+      params.data.jobSeekerJoined = params.newValue;
+      return true;
+    },
     hide: false,
     minWidth: 230,
   },
   {
     headerName: "Cooling Period",
     field: "coolingPeriod",
+    cellRenderer: CoolingPeriod,
+    valueGetter: (params) => {
+      return params.data.coolingPeriod;
+    },
+    valueSetter: (params: any) => {
+      params.data.coolingPeriod = params.newValue;
+      return true;
+    },
     hide: false,
-    minWidth: 230,
+    minWidth: 350,
   },
   {
     headerName: "Send Reward",
@@ -326,7 +344,11 @@ export const LISTING_GENERIC_HEADERS = [
     hide: false,
     cellRenderer: Reward,
     valueGetter: (params) => {
-      return params.data.sendReward;
+      return params.data.coolingPeriod;
+    },
+    valueSetter: (params: any) => {
+      params.data.sendReward = params.newValue;
+      return true;
     },
     minWidth: 230,
   },
