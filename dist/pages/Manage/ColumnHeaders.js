@@ -1,4 +1,4 @@
-import { MainStageDropDown, Icons, Interview, ResumeUploaded, ViewAssessments, SubStageDropDown, SubStageCommentsDropDown, Reward, } from "./CustomFields";
+import { MainStageDropDown, Icons, Interview, ResumeUploaded, ViewAssessments, SubStageDropDown, SubStageCommentsDropDown, Reward, JobSeekerJoined, CoolingPeriod, } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 export var dateFilterParams = {
     comparator: function (filterLocalDateAtMidnight, cellValue) {
@@ -288,14 +288,30 @@ export var LISTING_GENERIC_HEADERS = [
     {
         headerName: "Job Seeker Joined",
         field: "jobSeekerJoined",
+        cellRenderer: JobSeekerJoined,
+        valueGetter: function (params) {
+            return params.data.jobSeekerJoined;
+        },
+        valueSetter: function (params) {
+            params.data.jobSeekerJoined = params.newValue;
+            return true;
+        },
         hide: false,
         minWidth: 230,
     },
     {
         headerName: "Cooling Period",
         field: "coolingPeriod",
+        cellRenderer: CoolingPeriod,
+        valueGetter: function (params) {
+            return params.data.coolingPeriod;
+        },
+        valueSetter: function (params) {
+            params.data.coolingPeriod = params.newValue;
+            return true;
+        },
         hide: false,
-        minWidth: 230,
+        minWidth: 350,
     },
     {
         headerName: "Send Reward",
@@ -303,7 +319,11 @@ export var LISTING_GENERIC_HEADERS = [
         hide: false,
         cellRenderer: Reward,
         valueGetter: function (params) {
-            return params.data.sendReward;
+            return params.data.coolingPeriod;
+        },
+        valueSetter: function (params) {
+            params.data.sendReward = params.newValue;
+            return true;
         },
         minWidth: 230,
     },

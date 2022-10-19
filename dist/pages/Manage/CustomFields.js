@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import React, { useState, useEffect } from "react";
-import { Typography, Button, TextField, Box, IconButton, Drawer, Grid, Card, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, FormGroup, FormControlLabel, } from "@mui/material";
+import { Typography, Button, TextField, Box, Tooltip, IconButton, Drawer, Grid, Card, Popover, Dialog, DialogTitle, DialogContent, DialogContentText, FormGroup, FormControlLabel, } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -72,6 +72,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import moment from "moment";
+import SendIcon from "@mui/icons-material/Send";
 var useStyles = makeStyles(function () { return ({
     iconColor: {
         color: "#4d6cd9",
@@ -461,8 +462,6 @@ export var SubStageDropDown = function (params) {
             setMainStageVal(params.data.jobSeekerMainStage);
     }, [params]);
     var classes = useStyles();
-    console.log("test me");
-    console.log(params);
     if (mainStageVal)
         return (_jsx(_Fragment, { children: _jsx("div", { children: _jsx("select", __assign({ id: id, className: classes.dropdown, onChange: handleChange, defaultValue: params.data.jobSeekerSubStage }, { children: mainStageVal
                         ? subStages[mainStageVal]["subStages"].map(function (item) { return (_jsx("option", __assign({ value: item.value }, { children: item.title }))); })
@@ -723,8 +722,210 @@ export var Interview = function (params) {
     return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(Button, __assign({ size: "small", onClick: function () { return setToggleDrawer(true); }, variant: "contained", sx: { background: "#4D6CD9", borderRadius: "15px", height: "25px" } }, { children: "Schedule" })), _jsx(Drawer, __assign({ anchor: "right", open: toggleDrawer, onClose: handleClose }, { children: _jsx(Card, { handleCloseIcon: handleClose }) }))] })));
 };
 export var Reward = function (params) {
+    console.log(params.data.sendReward);
     var _a = useState(params.data.sendReward), disable = _a[0], setDisable = _a[1];
-    return (_jsx("div", { children: _jsx(Button, __assign({ size: "small", variant: "contained", sx: { background: "#4D6CD9", borderRadius: "15px", height: "25px" } }, { children: "Reward" })) }));
+    useEffect(function () {
+        if (params.data.coolingPeriod === "Complete") {
+            setDisable(true);
+        }
+        else {
+            setDisable(false);
+        }
+    }, [params.data.coolingPeriod]);
+    return (_jsx("div", { children: _jsx(Button, __assign({ disabled: !disable, size: "small", variant: "contained", sx: { background: "#4D6CD9", borderRadius: "15px", height: "25px" } }, { children: "Reward" })) }));
+};
+export var JobSeekerJoined = function (params) {
+    console.log("JobSeekerJoined", params.data.jobSeekerJoined);
+    var _a = useState(), disable = _a[0], setDisable = _a[1];
+    var _b = React.useState(moment(params.data.jobSeekerJoined, "DD-MM-YYYY").format("MM-DD-YYYY") || ""), dateValue = _b[0], setDateValue = _b[1];
+    var dispatch = useAppDispatch();
+    var dispatchNotificationData = function (notifyData) {
+        dispatch({
+            type: "SEND_ALERT",
+            data: {
+                enable: notifyData.enable,
+                type: notifyData.type,
+                message: notifyData.message,
+                duration: notifyData.duration,
+            },
+        });
+    };
+    var handleDateChange = function (newValue) { return __awaiter(void 0, void 0, void 0, function () {
+        var dd, mm, yy, jobSeekerId, payload, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dd = ("0" + newValue.$D).slice(-2);
+                    mm = ("0" + (newValue.$M + 1)).slice(-2);
+                    yy = newValue.$y;
+                    // Date picker is handling the date in DD/MM/YYYY format
+                    console.log("".concat(mm, "/").concat(dd, "/").concat(yy));
+                    setDateValue("".concat(dd, "/").concat(mm, "/").concat(yy));
+                    jobSeekerId = params.data._id;
+                    payload = {
+                        jobSeekerJoined: "".concat(dd, "/").concat(mm, "/").concat(yy),
+                    };
+                    return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
+                case 1:
+                    response = _a.sent();
+                    console.log(response);
+                    if (response.data.success) {
+                        params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "JobSeekerJoined Date is Successfully Scheduled",
+                            duration: 4000,
+                        });
+                        console.log(params);
+                    }
+                    else {
+                        params.setValue(params.data.nextInterviewDate);
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "JobSeekerJoined Date is Not Scheduled Please Try Again ",
+                            duration: 4000,
+                        });
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    return (_jsx("div", { children: _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DesktopDatePicker, { label: "Choose Date", inputFormat: "DD/MM/YYYY", value: moment(dateValue, "DD-MM-YYYY").format("MM-DD-YYYY"), onChange: handleDateChange, disablePast: true, renderInput: function (params) { return _jsx(TextField, __assign({}, params)); } }) })) }));
+};
+export var CoolingPeriod = function (params) {
+    var _a = useState(params.data.coolingPeriod), coolingPeriodEntered = _a[0], setCoolingPeriodEntered = _a[1];
+    var dispatch = useAppDispatch();
+    var dispatchNotificationData = function (notifyData) {
+        dispatch({
+            type: "SEND_ALERT",
+            data: {
+                enable: notifyData.enable,
+                type: notifyData.type,
+                message: notifyData.message,
+                duration: notifyData.duration,
+            },
+        });
+    };
+    var handleCoolingPeriod = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            setCoolingPeriodEntered(event.target.value);
+            return [2 /*return*/];
+        });
+    }); };
+    var handleSend = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var jobSeekerId, payload, response, jobSeekerId, payload, response, jobSeekerId, payload, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(coolingPeriodEntered === "Complete")) return [3 /*break*/, 2];
+                    jobSeekerId = params.data._id;
+                    payload = {
+                        coolingPeriod: coolingPeriodEntered,
+                        sendReward: true,
+                    };
+                    return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
+                case 1:
+                    response = _a.sent();
+                    console.log(response);
+                    if (response.data.success) {
+                        params.setValue(coolingPeriodEntered);
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "CoolingPeriod is Successfully Scheduled",
+                            duration: 4000,
+                        });
+                        console.log(params);
+                    }
+                    else {
+                        params.setValue(params.data.coolingPeriod);
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "CoolingPeriod is Not Scheduled Please Try Again ",
+                            duration: 4000,
+                        });
+                    }
+                    return [3 /*break*/, 6];
+                case 2:
+                    if (!(coolingPeriodEntered === "")) return [3 /*break*/, 4];
+                    jobSeekerId = params.data._id;
+                    payload = {
+                        coolingPeriod: "N/A",
+                        sendReward: false,
+                    };
+                    return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
+                case 3:
+                    response = _a.sent();
+                    console.log(response);
+                    if (response.data.success) {
+                        params.setValue("N/A");
+                        params.refreshCell();
+                        setCoolingPeriodEntered("N/A");
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "CoolingPeriod is Successfully Scheduled",
+                            duration: 4000,
+                        });
+                        console.log(params);
+                    }
+                    else {
+                        params.setValue(params.data.coolingPeriod);
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "CoolingPeriod is Not Scheduled Please Try Again ",
+                            duration: 4000,
+                        });
+                    }
+                    return [3 /*break*/, 6];
+                case 4:
+                    jobSeekerId = params.data._id;
+                    payload = {
+                        coolingPeriod: coolingPeriodEntered,
+                        sendReward: false,
+                    };
+                    return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
+                case 5:
+                    response = _a.sent();
+                    console.log(response);
+                    if (response.data.success) {
+                        params.setValue(coolingPeriodEntered);
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "success",
+                            message: "CoolingPeriod is Successfully Scheduled",
+                            duration: 4000,
+                        });
+                        console.log(params);
+                    }
+                    else {
+                        params.setValue(params.data.coolingPeriod);
+                        params.refreshCell();
+                        dispatchNotificationData({
+                            enable: true,
+                            type: "error",
+                            message: "CoolingPeriod is Not Scheduled Please Try Again ",
+                            duration: 4000,
+                        });
+                    }
+                    _a.label = 6;
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); };
+    return (_jsx("div", { children: _jsx(TextField, { id: "outlined-basic", label: "CoolingPeriod", variant: "outlined", value: coolingPeriodEntered, onChange: handleCoolingPeriod, InputProps: {
+                endAdornment: (_jsx(Tooltip, __assign({ title: "Update", placement: "top", arrow: true }, { children: _jsx(SendIcon, { fontSize: "small", sx: { color: "#4D6CD9" }, onClick: handleSend }) }))),
+            } }) }));
 };
 var CustomFields = function () {
     return _jsx("div", { children: "CustomFields" });
