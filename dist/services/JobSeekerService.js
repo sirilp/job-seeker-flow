@@ -259,3 +259,20 @@ export var getJobSeekersDetails = function (contestId, profileId) { return __awa
         }
     });
 }); };
+export var manageJobseekerPatch = function (jobSeekrId, payLoad) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios
+                    .patch("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seeker/").concat(jobSeekrId), payLoad, {
+                    headers: {
+                        Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                    },
+                })
+                    .catch(function (error) {
+                    console.log(error);
+                    return error;
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };

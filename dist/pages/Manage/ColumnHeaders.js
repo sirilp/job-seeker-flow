@@ -1,4 +1,4 @@
-import { MainStageDropDown, Icons, Interview, ResumeUploaded, ViewAssessments, } from "./CustomFields";
+import { MainStageDropDown, Icons, Interview, ResumeUploaded, ViewAssessments, SubStageDropDown, SubStageCommentsDropDown, Reward, } from "./CustomFields";
 import { CONTEST_ABOUT_EMPLOYER } from "../../constants";
 export var dateFilterParams = {
     comparator: function (filterLocalDateAtMidnight, cellValue) {
@@ -203,6 +203,15 @@ export var LISTING_GENERIC_HEADERS = [
         hide: false,
         filter: "agTextColumnFilter",
         cellRenderer: MainStageDropDown,
+        valueGetter: function (params) {
+            return params.data.jobSeekerMainStage;
+        },
+        valueSetter: function (params) {
+            params.data.jobSeekerComment = "N/A";
+            params.data.jobSeekerSubStage = "N/A";
+            params.data.jobSeekerMainStage = params.newValue;
+            return true;
+        },
         filterParams: {
             buttons: ["apply", "clear"],
         },
@@ -216,6 +225,15 @@ export var LISTING_GENERIC_HEADERS = [
         field: "jobSeekerSubStage",
         hide: false,
         filter: "agTextColumnFilter",
+        cellRenderer: SubStageDropDown,
+        valueGetter: function (params) {
+            return params.data.jobSeekerMainStage;
+        },
+        valueSetter: function (params) {
+            params.refresh = true;
+            params.data.jobSeekerSubStage = params.newValue;
+            return true;
+        },
         filterParams: {
             buttons: ["apply", "clear"],
         },
@@ -229,6 +247,14 @@ export var LISTING_GENERIC_HEADERS = [
         field: "jobSeekerComment",
         hide: false,
         filter: "agTextColumnFilter",
+        cellRenderer: SubStageCommentsDropDown,
+        valueGetter: function (params) {
+            return params.data.jobSeekerSubStage;
+        },
+        valueSetter: function (params) {
+            params.data.jobSeekerComment = params.newValue;
+            return true;
+        },
         filterParams: {
             buttons: ["apply", "clear"],
         },
@@ -241,6 +267,10 @@ export var LISTING_GENERIC_HEADERS = [
         headerName: "Interview Scheduling",
         field: "interviewScheduling",
         cellRenderer: Interview,
+        valueSetter: function (params) {
+            params.data.nextInterviewDate = params.newValue;
+            return true;
+        },
         hide: false,
         minWidth: 230,
     },
@@ -271,6 +301,10 @@ export var LISTING_GENERIC_HEADERS = [
         headerName: "Send Reward",
         field: "sendReward",
         hide: false,
+        cellRenderer: Reward,
+        valueGetter: function (params) {
+            return params.data.sendReward;
+        },
         minWidth: 230,
     },
 ];

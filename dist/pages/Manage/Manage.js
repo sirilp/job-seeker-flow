@@ -138,6 +138,9 @@ var Manage = function (props) {
                         mapData = response.data.data.content;
                         result = mapData.map(function (item, index) {
                             item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
+                            if (item.nextInterviewDate) {
+                                item.nextInterviewDate = moment(item.nextInterviewDate).format("DD-MM-YYYY");
+                            }
                             var Data = __assign(__assign(__assign({}, item), item.matchedProfileLogsList[0]), item.matchedProfilesList[0]);
                             return Data;
                         });
@@ -185,7 +188,7 @@ var Manage = function (props) {
             enablePivot: true,
             enableValue: true,
             resizable: true,
-            cellStyle: { "borderRightColor": "#DFE5FF" },
+            cellStyle: { borderRightColor: "#DFE5FF" },
         };
     }, []);
     var setColumnsDisplay = function (columnList) {
