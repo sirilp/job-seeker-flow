@@ -133,11 +133,10 @@ export var LISTING_GENERIC_HEADERS = [
             params.data.dob = params.newValue;
             return true;
         },
-        cellClassRules: {
-            "cell-pass": function (params) {
-                return params.data.pdcStatus == false || params.data.pdcStatus == null;
-            },
-        },
+        // cellClassRules: {
+        //   "cell-pass": (params: any) =>
+        //     params.data.pdcStatus == false || params.data.pdcStatus == null,
+        // },
     },
     {
         headerName: "Last 5 digits of PAN",
@@ -149,11 +148,10 @@ export var LISTING_GENERIC_HEADERS = [
             params.data.lastFiveDigitOfPan = params.newValue;
             return true;
         },
-        cellClassRules: {
-            "cell-pass": function (params) {
-                return params.data.pdcStatus == false || params.data.pdcStatus == null;
-            },
-        },
+        // cellClassRules: {
+        //   "cell-pass": (params: any) =>
+        //     params.data.pdcStatus == false || params.data.pdcStatus == null,
+        // },
     },
     {
         headerName: "FDC Status",
@@ -165,11 +163,10 @@ export var LISTING_GENERIC_HEADERS = [
             params.data.fdcStatus = params.newValue;
             return true;
         },
-        cellClassRules: {
-            "cell-pass": function (params) {
-                return params.data.pdcStatus == false || params.data.pdcStatus == null;
-            },
-        },
+        // cellClassRules: {
+        //   "cell-pass": (params: any) =>
+        //     params.data.pdcStatus == false || params.data.pdcStatus == null,
+        // },
     },
     {
         headerName: "Upload Profile",
@@ -186,11 +183,10 @@ export var LISTING_GENERIC_HEADERS = [
         floatingFilter: false,
         editable: false,
         cellRenderer: CustomUploadButton,
-        cellClassRules: {
-            "cell-pass": function (params) {
-                return params.data.fdcStatus == false || params.data.fdcStatus == null;
-            },
-        },
+        // cellClassRules: {
+        //   "cell-pass": (params: any) =>
+        //     params.data.fdcStatus == false || params.data.fdcStatus == null,
+        // },
     },
 ];
 export var relations = [CONTEST_ABOUT_EMPLOYER];

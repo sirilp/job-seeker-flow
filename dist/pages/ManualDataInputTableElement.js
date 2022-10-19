@@ -440,6 +440,7 @@ export var CustomDOBInputBox = function (params) {
     //   ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
     //   : params.getValue()
     ), date = _a[0], setDate = _a[1];
+    var _b = useState(false), isDisable = _b[0], setIsDisable = _b[1];
     var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var handleChange = function (newValue) {
         if (newValue != null) {
@@ -451,7 +452,10 @@ export var CustomDOBInputBox = function (params) {
             params.setValue("".concat(dd, "/").concat(mm, "/").concat(yy));
         }
     };
-    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", views: ["year", "month", "day"], value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
+    useEffect(function () {
+        setIsDisable(!params.data.pdcStatus);
+    }, [params.data.pdcStatus]);
+    return (_jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DatePicker, { label: "Custom input", views: ["year", "month", "day"], disabled: isDisable, value: date, inputFormat: "DD/MM/YYYY", onChange: function (newValue) {
                 handleChange(newValue);
             }, maxDate: moment().subtract(18, "year"), renderInput: function (_a) {
                 var inputRef = _a.inputRef, inputProps = _a.inputProps, InputProps = _a.InputProps;
@@ -465,6 +469,7 @@ export var CustomDOBInputBox = function (params) {
 export var PanInputBox = function (params) {
     var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var _a = useState(params.getValue()), panNumber = _a[0], setPanNumber = _a[1];
+    var _b = useState(false), isDisable = _b[0], setIsDisable = _b[1];
     var handleChange = function (event) {
         if (event.target.value.trim().length <= 5) {
             setPanNumber(event.target.value);
@@ -472,10 +477,13 @@ export var PanInputBox = function (params) {
         }
     };
     useEffect(function () {
+        setIsDisable(!params.data.pdcStatus);
+    }, [params.data.pdcStatus]);
+    useEffect(function () {
         if (params.getValue().trim() == "")
             setPanNumber(params.getValue());
     }, [params.getValue()]);
-    return (_jsx("div", { children: _jsx("input", { id: id, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: panNumber, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
+    return (_jsx("div", { children: _jsx("input", { id: id, disabled: isDisable, type: "text", onChange: handleChange, value: panNumber, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
 };
 export var FDCStatusCheckButton = function (params) {
     var dispatch = useAppDispatch();
@@ -497,8 +505,12 @@ export var FDCStatusCheckButton = function (params) {
         title: "",
         body: "",
     }), result = _a[0], setResult = _a[1];
+    var _b = useState(false), isDisable = _b[0], setIsDisable = _b[1];
+    useEffect(function () {
+        setIsDisable(!params.data.pdcStatus);
+    }, [params.data.pdcStatus]);
     var classes = useStyles();
-    var _b = React.useState(false), open = _b[0], setOpen = _b[1];
+    var _c = React.useState(false), open = _c[0], setOpen = _c[1];
     var dispatchNotificationData = function (notifyData) {
         dispatch({
             type: "SEND_ALERT",
@@ -679,7 +691,7 @@ export var FDCStatusCheckButton = function (params) {
     }, [params.getValue()]);
     return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, className: classes.buttonContainer, sx: {
                     display: "inline",
-                }, variant: "contained", size: "small", onClick: handleClick }, { children: "Check" })), _jsx("div", __assign({ style: { color: result.color, display: "inline" } }, { children: result.result })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip
+                }, variant: "contained", size: "small", onClick: handleClick, disabled: isDisable }, { children: "Check" })), _jsx("div", __assign({ style: { color: result.color, display: "inline" } }, { children: result.result })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip
                     // PopperProps={{
                     //   disablePortal: true,
                     // }}
@@ -701,11 +713,15 @@ export var FDCStatusCheckButton = function (params) {
 };
 export var CustomUploadButton = function (params) {
     var classes = useStyles();
+    var _a = useState(false), isDisable = _a[0], setIsDisable = _a[1];
+    useEffect(function () {
+        setIsDisable(!params.data.fdcStatus);
+    }, [params.data.fdcStatus]);
     var navigateUpload = function () { };
     var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     return (_jsx("div", __assign({ style: {
             textAlign: "center",
-        } }, { children: _jsx(Button, __assign({ id: id, className: classes.buttonContainer, variant: "contained", size: "small", onClick: navigateUpload }, { children: "Upload" })) })));
+        } }, { children: _jsx(Button, __assign({ id: id, className: classes.buttonContainer, variant: "contained", size: "small", onClick: navigateUpload, disabled: isDisable }, { children: "Upload" })) })));
 };
 export var ClearRowButton = function (params) {
     var classes = useStyles();
