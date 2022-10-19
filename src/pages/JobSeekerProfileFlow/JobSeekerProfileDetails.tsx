@@ -157,6 +157,7 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     setLoader(true);
     const profileDetailsMap = buildDetailsPayload();
     if (profileDetailsMap.expectedCtc.expectedCtcLakh) {
+      if(profileDetailsMap.workStatus){
       try {
         const profileDetailsResponse = await updateJobSeekerProfile({
           profileId: props.profileDataId || userDataState.userData.profileId,
@@ -176,6 +177,11 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
         props.setDataMessage(error?.message);
         props.setOpen(true);
       }
+    } else {
+      props.setType(WARNING_KEY);
+      props.setDataMessage("Please select Work Status");
+      props.setOpen(true);
+    }
     } else {
       props.setType(WARNING_KEY);
       props.setDataMessage(EXPEXTED_CTC_DET);

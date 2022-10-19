@@ -390,9 +390,11 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                     <span className="asterisk-span"> *</span>
                   </p>
                   <TextField
+                    required
                     disabled={!props.hasButtons}
                     type="text"
                     multiline
+                    label={CHANGE_REASON_TEXT}
                     fullWidth
                     rows={3}
                     value={reasonOfJobChange}
@@ -525,8 +527,10 @@ const JobSeekerProfileNoticePeriod: FC<any> = (props): ReactElement => {
                       <span className="asterisk-span"> *</span>
                     </p>
                     <TextField
+                      required
                       disabled={!props.hasButtons}
                       type="text"
+                      label={NO_OFFER_REASON}
                       multiline
                       fullWidth
                       rows={3}

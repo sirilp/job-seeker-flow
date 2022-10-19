@@ -181,6 +181,7 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
       enablePivot: true,
       enableValue: true,
       resizable: true,
+      suppressKeyboardEvent: (params) => true,
       cellStyle: { borderRightColor: "#DFE5FF" },
     };
   }, []);
@@ -194,9 +195,25 @@ const JobSeekerAddProfile: FC<any> = (props: any): ReactElement => {
 
   const onCellValueChanged = useCallback((event) => {
     // console.log(event);
-    // if (gridRef.current) {
-    //   const rowSelection = gridRef.current.api.getSelectedRows();
-    // }
+    // console.log(gridRef.current);
+    if (event.column.colDef.field == "pdcStatus") {
+      if (event.oldValue != event.newValue) {
+        gridRef?.current?.api?.refreshCells({
+          force: true,
+          suppressFlash: true,
+          columns: ["dob", "lastFiveDigitOfPan", "fdcStatus"],
+        });
+      }
+    }
+    if (event.column.colDef.field == "fdcStatus") {
+      if (event.oldValue != event.newValue) {
+        gridRef?.current?.api?.refreshCells({
+          force: true,
+          suppressFlash: true,
+          columns: ["uploadProfile"],
+        });
+      }
+    }
   }, []);
   const clearTable = () => {
     // console.log(gridRef.current);

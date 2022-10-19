@@ -200,7 +200,7 @@ const CertificationDetails: FC<any> = (props): ReactElement => {
         true
       );
       props.setCertificationData(
-        certificationDetailsForm.values.members[index]
+        certificationDetailsForm.values.members
       );
     }
   };

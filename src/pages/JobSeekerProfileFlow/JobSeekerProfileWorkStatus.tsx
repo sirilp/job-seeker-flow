@@ -121,7 +121,12 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
       props.setDataMessage("Please enter all work status details");
       setLoader(false);
       return;
-    } else{
+    } else {
+      if(profileWorkStatusMap.jobDurationType === JOB_TYPE_OPTIONS[0])
+      {
+        delete profileWorkStatusMap.payrollEmployer;
+        delete profileWorkStatusMap.endClient;
+      }
     try {
       const profileDetailsResponse = await updateJobSeekerProfile({
         profileId: userDataState.userData.profileId,
@@ -284,11 +289,6 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
       }
     }
     return true;
-  };
-
-  const handleCertifications = (certification) => {
-    delete certification.saveStatus;
-    setCertificationDetails((data) => [...data, certification]);
   };
 
   const removeCertification = (index) => {
@@ -502,7 +502,7 @@ const JobSeekerProfileWorkStatus: FC<any> = (props): ReactElement => {
               </div>
               <CertificationDetails
                 disabled={!props.hasButtons}
-                setCertificationData={handleCertifications}
+                setCertificationData={setCertificationDetails}
                 removeCertification={removeCertification}
                 setType={props.setType}
                 setOpen={props.setOpen}

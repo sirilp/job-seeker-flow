@@ -193,6 +193,7 @@ const ExperiencedSeeker: FC<any> = React.forwardRef(
                       required
                       id="notWorkingReason"
                       disabled={props.disabled}
+                      label={JOBLESS_REASON}
                       type="text"
                       multiline
                       fullWidth

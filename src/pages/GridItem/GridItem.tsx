@@ -57,6 +57,7 @@ const GridItem: FC<any> = (props): ReactElement => {
         pagination={props.pagination}
         onSelectionChanged={props.onSelectionChanged}
         onCellClicked={onCellClicked}
+        onCellValueChanged={props.onCellValueChanged}
       />
       {/* <div className="pagination-container">
         <Select

@@ -557,6 +557,7 @@ export const CustomDOBInputBox = (params: any) => {
     //   ? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
     //   : params.getValue()
   );
+  const [isDisable, setIsDisable] = useState(false);
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const handleChange = (newValue: any) => {
     if (newValue != null) {
@@ -568,12 +569,16 @@ export const CustomDOBInputBox = (params: any) => {
       params.setValue(`${dd}/${mm}/${yy}`);
     }
   };
+  useEffect(() => {
+    setIsDisable(!params.data.pdcStatus);
+  }, [params.data.pdcStatus]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="Custom input"
         views={["year", "month", "day"]}
+        disabled={isDisable}
         value={date}
         inputFormat="DD/MM/YYYY"
         onChange={(newValue) => {
@@ -603,6 +608,8 @@ export const CustomDOBInputBox = (params: any) => {
 export const PanInputBox = (params: any) => {
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const [panNumber, setPanNumber] = useState(params.getValue());
+  const [isDisable, setIsDisable] = useState(false);
+
   const handleChange = (event: any) => {
     if (event.target.value.trim().length <= 5) {
       setPanNumber(event.target.value);
@@ -610,13 +617,16 @@ export const PanInputBox = (params: any) => {
     }
   };
   useEffect(() => {
+    setIsDisable(!params.data.pdcStatus);
+  }, [params.data.pdcStatus]);
+  useEffect(() => {
     if (params.getValue().trim() == "") setPanNumber(params.getValue());
   }, [params.getValue()]);
   return (
     <div>
       <input
         id={id}
-        disabled={params.pdcDisabled}
+        disabled={isDisable}
         type="text"
         onChange={handleChange}
         value={panNumber}
@@ -646,6 +656,11 @@ export const FDCStatusCheckButton = (params: any) => {
     title: "",
     body: "",
   });
+  const [isDisable, setIsDisable] = useState(false);
+
+  useEffect(() => {
+    setIsDisable(!params.data.pdcStatus);
+  }, [params.data.pdcStatus]);
 
   const classes = useStyles();
 
@@ -864,6 +879,7 @@ export const FDCStatusCheckButton = (params: any) => {
         variant="contained"
         size="small"
         onClick={handleClick}
+        disabled={isDisable}
       >
         Check
       </Button>
@@ -920,7 +936,11 @@ export const FDCStatusCheckButton = (params: any) => {
 
 export const CustomUploadButton = (params: any) => {
   const classes = useStyles();
+  const [isDisable, setIsDisable] = useState(false);
 
+  useEffect(() => {
+    setIsDisable(!params.data.fdcStatus);
+  }, [params.data.fdcStatus]);
   const navigateUpload = () => {};
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   return (
@@ -935,6 +955,7 @@ export const CustomUploadButton = (params: any) => {
         variant="contained"
         size="small"
         onClick={navigateUpload}
+        disabled={isDisable}
       >
         Upload
       </Button>
