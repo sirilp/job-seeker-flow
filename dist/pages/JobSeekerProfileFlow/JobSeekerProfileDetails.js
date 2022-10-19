@@ -149,7 +149,8 @@ var JobSeekerProfileDetails = function (props) {
                 case 0:
                     setLoader(true);
                     profileDetailsMap = buildDetailsPayload();
-                    if (!profileDetailsMap.expectedCtc.expectedCtcLakh) return [3 /*break*/, 5];
+                    if (!profileDetailsMap.expectedCtc.expectedCtcLakh) return [3 /*break*/, 7];
+                    if (!profileDetailsMap.workStatus) return [3 /*break*/, 5];
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -178,10 +179,16 @@ var JobSeekerProfileDetails = function (props) {
                 case 4: return [3 /*break*/, 6];
                 case 5:
                     props.setType(WARNING_KEY);
-                    props.setDataMessage(EXPEXTED_CTC_DET);
+                    props.setDataMessage("Please select Work Status");
                     props.setOpen(true);
                     _b.label = 6;
-                case 6:
+                case 6: return [3 /*break*/, 8];
+                case 7:
+                    props.setType(WARNING_KEY);
+                    props.setDataMessage(EXPEXTED_CTC_DET);
+                    props.setOpen(true);
+                    _b.label = 8;
+                case 8:
                     setLoader(false);
                     return [2 /*return*/];
             }

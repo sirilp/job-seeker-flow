@@ -121,12 +121,18 @@ var JobSeekerProfileWorkStatus = function (props) {
                     setLoader(false);
                     return [2 /*return*/];
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
+                    if (profileWorkStatusMap.jobDurationType === JOB_TYPE_OPTIONS[0]) {
+                        delete profileWorkStatusMap.payrollEmployer;
+                        delete profileWorkStatusMap.endClient;
+                    }
+                    _b.label = 2;
+                case 2:
+                    _b.trys.push([2, 4, , 5]);
                     return [4 /*yield*/, updateJobSeekerProfile({
                             profileId: userDataState.userData.profileId,
                             profileData: { profileWorkStatusMap: profileWorkStatusMap, profileLastCompletedStep: "4" },
                         })];
-                case 2:
+                case 3:
                     profileDetailsResponse = _b.sent();
                     if ((_a = profileDetailsResponse === null || profileDetailsResponse === void 0 ? void 0 : profileDetailsResponse.data) === null || _a === void 0 ? void 0 : _a.success) {
                         props.setType(SUCCESS_KEY);
@@ -141,18 +147,18 @@ var JobSeekerProfileWorkStatus = function (props) {
                             props.setActiveStep(4);
                         }
                     }
-                    return [3 /*break*/, 4];
-                case 3:
+                    return [3 /*break*/, 5];
+                case 4:
                     error_1 = _b.sent();
                     console.log(error_1);
                     props.setType(ERROR_KEY);
                     props.setDataMessage(error_1 === null || error_1 === void 0 ? void 0 : error_1.message);
                     props.setOpen(true);
-                    return [3 /*break*/, 4];
-                case 4:
+                    return [3 /*break*/, 5];
+                case 5:
                     setLoader(false);
-                    _b.label = 5;
-                case 5: return [2 /*return*/];
+                    _b.label = 6;
+                case 6: return [2 /*return*/];
             }
         });
     }); };
@@ -272,10 +278,6 @@ var JobSeekerProfileWorkStatus = function (props) {
         }
         return true;
     };
-    var handleCertifications = function (certification) {
-        delete certification.saveStatus;
-        setCertificationDetails(function (data) { return __spreadArray(__spreadArray([], data, true), [certification], false); });
-    };
     var removeCertification = function (index) {
         var list = __spreadArray([], certificationDetails, true);
         list.splice(index, 1);
@@ -367,7 +369,7 @@ var JobSeekerProfileWorkStatus = function (props) {
     return (_jsx(_Fragment, { children: !loader ? (_jsxs("div", __assign({ className: "job-seeker-profile-content" }, { children: [_jsx("p", __assign({ className: "step-content-title-text" }, { children: EXPERIENCE_TITLE })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: PROFILE_LOCATION_TEXT }) })), _jsx("div", { children: _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: profileFetchLocation, onChange: handleProfileFetch }, { children: ProfileFetchLocations.map(function (location) { return (_jsx(FormControlLabel, { disabled: !props.hasButtons, value: location, control: _jsx(Radio, {}), label: location }, location)); }) })) }) }), profileFetchLocation ===
                             ProfileFetchLocations[ProfileFetchLocations.length - 1] ? (_jsx("div", __assign({ className: "profile-location-field" }, { children: _jsx(TextField, { disabled: !props.hasButtons, type: "text", multiline: true, fullWidth: true, placeholder: PROFILE_SOURCE_HOLDER, rows: 2, helperText: OTHER_LIMIT_TEXT, onChange: function (e) { return console.log("val ", e.target.value); }, InputProps: {
                                     inputProps: { maxLength: 20 },
-                                }, size: "small" }) }))) : null] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [CURRENT_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: CURRENT_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: currentLocation, label: CURRENT_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setCurrentLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [PREFERRED_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: PREFERRED_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: preferredLocation, label: PREFERRED_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setPreferredLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: ADDITIONAL_CERTIFICATES_TEXT }) })), _jsx("div", { children: _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: additonalCertificationStatus, onChange: handleCertificationStatus }, { children: YesNoOptions.map(function (location) { return (_jsx(FormControlLabel, { disabled: !props.hasButtons, value: location, control: _jsx(Radio, {}), label: location }, location)); }) })) }) })] })), additonalCertificationStatus === YesNoOptions[0] ? (_jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: CERTIFICATION_ADD_TEXT }) })), _jsx(CertificationDetails, { disabled: !props.hasButtons, setCertificationData: handleCertifications, removeCertification: removeCertification, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, prefillDetails: props.profileDataId || userDataState.userData.profileId
+                                }, size: "small" }) }))) : null] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [CURRENT_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: CURRENT_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: currentLocation, label: CURRENT_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setCurrentLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [PREFERRED_LOCATION_TEXT, _jsx("span", __assign({ className: "asterisk-span" }, { children: " *" }))] }) })), _jsx("div", { children: _jsxs(FormControl, __assign({ sx: { minWidth: 250 } }, { children: [_jsx(InputLabel, __assign({ sx: { lineHeight: "15px" } }, { children: PREFERRED_LOCATION_TEXT })), _jsx(Select, __assign({ disabled: !props.hasButtons, size: "small", value: preferredLocation, label: PREFERRED_LOCATION_TEXT, className: classes.inputField, onChange: function (e) { return setPreferredLocation(e.target.value); } }, { children: citiesArray.map(function (item, index) { return (_jsx(MenuItem, __assign({ value: item }, { children: item }), item + index)); }) }))] })) })] })), _jsxs("div", __assign({ className: "conditional-container" }, { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: ADDITIONAL_CERTIFICATES_TEXT }) })), _jsx("div", { children: _jsx(FormControl, { children: _jsx(RadioGroup, __assign({ value: additonalCertificationStatus, onChange: handleCertificationStatus }, { children: YesNoOptions.map(function (location) { return (_jsx(FormControlLabel, { disabled: !props.hasButtons, value: location, control: _jsx(Radio, {}), label: location }, location)); }) })) }) })] })), additonalCertificationStatus === YesNoOptions[0] ? (_jsxs("div", { children: [_jsx("div", __assign({ className: "experience-card-title" }, { children: _jsx("p", { children: CERTIFICATION_ADD_TEXT }) })), _jsx(CertificationDetails, { disabled: !props.hasButtons, setCertificationData: setCertificationDetails, removeCertification: removeCertification, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, prefillDetails: props.profileDataId || userDataState.userData.profileId
                                 ? certificationDetails
                                 : null })] })) : null, _jsx("div", { children: _jsx("div", __assign({ className: "experience-card-title" }, { children: _jsxs("p", { children: [WORK_STATUS_TEXT, ": ", jobStatus] }) })) }), _jsx("div", { children: jobStatus === WorkStatusType.FRESHER ? (_jsx(FreshGraduateDetails, { disabled: !props.hasButtons, ref: freshGraduateRef, setParentData: setFreshGraduateDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, fresherPrefillData: props.profileDataId || userDataState.userData.profileId ? freshGraduateDetails : null })) : null }), _jsx("div", { children: jobStatus !== WorkStatusType.FRESHER ? (_jsx(_Fragment, { children: gotPatchData ? (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) : (_jsx(ExperiencedSeeker, { disabled: !props.hasButtons, workStatus: jobStatus, ref: experiencedRef, setParentData: setExperiencedDetails, setType: props.setType, setOpen: props.setOpen, setDataMessage: props.setDataMessage, experiencedPrefillData: props.profileDataId || userDataState.userData.profileId ? experiencedDetails : null })) })) : null }), props.hasButtons ? (_jsx(PreviousNextButtons, { handleNext: submitWorkStatus, handleBack: props.handleBack })) : null] }))) : (_jsx(Stack, __assign({ alignItems: "center" }, { children: _jsx(CircularProgress, {}) }))) }));
 };

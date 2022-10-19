@@ -166,7 +166,7 @@ var CertificationDetails = function (props) {
         }
         else {
             certificationDetailsForm.setFieldValue("members[".concat(index, "].saveStatus"), true);
-            props.setCertificationData(certificationDetailsForm.values.members[index]);
+            props.setCertificationData(certificationDetailsForm.values.members);
         }
     };
     var handleDeleteData = function (index) {
