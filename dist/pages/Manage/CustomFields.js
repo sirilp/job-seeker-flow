@@ -318,7 +318,6 @@ export var ResumeUploaded = function (params) {
             switch (_a.label) {
                 case 0:
                     resumeId = params.getValue();
-                    console.log(resumeId);
                     return [4 /*yield*/, openFile(resumeId)];
                 case 1:
                     _a.sent();
@@ -331,14 +330,12 @@ export var ResumeUploaded = function (params) {
 export var Icons = function (params) {
     var _a = useState(false), toggleDrawer = _a[0], setToggleDrawer = _a[1];
     var classes = useStyles();
-    var handleClick = function () {
-        console.log(params);
-    };
+    var handleClick = function () { };
     var handleChat = function () {
         console.log("Chat Icon clicked");
         setToggleDrawer(true);
     };
-    return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsxs(Box, __assign({ className: classes.leftDrawerBox }, { children: [_jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }), console.log("Left Drawer called")] })) }))] })));
+    return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(VisibilityIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(LocalPhoneRoundedIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(ChatBubbleOutlineIcon, { className: classes.iconColor, onClick: handleChat }), _jsx(DehazeIcon, { className: classes.iconColor, onClick: handleClick }), _jsx(Drawer, __assign({ anchor: "left", open: toggleDrawer, onClose: function () { return setToggleDrawer(false); } }, { children: _jsx(Box, __assign({ className: classes.leftDrawerBox }, { children: _jsx(MessageBox, { closeIt: function () { return setToggleDrawer(false); }, params: params }) })) }))] })));
 };
 export var MainStageDropDown = function (params) {
     var dispatch = useAppDispatch();
@@ -369,7 +366,6 @@ export var MainStageDropDown = function (params) {
                     return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
                 case 1:
                     response = _a.sent();
-                    console.log(response);
                     if (response.data.success) {
                         params.setValue(event.target.value);
                         params.refreshCell();
@@ -380,7 +376,6 @@ export var MainStageDropDown = function (params) {
                             message: "MainStage Updated Successfully ",
                             duration: 4000,
                         });
-                        console.log(params);
                     }
                     else {
                         params.setValue(params.data.jobSeekerMainStage);
@@ -403,8 +398,8 @@ export var MainStageDropDown = function (params) {
 export var SubStageDropDown = function (params) {
     var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
     var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
-    var initalValue = params.data.jobSeekerSubStage;
-    var _a = useState(initalValue), subStageSelected = _a[0], setSubStageSelected = _a[1];
+    var initalValue;
+    var _a = useState(params.data.jobSeekerSubStage), subStageSelected = _a[0], setSubStageSelected = _a[1];
     var dispatch = useAppDispatch();
     var dispatchNotificationData = function (notifyData) {
         dispatch({
@@ -457,13 +452,13 @@ export var SubStageDropDown = function (params) {
     }); };
     useEffect(function () {
         if (params.data.jobSeekerSubStage)
-            setSubStageSelected(params.data.jobSeekerMainStage);
+            setSubStageSelected(params.data.jobSeekerSubStage);
         if (params.data.jobSeekerMainStage)
             setMainStageVal(params.data.jobSeekerMainStage);
     }, [params]);
     var classes = useStyles();
     if (mainStageVal)
-        return (_jsx(_Fragment, { children: _jsx("div", { children: _jsx("select", __assign({ id: id, className: classes.dropdown, onChange: handleChange, defaultValue: params.data.jobSeekerSubStage }, { children: mainStageVal
+        return (_jsx(_Fragment, { children: _jsx("div", { children: _jsx("select", __assign({ id: id, className: classes.dropdown, onChange: handleChange, defaultValue: subStageSelected }, { children: mainStageVal
                         ? subStages[mainStageVal]["subStages"].map(function (item) { return (_jsx("option", __assign({ value: item.value }, { children: item.title }))); })
                         : null })) }) }));
     else
@@ -491,7 +486,6 @@ export var SubStageCommentsDropDown = function (params) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(params);
                     jobSeekerId = params.data._id;
                     payload = {
                         jobSeekerComment: event.target.value,
@@ -523,7 +517,6 @@ export var SubStageCommentsDropDown = function (params) {
         });
     }); };
     useEffect(function () {
-        console.log(params);
         if (params.data.jobSeekerMainStage && params.data.jobSeekerSubStage) {
             setMainStageVal(params.data.jobSeekerMainStage);
             setSubStageVal(params.data.jobSeekerSubStage);
@@ -573,7 +566,6 @@ export var ViewAssessments = function (params) {
     };
     var classes = useStyles();
     var handleClick = function () {
-        console.log(params);
         setToggleDrawer(true);
     };
     var handleCloseView = function () {
@@ -681,7 +673,6 @@ export var Interview = function (params) {
                     return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
                 case 1:
                     response = _a.sent();
-                    console.log(response);
                     if (response.data.success) {
                         params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
                         params.refreshCell();
@@ -692,7 +683,6 @@ export var Interview = function (params) {
                             message: "Interview Date is Successfully Scheduled",
                             duration: 4000,
                         });
-                        console.log(params);
                     }
                     else {
                         params.setValue(params.data.nextInterviewDate);
@@ -722,7 +712,6 @@ export var Interview = function (params) {
     return (_jsxs("div", __assign({ className: classes.assessmentDialogueContent }, { children: [_jsx(Button, __assign({ size: "small", onClick: function () { return setToggleDrawer(true); }, variant: "contained", sx: { background: "#4D6CD9", borderRadius: "15px", height: "25px" } }, { children: "Schedule" })), _jsx(Drawer, __assign({ anchor: "right", open: toggleDrawer, onClose: handleClose }, { children: _jsx(Card, { handleCloseIcon: handleClose }) }))] })));
 };
 export var Reward = function (params) {
-    console.log(params.data.sendReward);
     var _a = useState(params.data.sendReward), disable = _a[0], setDisable = _a[1];
     useEffect(function () {
         if (params.data.coolingPeriod === "Complete") {
@@ -735,9 +724,8 @@ export var Reward = function (params) {
     return (_jsx("div", { children: _jsx(Button, __assign({ disabled: !disable, size: "small", variant: "contained", sx: { background: "#4D6CD9", borderRadius: "15px", height: "25px" } }, { children: "Reward" })) }));
 };
 export var JobSeekerJoined = function (params) {
-    console.log("JobSeekerJoined", params.data.jobSeekerJoined);
     var _a = useState(), disable = _a[0], setDisable = _a[1];
-    var _b = React.useState(moment(params.data.jobSeekerJoined, "DD-MM-YYYY").format("MM-DD-YYYY") || ""), dateValue = _b[0], setDateValue = _b[1];
+    var _b = React.useState(params.getValue()), dateValue = _b[0], setDateValue = _b[1];
     var dispatch = useAppDispatch();
     var dispatchNotificationData = function (notifyData) {
         dispatch({
@@ -763,7 +751,7 @@ export var JobSeekerJoined = function (params) {
                     setDateValue("".concat(dd, "/").concat(mm, "/").concat(yy));
                     jobSeekerId = params.data._id;
                     payload = {
-                        jobSeekerJoined: "".concat(dd, "/").concat(mm, "/").concat(yy),
+                        jobSeekerJoinedDate: "".concat(dd, "/").concat(mm, "/").concat(yy),
                     };
                     return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
                 case 1:
@@ -771,22 +759,19 @@ export var JobSeekerJoined = function (params) {
                     console.log(response);
                     if (response.data.success) {
                         params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
-                        params.refreshCell();
                         dispatchNotificationData({
                             enable: true,
                             type: "success",
-                            message: "JobSeekerJoined Date is Successfully Scheduled",
+                            message: "JobSeekerJoined Date is Successfully Updated",
                             duration: 4000,
                         });
-                        console.log(params);
                     }
                     else {
-                        params.setValue(params.data.nextInterviewDate);
-                        params.refreshCell();
+                        params.setValue(params.data.jobSeekerJoinedDate);
                         dispatchNotificationData({
                             enable: true,
                             type: "error",
-                            message: "JobSeekerJoined Date is Not Scheduled Please Try Again ",
+                            message: "JobSeekerJoined Date is Not Updated Please Try Again ",
                             duration: 4000,
                         });
                     }
@@ -794,7 +779,11 @@ export var JobSeekerJoined = function (params) {
             }
         });
     }); };
-    return (_jsx("div", { children: _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DesktopDatePicker, { label: "Choose Date", inputFormat: "DD/MM/YYYY", value: moment(dateValue, "DD-MM-YYYY").format("MM-DD-YYYY"), onChange: handleDateChange, disablePast: true, renderInput: function (params) { return _jsx(TextField, __assign({}, params)); } }) })) }));
+    return (_jsx("div", { children: _jsx(LocalizationProvider, __assign({ dateAdapter: AdapterDayjs }, { children: _jsx(DesktopDatePicker
+            // label="Choose Date"
+            , { 
+                // label="Choose Date"
+                inputFormat: "DD/MM/YYYY", value: moment(dateValue, "DD-MM-YYYY").format("MM-DD-YYYY"), onChange: handleDateChange, disablePast: true, renderInput: function (params) { return _jsx(TextField, __assign({}, params)); } }) })) }));
 };
 export var CoolingPeriod = function (params) {
     var _a = useState(params.data.coolingPeriod), coolingPeriodEntered = _a[0], setCoolingPeriodEntered = _a[1];
@@ -830,17 +819,15 @@ export var CoolingPeriod = function (params) {
                     return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
                 case 1:
                     response = _a.sent();
-                    console.log(response);
                     if (response.data.success) {
                         params.setValue(coolingPeriodEntered);
                         params.refreshCell();
                         dispatchNotificationData({
                             enable: true,
                             type: "success",
-                            message: "CoolingPeriod is Successfully Scheduled",
+                            message: "CoolingPeriod is Successfully Updated",
                             duration: 4000,
                         });
-                        console.log(params);
                     }
                     else {
                         params.setValue(params.data.coolingPeriod);
@@ -848,7 +835,7 @@ export var CoolingPeriod = function (params) {
                         dispatchNotificationData({
                             enable: true,
                             type: "error",
-                            message: "CoolingPeriod is Not Scheduled Please Try Again ",
+                            message: "CoolingPeriod is Not Updated Please Try Again ",
                             duration: 4000,
                         });
                     }
@@ -863,7 +850,6 @@ export var CoolingPeriod = function (params) {
                     return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
                 case 3:
                     response = _a.sent();
-                    console.log(response);
                     if (response.data.success) {
                         params.setValue("N/A");
                         params.refreshCell();
@@ -874,7 +860,6 @@ export var CoolingPeriod = function (params) {
                             message: "CoolingPeriod is Successfully Scheduled",
                             duration: 4000,
                         });
-                        console.log(params);
                     }
                     else {
                         params.setValue(params.data.coolingPeriod);
@@ -896,7 +881,6 @@ export var CoolingPeriod = function (params) {
                     return [4 /*yield*/, manageJobseekerPatch(jobSeekerId, payload)];
                 case 5:
                     response = _a.sent();
-                    console.log(response);
                     if (response.data.success) {
                         params.setValue(coolingPeriodEntered);
                         params.refreshCell();
@@ -906,7 +890,6 @@ export var CoolingPeriod = function (params) {
                             message: "CoolingPeriod is Successfully Scheduled",
                             duration: 4000,
                         });
-                        console.log(params);
                     }
                     else {
                         params.setValue(params.data.coolingPeriod);

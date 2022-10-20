@@ -181,7 +181,7 @@ export var LISTING_GENERIC_HEADERS = [
     },
     {
         headerName: "Profile Vetted",
-        field: "profileVetted",
+        field: "consentDate",
         hide: false,
         filter: "agDateColumnFilter",
         filterParams: dateFilterParams,
@@ -240,7 +240,7 @@ export var LISTING_GENERIC_HEADERS = [
         floatingFilterComponentParams: {
             suppressFilterButton: true,
         },
-        minWidth: 260,
+        minWidth: 430,
     },
     {
         headerName: "Job Seeker Comment",
@@ -287,13 +287,13 @@ export var LISTING_GENERIC_HEADERS = [
     },
     {
         headerName: "Job Seeker Joined",
-        field: "jobSeekerJoined",
+        field: "jobSeekerJoinedDate",
         cellRenderer: JobSeekerJoined,
         valueGetter: function (params) {
-            return params.data.jobSeekerJoined;
+            return params.data.jobSeekerJoinedDate;
         },
         valueSetter: function (params) {
-            params.data.jobSeekerJoined = params.newValue;
+            params.data.jobSeekerJoinedDate = params.newValue;
             return true;
         },
         hide: false,
@@ -311,7 +311,7 @@ export var LISTING_GENERIC_HEADERS = [
             return true;
         },
         hide: false,
-        minWidth: 350,
+        minWidth: 250,
     },
     {
         headerName: "Send Reward",

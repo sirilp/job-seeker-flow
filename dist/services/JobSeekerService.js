@@ -276,3 +276,35 @@ export var manageJobseekerPatch = function (jobSeekrId, payLoad) { return __awai
         }
     });
 }); };
+export var JobSeekersStagefilterWithContest = function (contestId, stage, page, size) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(contestId, "&filters=consentStatus:JOB_SEEKER_CONSENT_PASS,jobSeekerMainStage:").concat(stage, "&page=").concat(page, "&size=").concat(size), {
+                    headers: {
+                        Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                    },
+                })
+                    .catch(function (error) {
+                    console.log(error);
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+export var JobSeekersInCoolingPeriodWithContest = function (contestId, filter, page, size) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios
+                    .get("".concat(process.env.REACT_APP_MAIN_SERVER_URL, "hiringhood/v1/job-seekers-profiles?contestId=").concat(contestId, "&filters=consentStatus:JOB_SEEKER_CONSENT_PASS,coolingPeriod:").concat(filter, "&page=").concat(page, "&size=").concat(size), {
+                    headers: {
+                        Authorization: "Bearer ".concat(sessionStorage.getItem("react-token")),
+                    },
+                })
+                    .catch(function (error) {
+                    console.log(error);
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
