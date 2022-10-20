@@ -289,3 +289,43 @@ export const manageJobseekerPatch = async (
       return error;
     });
 };
+
+export const JobSeekersStagefilterWithContest = async (
+  contestId?: string,
+  stage?: string,
+  page?: number,
+  size?: number
+) => {
+  return await axios
+    .get(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${contestId}&filters=consentStatus:JOB_SEEKER_CONSENT_PASS,jobSeekerMainStage:${stage}&page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const JobSeekersInCoolingPeriodWithContest = async (
+  contestId?: string,
+  filter?: string,
+  page?: number,
+  size?: number
+) => {
+  return await axios
+    .get(
+      `${process.env.REACT_APP_MAIN_SERVER_URL}hiringhood/v1/job-seekers-profiles?contestId=${contestId}&filters=consentStatus:JOB_SEEKER_CONSENT_PASS,coolingPeriod:${filter}&page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("react-token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};

@@ -302,7 +302,6 @@ export const ResumeUploaded = (params) => {
   const classes = useStyles();
   const handleViewResume = async () => {
     const resumeId = params.getValue();
-    console.log(resumeId);
     await openFile(resumeId);
   };
 
@@ -319,9 +318,7 @@ export const Icons = (params) => {
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
   const classes = useStyles();
-  const handleClick = () => {
-    console.log(params);
-  };
+  const handleClick = () => {};
   const handleChat = () => {
     console.log("Chat Icon clicked");
     setToggleDrawer(true);
@@ -347,7 +344,6 @@ export const Icons = (params) => {
       >
         <Box className={classes.leftDrawerBox}>
           <MessageBox closeIt={() => setToggleDrawer(false)} params={params} />
-          {console.log("Left Drawer called")}
         </Box>
       </Drawer>
     </div>
@@ -381,7 +377,7 @@ export const MainStageDropDown = (params: any) => {
       jobSeekerComment: "N/A",
     };
     const response = await manageJobseekerPatch(jobSeekerId, payload);
-    console.log(response);
+
     if (response.data.success) {
       params.setValue(event.target.value);
       params.refreshCell();
@@ -392,8 +388,6 @@ export const MainStageDropDown = (params: any) => {
         message: "MainStage Updated Successfully ",
         duration: 4000,
       });
-
-      console.log(params);
     } else {
       params.setValue(params.data.jobSeekerMainStage);
       params.refreshCell();
@@ -431,8 +425,10 @@ export const MainStageDropDown = (params: any) => {
 export const SubStageDropDown = (params: any) => {
   const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
   const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
-  const initalValue: string = params.data.jobSeekerSubStage;
-  const [subStageSelected, setSubStageSelected] = useState<any>(initalValue);
+  let initalValue: string;
+  const [subStageSelected, setSubStageSelected] = useState<any>(
+    params.data.jobSeekerSubStage
+  );
   const dispatch = useAppDispatch();
   const dispatchNotificationData = (notifyData) => {
     dispatch({
@@ -480,10 +476,11 @@ export const SubStageDropDown = (params: any) => {
 
   useEffect(() => {
     if (params.data.jobSeekerSubStage)
-      setSubStageSelected(params.data.jobSeekerMainStage);
+      setSubStageSelected(params.data.jobSeekerSubStage);
     if (params.data.jobSeekerMainStage)
       setMainStageVal(params.data.jobSeekerMainStage);
   }, [params]);
+
   const classes = useStyles();
   if (mainStageVal)
     return (
@@ -493,7 +490,7 @@ export const SubStageDropDown = (params: any) => {
             id={id}
             className={classes.dropdown}
             onChange={handleChange}
-            defaultValue={params.data.jobSeekerSubStage}
+            defaultValue={subStageSelected}
           >
             {mainStageVal
               ? subStages[mainStageVal]["subStages"].map((item) => (
@@ -526,7 +523,6 @@ export const SubStageCommentsDropDown = (params: any) => {
   };
 
   const handleChange = async (event: any) => {
-    console.log(params);
     let jobSeekerId = params.data._id;
     let payload = {
       jobSeekerComment: event.target.value,
@@ -553,7 +549,6 @@ export const SubStageCommentsDropDown = (params: any) => {
   };
 
   useEffect(() => {
-    console.log(params);
     if (params.data.jobSeekerMainStage && params.data.jobSeekerSubStage) {
       setMainStageVal(params.data.jobSeekerMainStage);
       setSubStageVal(params.data.jobSeekerSubStage);
@@ -638,7 +633,6 @@ export const ViewAssessments = (params) => {
 
   const classes = useStyles();
   const handleClick = () => {
-    console.log(params);
     setToggleDrawer(true);
   };
 
@@ -1076,7 +1070,7 @@ export const Interview = (params: any) => {
       nextInterviewDate: dateValue,
     };
     const response = await manageJobseekerPatch(jobSeekerId, payload);
-    console.log(response);
+
     if (response.data.success) {
       params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
       params.refreshCell();
@@ -1087,8 +1081,6 @@ export const Interview = (params: any) => {
         message: "Interview Date is Successfully Scheduled",
         duration: 4000,
       });
-
-      console.log(params);
     } else {
       params.setValue(params.data.nextInterviewDate);
       params.refreshCell();
@@ -1178,7 +1170,6 @@ export const Interview = (params: any) => {
 };
 
 export const Reward = (params: any) => {
-  console.log(params.data.sendReward);
   const [disable, setDisable] = useState<any>(params.data.sendReward);
 
   useEffect(() => {
@@ -1204,11 +1195,8 @@ export const Reward = (params: any) => {
 };
 
 export const JobSeekerJoined = (params: any) => {
-  console.log("JobSeekerJoined", params.data.jobSeekerJoined);
   const [disable, setDisable] = useState<any>();
-  const [dateValue, setDateValue] = React.useState<any>(
-    moment(params.data.jobSeekerJoined, "DD-MM-YYYY").format("MM-DD-YYYY") || ""
-  );
+  const [dateValue, setDateValue] = React.useState<any>(params.getValue());
   const dispatch = useAppDispatch();
   const dispatchNotificationData = (notifyData) => {
     dispatch({
@@ -1231,28 +1219,24 @@ export const JobSeekerJoined = (params: any) => {
     setDateValue(`${dd}/${mm}/${yy}`);
     let jobSeekerId = params.data._id;
     let payload = {
-      jobSeekerJoined: `${dd}/${mm}/${yy}`,
+      jobSeekerJoinedDate: `${dd}/${mm}/${yy}`,
     };
     const response = await manageJobseekerPatch(jobSeekerId, payload);
     console.log(response);
     if (response.data.success) {
       params.setValue(moment(dateValue, "DD-MM-YYYY").format("DD-MM-YYYY"));
-      params.refreshCell();
       dispatchNotificationData({
         enable: true,
         type: "success",
-        message: "JobSeekerJoined Date is Successfully Scheduled",
+        message: "JobSeekerJoined Date is Successfully Updated",
         duration: 4000,
       });
-
-      console.log(params);
     } else {
-      params.setValue(params.data.nextInterviewDate);
-      params.refreshCell();
+      params.setValue(params.data.jobSeekerJoinedDate);
       dispatchNotificationData({
         enable: true,
         type: "error",
-        message: "JobSeekerJoined Date is Not Scheduled Please Try Again ",
+        message: "JobSeekerJoined Date is Not Updated Please Try Again ",
         duration: 4000,
       });
     }
@@ -1262,7 +1246,7 @@ export const JobSeekerJoined = (params: any) => {
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDatePicker
-          label="Choose Date"
+          // label="Choose Date"
           inputFormat="DD/MM/YYYY"
           value={moment(dateValue, "DD-MM-YYYY").format("MM-DD-YYYY")}
           onChange={handleDateChange}
@@ -1302,25 +1286,23 @@ export const CoolingPeriod = (params: any) => {
         sendReward: true,
       };
       const response = await manageJobseekerPatch(jobSeekerId, payload);
-      console.log(response);
+
       if (response.data.success) {
         params.setValue(coolingPeriodEntered);
         params.refreshCell();
         dispatchNotificationData({
           enable: true,
           type: "success",
-          message: "CoolingPeriod is Successfully Scheduled",
+          message: "CoolingPeriod is Successfully Updated",
           duration: 4000,
         });
-
-        console.log(params);
       } else {
         params.setValue(params.data.coolingPeriod);
         params.refreshCell();
         dispatchNotificationData({
           enable: true,
           type: "error",
-          message: "CoolingPeriod is Not Scheduled Please Try Again ",
+          message: "CoolingPeriod is Not Updated Please Try Again ",
           duration: 4000,
         });
       }
@@ -1331,7 +1313,7 @@ export const CoolingPeriod = (params: any) => {
         sendReward: false,
       };
       const response = await manageJobseekerPatch(jobSeekerId, payload);
-      console.log(response);
+
       if (response.data.success) {
         params.setValue("N/A");
         params.refreshCell();
@@ -1342,8 +1324,6 @@ export const CoolingPeriod = (params: any) => {
           message: "CoolingPeriod is Successfully Scheduled",
           duration: 4000,
         });
-
-        console.log(params);
       } else {
         params.setValue(params.data.coolingPeriod);
         params.refreshCell();
@@ -1361,7 +1341,7 @@ export const CoolingPeriod = (params: any) => {
         sendReward: false,
       };
       const response = await manageJobseekerPatch(jobSeekerId, payload);
-      console.log(response);
+
       if (response.data.success) {
         params.setValue(coolingPeriodEntered);
         params.refreshCell();
@@ -1371,8 +1351,6 @@ export const CoolingPeriod = (params: any) => {
           message: "CoolingPeriod is Successfully Scheduled",
           duration: 4000,
         });
-
-        console.log(params);
       } else {
         params.setValue(params.data.coolingPeriod);
         params.refreshCell();

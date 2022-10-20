@@ -25,6 +25,9 @@ import { PAGE_SIZE_ARRAY } from "../../constants";
 import {
   statusFilterContestLinkedJobsekeers,
   getAggregateData,
+  consentStatusFilterContestLinkedJobsekeers,
+  JobSeekersStagefilterWithContest,
+  JobSeekersInCoolingPeriodWithContest,
 } from "../../services/JobSeekerService";
 import moment from "moment";
 import { makeStyles } from "@mui/styles";
@@ -46,7 +49,6 @@ const Manage = (props) => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [rowData, setRowData] = React.useState<any[]>();
-  const [selectedButton, setSelectedButton] = React.useState<Number>(1);
   const [columnsListOpen, setColumnsListOpen] = React.useState(false);
   const [floatingFilter, setFloatingFilter] = React.useState(true);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -60,11 +62,23 @@ const Manage = (props) => {
   });
   const [selectedEmails, setSelectedEmails] = useState<any>([]);
   const [isMailCheckEnable, setIsMailCheckEnable] = useState(false);
+  const [selectedButtonValue, setSelectedButtonValue] = useState(
+    "JOB_SEEKER_CONSENT_PASS"
+  );
+  const [selectedButtonId, setSelectedButtonId] = React.useState<Number>(1);
+
+  const setSelectedButton = (id: number, filterValue: string) => {
+    setSelectedButtonId(id);
+    setSelectedButtonValue(filterValue);
+    setPageNo(0);
+    setPageSize(10);
+    // getTableRowData(0, 10, id, filterValue);
+  };
 
   useEffect(() => {
-    getTableRowData(pageNo, pageSize, id);
     handleAggregateData(id);
-  }, [pageNo, pageSize, id]);
+    getTableRowData(pageNo, pageSize, id, selectedButtonValue);
+  }, [pageNo, pageSize, id, selectedButtonValue]);
 
   const handleAggregateData = async (id) => {
     const response: any = await getAggregateData(id);
@@ -90,10 +104,15 @@ const Manage = (props) => {
     }
   };
 
-  const getTableRowData = async (pageNo, pageSize, id) => {
-    const response: any = await statusFilterContestLinkedJobsekeers(
+  const handleconsentStatusFilterContestLinkedJobsekeers = async (
+    pageNo,
+    pageSize,
+    id,
+    selectedButtonValue
+  ) => {
+    const response: any = await consentStatusFilterContestLinkedJobsekeers(
       id,
-      "",
+      selectedButtonValue,
       pageNo,
       pageSize
     );
@@ -106,6 +125,14 @@ const Manage = (props) => {
           item.nextInterviewDate = moment(item.nextInterviewDate).format(
             "DD-MM-YYYY"
           );
+        }
+        if (item.jobSeekerJoinedDate) {
+          item.jobSeekerJoinedDate = moment(item.jobSeekerJoinedDate).format(
+            "DD-MM-YYYY"
+          );
+        }
+        if (item.consentDate) {
+          item.consentDate = moment(item.consentDate).format("DD-MM-YYYY");
         }
         let Data = {
           ...item,
@@ -122,6 +149,127 @@ const Manage = (props) => {
     } else {
       console.log("false");
       setRowData([]);
+    }
+  };
+
+  const handleJobSeekersStagefilterWithContest = async (
+    pageNo,
+    pageSize,
+    id,
+    selectedButtonValue
+  ) => {
+    const response: any = await JobSeekersStagefilterWithContest(
+      id,
+      selectedButtonValue,
+      pageNo,
+      pageSize
+    );
+
+    if (response.data.success) {
+      let mapData = response.data.data.content;
+      let result = mapData.map((item, index) => {
+        item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
+        if (item.nextInterviewDate) {
+          item.nextInterviewDate = moment(item.nextInterviewDate).format(
+            "DD-MM-YYYY"
+          );
+        }
+        if (item.jobSeekerJoinedDate) {
+          item.jobSeekerJoinedDate = moment(item.jobSeekerJoinedDate).format(
+            "DD-MM-YYYY"
+          );
+        }
+        if (item.consentDate) {
+          item.consentDate = moment(item.consentDate).format("DD-MM-YYYY");
+        }
+        let Data = {
+          ...item,
+          ...item.matchedProfileLogsList[0],
+          ...item.matchedProfilesList[0],
+        };
+
+        return Data;
+      });
+      setRowData(result);
+      setTotalPages(response?.data?.data?.totalPages);
+      setPageNo(response?.data?.data?.pageNo);
+      setPageSize(response?.data?.data?.pageSize);
+    } else {
+      console.log("false");
+      setRowData([]);
+    }
+  };
+
+  const handleJobSeekersInCoolingPeriodWithContest = async (
+    pageNo,
+    pageSize,
+    id,
+    selectedButtonValue
+  ) => {
+    const response: any = await JobSeekersInCoolingPeriodWithContest(
+      id,
+      selectedButtonValue,
+      pageNo,
+      pageSize
+    );
+
+    if (response.data.success) {
+      let mapData = response.data.data.content;
+      let result = mapData.map((item, index) => {
+        item.appliedDate = moment(item.appliedDate).format("DD-MM-YYYY");
+        if (item.nextInterviewDate) {
+          item.nextInterviewDate = moment(item.nextInterviewDate).format(
+            "DD-MM-YYYY"
+          );
+        }
+        if (item.jobSeekerJoinedDate) {
+          item.jobSeekerJoinedDate = moment(item.jobSeekerJoinedDate).format(
+            "DD-MM-YYYY"
+          );
+        }
+        if (item.consentDate) {
+          item.consentDate = moment(item.consentDate).format("DD-MM-YYYY");
+        }
+        let Data = {
+          ...item,
+          ...item.matchedProfileLogsList[0],
+          ...item.matchedProfilesList[0],
+        };
+
+        return Data;
+      });
+      setRowData(result);
+      setTotalPages(response?.data?.data?.totalPages);
+      setPageNo(response?.data?.data?.pageNo);
+      setPageSize(response?.data?.data?.pageSize);
+    } else {
+      console.log("false");
+      setRowData([]);
+    }
+  };
+
+  const getTableRowData = async (pageNo, pageSize, id, selectedButtonValue) => {
+    if (selectedButtonValue === "JOB_SEEKER_CONSENT_PASS") {
+      handleconsentStatusFilterContestLinkedJobsekeers(
+        pageNo,
+        pageSize,
+        id,
+        selectedButtonValue
+      );
+    } else if (selectedButtonValue === "notNull") {
+      handleJobSeekersInCoolingPeriodWithContest(
+        pageNo,
+        pageSize,
+        id,
+        selectedButtonValue
+      );
+    } else {
+      handleJobSeekersStagefilterWithContest(
+        pageNo,
+        pageSize,
+        id,
+        selectedButtonValue
+      );
     }
   };
 
@@ -148,7 +296,7 @@ const Manage = (props) => {
     return {
       flex: 1,
       minWidth: 170,
-      maxWidth: 250,
+      maxWidth: 480,
       sortable: true,
       floatingFilter: true,
       enableRowGroup: true,
@@ -216,31 +364,37 @@ const Manage = (props) => {
               label: "Vetted",
               tooltip: "Vetted",
               id: 1,
+              value: "JOB_SEEKER_CONSENT_PASS",
             },
             {
               label: "Phase-L1",
               tooltip: "Phase-L1",
               id: 2,
+              value: "phaseL1",
             },
             {
               label: "Phase-L2",
               tooltip: "Phase-L2",
               id: 3,
+              value: "phaseL2",
             },
             {
               label: "Phase-HR",
               tooltip: "Phase-HR",
               id: 4,
+              value: "phaseHr",
             },
             {
               label: "Offer Rolled",
               tooltip: "Offer Rolled",
               id: 5,
+              value: "offerRolled",
             },
             {
               label: "Cooling Period",
               tooltip: "Cooling Period",
               id: 6,
+              value: "notNull",
             },
           ]}
           countsList={[
@@ -252,7 +406,7 @@ const Manage = (props) => {
             { _id: 6, count: agCount.coolingPeriod },
           ]}
           setSelectedButton={setSelectedButton}
-          selectedButton={selectedButton}
+          selectedButton={selectedButtonId}
         />
       </Grid>
       <Grid item xs={12}>

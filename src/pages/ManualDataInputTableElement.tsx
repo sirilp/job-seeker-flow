@@ -43,7 +43,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const FirstNameInputBox = (params: any) => {
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   const [firstName, setFirstName] = useState(params.getValue());
   useEffect(() => {
     if (params.getValue().trim() == "") setFirstName(params.getValue());
@@ -56,9 +58,10 @@ export const FirstNameInputBox = (params: any) => {
     }
   };
   return (
-    <div>
+    <div id={containerId}>
       <input
         id={id}
+        name={elementName}
         disabled={params.pdcDisabled}
         type="text"
         onChange={handleChange}
@@ -70,7 +73,9 @@ export const FirstNameInputBox = (params: any) => {
 };
 
 export const LastNameInputBox = (params: any) => {
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   const [lastName, setLastName] = useState(params.getValue());
   const handleChange = (event: any) => {
     if (/^[A-Za-z\s]+$/.test(event.target.value) || event.target.value == "") {
@@ -82,9 +87,10 @@ export const LastNameInputBox = (params: any) => {
     if (params.getValue().trim() == "") setLastName(params.getValue());
   }, [params.getValue()]);
   return (
-    <div>
+    <div id={containerId}>
       <input
         id={id}
+        name={elementName}
         disabled={params.pdcDisabled}
         type="text"
         onChange={handleChange}
@@ -95,7 +101,9 @@ export const LastNameInputBox = (params: any) => {
   );
 };
 export const MobileNumberInputBox = (params: any) => {
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   const [mobileNumber, setMobileNumber] = useState(params.getValue());
   const handleChange = (event: any) => {
     if (/^\d{0,10}$/.test(event.target.value.trim())) {
@@ -107,9 +115,10 @@ export const MobileNumberInputBox = (params: any) => {
     if (params.getValue().trim() == "") setMobileNumber(params.getValue());
   }, [params.getValue()]);
   return (
-    <div>
+    <div id={containerId}>
       <input
         id={id}
+        name={elementName}
         disabled={params.pdcDisabled}
         type="text"
         onChange={handleChange}
@@ -121,7 +130,9 @@ export const MobileNumberInputBox = (params: any) => {
 };
 
 export const EmailTextInput = (params: any) => {
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   const [email, setEmail] = useState(params.getValue());
   const handleChange = (event: any) => {
     setEmail(event.target.value);
@@ -131,9 +142,10 @@ export const EmailTextInput = (params: any) => {
     if (params.getValue().trim() == "") setEmail(params.getValue());
   }, [params.getValue()]);
   return (
-    <div>
+    <div id={containerId}>
       <input
         id={id}
+        name={elementName}
         disabled={params.pdcDisabled}
         type="email"
         onChange={handleChange}
@@ -168,8 +180,10 @@ export const CustomDropDown = (params: any) => {
     setOption(params.getValue() == "yes" ? yes : no);
   }, []);
 
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
-  const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
+  const iconId = `icon-no-${params.rowIndex}-${params.column.instanceId}`;
 
   const [isInterviewed, setIsInterviewed] = useState(params.getValue());
   const handleChange = (event: any) => {
@@ -228,9 +242,10 @@ export const CustomDropDown = (params: any) => {
   }, [params.getValue()]);
   return (
     <>
-      <div>
+      <div id={containerId}>
         <select
           id={id}
+          name={elementName}
           style={{ border: "1px solid #DFE5FF" }}
           value={isInterviewed}
           onChange={handleChange}
@@ -323,8 +338,10 @@ export const PDCStatusCheckButton = (params: any) => {
     },
   }));
 
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
-  const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
+  const iconId = `icon-no-${params.rowIndex}-${params.column.instanceId}`;
 
   const dispatchNotificationData = (notifyData) => {
     dispatch({
@@ -492,6 +509,7 @@ export const PDCStatusCheckButton = (params: any) => {
     <>
       <Button
         id={id}
+        name={elementName}
         className={classes.buttonContainer}
         sx={{
           display: "inline",
@@ -558,7 +576,9 @@ export const CustomDOBInputBox = (params: any) => {
     //   : params.getValue()
   );
   const [isDisable, setIsDisable] = useState(false);
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   const handleChange = (newValue: any) => {
     if (newValue != null) {
       const dd = ("0" + newValue.$D).slice(-2);
@@ -589,6 +609,7 @@ export const CustomDOBInputBox = (params: any) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <input
               id={id}
+              name={elementName}
               ref={inputRef}
               {...inputProps}
               style={{
@@ -606,7 +627,9 @@ export const CustomDOBInputBox = (params: any) => {
 };
 
 export const PanInputBox = (params: any) => {
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   const [panNumber, setPanNumber] = useState(params.getValue());
   const [isDisable, setIsDisable] = useState(false);
 
@@ -623,9 +646,10 @@ export const PanInputBox = (params: any) => {
     if (params.getValue().trim() == "") setPanNumber(params.getValue());
   }, [params.getValue()]);
   return (
-    <div>
+    <div id={containerId}>
       <input
         id={id}
+        name={elementName}
         disabled={isDisable}
         type="text"
         onChange={handleChange}
@@ -695,8 +719,10 @@ export const FDCStatusCheckButton = (params: any) => {
     },
   }));
 
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
-  const iconId = `iconNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
+  const iconId = `icon-no-${params.rowIndex}-${params.column.instanceId}`;
 
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -872,6 +898,7 @@ export const FDCStatusCheckButton = (params: any) => {
     <>
       <Button
         id={id}
+        name={elementName}
         className={classes.buttonContainer}
         sx={{
           display: "inline",
@@ -942,15 +969,19 @@ export const CustomUploadButton = (params: any) => {
     setIsDisable(!params.data.fdcStatus);
   }, [params.data.fdcStatus]);
   const navigateUpload = () => {};
-  const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `cell-no-${params.rowIndex}-${params.column.instanceId}`;
+  const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   return (
     <div
       style={{
         textAlign: "center",
       }}
+      id={containerId}
     >
       <Button
         id={id}
+        name={elementName}
         className={classes.buttonContainer}
         variant="contained"
         size="small"
@@ -983,15 +1014,18 @@ export const ClearRowButton = (params: any) => {
     params.node.setDataValue("fdcStatus", "0");
     params.node.setDataValue("uploadProfile", "");
   };
-  // const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
+  const id = `clear-row-${params.rowIndex}-${params.column.instanceId}`;
+  // const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+  const containerId = `container-no-${params.rowIndex}-${params.column.instanceId}`;
   return (
     <div
+      id={containerId}
       style={{
         textAlign: "center",
       }}
     >
       <IconButton
-        // id={id}
+        id={id}
         // className={classes.buttonContainer}
         onClick={handleClick}
         aria-label="delete"
