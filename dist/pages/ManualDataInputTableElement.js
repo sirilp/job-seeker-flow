@@ -85,7 +85,9 @@ var useStyles = makeStyles(function () { return ({
     },
 }); });
 export var FirstNameInputBox = function (params) {
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var _a = useState(params.getValue()), firstName = _a[0], setFirstName = _a[1];
     useEffect(function () {
         if (params.getValue().trim() == "")
@@ -97,10 +99,12 @@ export var FirstNameInputBox = function (params) {
             params.setValue(event.target.value);
         }
     };
-    return (_jsx("div", { children: _jsx("input", { id: id, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: firstName, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
+    return (_jsx("div", __assign({ id: containerId }, { children: _jsx("input", { id: id, name: elementName, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: firstName, style: { width: "100%", border: "1px solid #DFE5FF" } }) })));
 };
 export var LastNameInputBox = function (params) {
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var _a = useState(params.getValue()), lastName = _a[0], setLastName = _a[1];
     var handleChange = function (event) {
         if (/^[A-Za-z\s]+$/.test(event.target.value) || event.target.value == "") {
@@ -112,10 +116,12 @@ export var LastNameInputBox = function (params) {
         if (params.getValue().trim() == "")
             setLastName(params.getValue());
     }, [params.getValue()]);
-    return (_jsx("div", { children: _jsx("input", { id: id, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: lastName, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
+    return (_jsx("div", __assign({ id: containerId }, { children: _jsx("input", { id: id, name: elementName, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: lastName, style: { width: "100%", border: "1px solid #DFE5FF" } }) })));
 };
 export var MobileNumberInputBox = function (params) {
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var _a = useState(params.getValue()), mobileNumber = _a[0], setMobileNumber = _a[1];
     var handleChange = function (event) {
         if (/^\d{0,10}$/.test(event.target.value.trim())) {
@@ -127,10 +133,12 @@ export var MobileNumberInputBox = function (params) {
         if (params.getValue().trim() == "")
             setMobileNumber(params.getValue());
     }, [params.getValue()]);
-    return (_jsx("div", { children: _jsx("input", { id: id, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: mobileNumber, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
+    return (_jsx("div", __assign({ id: containerId }, { children: _jsx("input", { id: id, name: elementName, disabled: params.pdcDisabled, type: "text", onChange: handleChange, value: mobileNumber, style: { width: "100%", border: "1px solid #DFE5FF" } }) })));
 };
 export var EmailTextInput = function (params) {
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var _a = useState(params.getValue()), email = _a[0], setEmail = _a[1];
     var handleChange = function (event) {
         setEmail(event.target.value);
@@ -140,7 +148,7 @@ export var EmailTextInput = function (params) {
         if (params.getValue().trim() == "")
             setEmail(params.getValue());
     }, [params.getValue()]);
-    return (_jsx("div", { children: _jsx("input", { id: id, disabled: params.pdcDisabled, type: "email", onChange: handleChange, value: email, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
+    return (_jsx("div", __assign({ id: containerId }, { children: _jsx("input", { id: id, name: elementName, disabled: params.pdcDisabled, type: "email", onChange: handleChange, value: email, style: { width: "100%", border: "1px solid #DFE5FF" } }) })));
 };
 export var CustomDropDown = function (params) {
     var yes = {
@@ -164,8 +172,10 @@ export var CustomDropDown = function (params) {
     useEffect(function () {
         setOption(params.getValue() == "yes" ? yes : no);
     }, []);
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
-    var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var iconId = "icon-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var _b = useState(params.getValue()), isInterviewed = _b[0], setIsInterviewed = _b[1];
     var handleChange = function (event) {
         setIsInterviewed(event.target.value);
@@ -219,7 +229,7 @@ export var CustomDropDown = function (params) {
             setIsInterviewed(params.getValue());
         }
     }, [params.getValue()]);
-    return (_jsxs(_Fragment, { children: [_jsx("div", { children: _jsxs("select", __assign({ id: id, style: { border: "1px solid #DFE5FF" }, value: isInterviewed, onChange: handleChange }, { children: [_jsx("option", __assign({ value: "no" }, { children: "No" })), _jsx("option", __assign({ value: "yes" }, { children: "Yes" }))] })) }), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip
+    return (_jsxs(_Fragment, { children: [_jsx("div", __assign({ id: containerId }, { children: _jsxs("select", __assign({ id: id, name: elementName, style: { border: "1px solid #DFE5FF" }, value: isInterviewed, onChange: handleChange }, { children: [_jsx("option", __assign({ value: "no" }, { children: "No" })), _jsx("option", __assign({ value: "yes" }, { children: "Yes" }))] })) })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip
                     // PopperProps={{
                     //   disablePortal: true,
                     // }}
@@ -274,8 +284,10 @@ export var PDCStatusCheckButton = function (params) {
             },
             _b);
     });
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
-    var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var iconId = "icon-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var dispatchNotificationData = function (notifyData) {
         dispatch({
             type: "SEND_ALERT",
@@ -420,7 +432,7 @@ export var PDCStatusCheckButton = function (params) {
             setOpen(false);
         }
     }, [params.getValue()]);
-    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, className: classes.buttonContainer, sx: {
+    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, name: elementName, className: classes.buttonContainer, sx: {
                     display: "inline",
                 }, variant: "contained", size: "small", onClick: handleClick }, { children: "Check" })), _jsx("div", __assign({ style: { color: result.color, display: "inline" } }, { children: result.result })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip, __assign({ onClose: handleTooltipClose, open: open, disableFocusListener: true, disableHoverListener: true, disableTouchListener: true, title: _jsxs(React.Fragment, { children: [_jsx(Typography, __assign({ variant: "subtitle2" }, { children: _jsx("b", __assign({ style: { color: result.color } }, { children: result.title })) })), _jsx(Typography, __assign({ variant: "caption", color: "#626880" }, { children: result.body }))] }) }, { children: (function () {
                             if (result.result == "Pass") {
@@ -441,7 +453,9 @@ export var CustomDOBInputBox = function (params) {
     //   : params.getValue()
     ), date = _a[0], setDate = _a[1];
     var _b = useState(false), isDisable = _b[0], setIsDisable = _b[1];
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var handleChange = function (newValue) {
         if (newValue != null) {
             var dd = ("0" + newValue.$D).slice(-2);
@@ -459,7 +473,7 @@ export var CustomDOBInputBox = function (params) {
                 handleChange(newValue);
             }, maxDate: moment().subtract(18, "year"), renderInput: function (_a) {
                 var inputRef = _a.inputRef, inputProps = _a.inputProps, InputProps = _a.InputProps;
-                return (_jsxs(Box, __assign({ sx: { display: "flex", alignItems: "center" } }, { children: [_jsx("input", __assign({ id: id, ref: inputRef }, inputProps, { style: {
+                return (_jsxs(Box, __assign({ sx: { display: "flex", alignItems: "center" } }, { children: [_jsx("input", __assign({ id: id, name: elementName, ref: inputRef }, inputProps, { style: {
                                 // height: "2vw",
                                 width: "90%",
                                 border: "1px solid #DFE5FF",
@@ -467,7 +481,9 @@ export var CustomDOBInputBox = function (params) {
             } }) })));
 };
 export var PanInputBox = function (params) {
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var _a = useState(params.getValue()), panNumber = _a[0], setPanNumber = _a[1];
     var _b = useState(false), isDisable = _b[0], setIsDisable = _b[1];
     var handleChange = function (event) {
@@ -483,7 +499,7 @@ export var PanInputBox = function (params) {
         if (params.getValue().trim() == "")
             setPanNumber(params.getValue());
     }, [params.getValue()]);
-    return (_jsx("div", { children: _jsx("input", { id: id, disabled: isDisable, type: "text", onChange: handleChange, value: panNumber, style: { width: "100%", border: "1px solid #DFE5FF" } }) }));
+    return (_jsx("div", __assign({ id: containerId }, { children: _jsx("input", { id: id, name: elementName, disabled: isDisable, type: "text", onChange: handleChange, value: panNumber, style: { width: "100%", border: "1px solid #DFE5FF" } }) })));
 };
 export var FDCStatusCheckButton = function (params) {
     var dispatch = useAppDispatch();
@@ -538,8 +554,10 @@ export var FDCStatusCheckButton = function (params) {
             },
             _b);
     });
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
-    var iconId = "iconNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var iconId = "icon-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     var handleClick = function (event) { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -689,7 +707,7 @@ export var FDCStatusCheckButton = function (params) {
             setOpen(false);
         }
     }, [params.getValue()]);
-    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, className: classes.buttonContainer, sx: {
+    return (_jsxs(_Fragment, { children: [_jsx(Button, __assign({ id: id, name: elementName, className: classes.buttonContainer, sx: {
                     display: "inline",
                 }, variant: "contained", size: "small", onClick: handleClick, disabled: isDisable }, { children: "Check" })), _jsx("div", __assign({ style: { color: result.color, display: "inline" } }, { children: result.result })), _jsx("div", __assign({ style: { display: "inline-flex", alignItems: "center" } }, { children: _jsx(ClickAwayListener, __assign({ onClickAway: handleTooltipClose }, { children: _jsx(HtmlTooltip
                     // PopperProps={{
@@ -718,10 +736,12 @@ export var CustomUploadButton = function (params) {
         setIsDisable(!params.data.fdcStatus);
     }, [params.data.fdcStatus]);
     var navigateUpload = function () { };
-    var id = "cellNo".concat(params.rowIndex).concat(params.column.instanceId);
+    var id = "cell-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var elementName = "".concat(params.colDef.field, "-").concat(params.rowIndex, "-").concat(params.column.instanceId);
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
     return (_jsx("div", __assign({ style: {
             textAlign: "center",
-        } }, { children: _jsx(Button, __assign({ id: id, className: classes.buttonContainer, variant: "contained", size: "small", onClick: navigateUpload, disabled: isDisable }, { children: "Upload" })) })));
+        }, id: containerId }, { children: _jsx(Button, __assign({ id: id, name: elementName, className: classes.buttonContainer, variant: "contained", size: "small", onClick: navigateUpload, disabled: isDisable }, { children: "Upload" })) })));
 };
 export var ClearRowButton = function (params) {
     var classes = useStyles();
@@ -741,14 +761,12 @@ export var ClearRowButton = function (params) {
         params.node.setDataValue("fdcStatus", "0");
         params.node.setDataValue("uploadProfile", "");
     };
-    // const id = `cellNo${params.rowIndex}${params.column.instanceId}`;
-    return (_jsx("div", __assign({ style: {
+    var id = "clear-row-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    // const elementName = `${params.colDef.field}-${params.rowIndex}-${params.column.instanceId}`;
+    var containerId = "container-no-".concat(params.rowIndex, "-").concat(params.column.instanceId);
+    return (_jsx("div", __assign({ id: containerId, style: {
             textAlign: "center",
-        } }, { children: _jsx(IconButton
-        // id={id}
-        // className={classes.buttonContainer}
-        , __assign({ 
-            // id={id}
+        } }, { children: _jsx(IconButton, __assign({ id: id, 
             // className={classes.buttonContainer}
             onClick: handleClick, "aria-label": "delete", disabled: disableButton === true ? true : false }, { children: _jsx(DeleteIcon, {}) })) })));
 };
