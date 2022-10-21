@@ -89,7 +89,7 @@ const Manage = (props) => {
     );
     if (coolingCount.data.success) {
       result5 = coolingCount.data.data.filter(
-        (data) => data.status === "totalCount"
+        (data) => data.status === "TOTAL_JOB_SEEKERS"
       );
     } else {
       result5 = [];
@@ -99,7 +99,7 @@ const Manage = (props) => {
 
     if (response.data.success) {
       const result0 = response.data.data.filter(
-        (data) => data.status === "totalCount"
+        (data) => data.status === "TOTAL_JOB_SEEKERS"
       );
       const result1 = response.data.data.filter(
         (data) => data.status === "phaseL1"
