@@ -243,7 +243,10 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
   const patchProfileDetails = (patchData: any) => {
     console.log(patchData);
     setFreshGrad(patchData.freshGraduate);
-    setTotalExp(patchData.totalExperience);
+    setTotalExperience({
+      totalExperienceYears: patchData.totalExperience.totalExperienceYears,
+      totalExperienceMonths: patchData.totalExperience.totalExperienceMonths
+    })
     setRelevantExperience({
       relevantExperienceYears:
         patchData.relevantExperience.relevantExperienceYears,
@@ -266,12 +269,6 @@ const JobSeekerProfileDetails: FC<any> = (props): ReactElement => {
     setTotalCtc(patchData.totalCtc);
   };
 
-  const setTotalExp = (patchObj: any) => {
-    setTotalExperience({
-      totalExperienceMonths: patchObj.totalExperienceMonths,
-      totalExperienceYears: patchObj.totalExperienceYears,
-    });
-  };
   const setFreshGrad = (data: any) => {
     if (data === "true") {
       setFreshGraduate(true);
