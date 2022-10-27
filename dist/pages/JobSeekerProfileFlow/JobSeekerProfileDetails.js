@@ -251,7 +251,10 @@ var JobSeekerProfileDetails = function (props) {
     var patchProfileDetails = function (patchData) {
         console.log(patchData);
         setFreshGrad(patchData.freshGraduate);
-        setTotalExp(patchData.totalExperience);
+        setTotalExperience({
+            totalExperienceYears: patchData.totalExperience.totalExperienceYears,
+            totalExperienceMonths: patchData.totalExperience.totalExperienceMonths
+        });
         setRelevantExperience({
             relevantExperienceYears: patchData.relevantExperience.relevantExperienceYears,
             relevantExperienceMonths: patchData.relevantExperience.relevantExperienceMonths,
@@ -270,12 +273,6 @@ var JobSeekerProfileDetails = function (props) {
         });
         setWorkStatus(patchData.workStatus);
         setTotalCtc(patchData.totalCtc);
-    };
-    var setTotalExp = function (patchObj) {
-        setTotalExperience({
-            totalExperienceMonths: patchObj.totalExperienceMonths,
-            totalExperienceYears: patchObj.totalExperienceYears,
-        });
     };
     var setFreshGrad = function (data) {
         if (data === "true") {
